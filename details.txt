@@ -1,0 +1,79 @@
+STORY & IN-GAME TEXTS
+
+Forum event introduction: King Fromagnus' birthday is approaching and the newly established Transformice Orchestra is preparing for their premiere, a concert in his honor. There is still plenty of work to be done though! You need to give a helping hand or two, with the musical instruments and the music scores. And of course, every musician must be in tune, it simply won't do to embarrass ourselves in front of King Fromagnus! But don't worry, as they say, the show is not over until the... plump lady sings. And you’re the one who will make sure that she sings!
+
+Conductor’s text: First phase: Finally, you’re here! I need this orchestra ready as soon as possible. There is no time to waste, so listen carefully: Go to each musician and ask them what their instrument is. Then go backstage and fetch their instrument and its music score. Lastly, return to the musician and help them tune their instrument. Now, hurry up, we need to get this concert started, I don’t want to keep the Diva waiting and certainly not King Fromagnus! Oh, he’ll never forget this birthday...
+
+Second phase:You got everyone ready? Good mouse! Now, go to the Diva already, she is getting cranky and it’s contagious. Don’t worry, she’ll tell you exactly what to do. That’s her second favorite thing to do, after singing. Don’t worry, I’ll handle the rest. Good luck!
+
+Diva’s text: First phase: What are you staring at, do you want my autograph? I don’t see the orchestra ready! Make yourself useful already, we don’t have all the time in the world. Now, where did I put my pocket mirror...
+
+Second phase: Well, that took you a while, didn’t it? I was beginning to despair. Alright, you have one final task, don’t mess this up. I’ll sing a few tunes and you’ll repeat them on the piano. But make no mistakes, or we’ll have to start all over again. Do you understand? Well then, let’s go!
+
+Other texts:
+
+Musicians’ hints:
+Violin: With my instrument, I could be the second-in-command of the whole orchestra.
+Viola: My instrument is the female member of a string quartet.
+Cello: I play my instrument between my legs.
+Bass: My stringed instrument is taller than you.
+Harp: Supposedly, angels also play my instrument.
+
+Flute: Mine is a slender instrument found in Jethro Tull music.
+Oboe: The shawm is my instrument's ancestor.
+Clarinet: Rhapsody in Blue opens with a solo for my instrument.
+Bassoon: My instrument's mouthpiece is called the bocal.
+Saxophone: My instrument is ideal for sensual music.
+
+Horn: The english claim my instrument is french.
+Trumpet: My instrument can make the walls of Jericho tremble.
+Trombone: Don Drummond was the man with a big instrument like mine.
+Tuba: My instrument replaced the ophicleide in the orchestra.
+Euphonium: The name of my instrument means "well-sounding" in greek.
+
+Timpani: I use a pedal to tune my instrument.
+Cymbals: My instrument doesn't really need tuning.
+Gong: My instrument originates in southeast Asia.
+Vibraphone: My instrument is not even 100 years old.
+Marimba: Rosewood is often used to make my instrument.
+
+Musical instruments’ board: Choose the right musical instrument from the board, then fetch its matching music score.
+
+Music scores’ pile: Choose the right music score and memorize the sequence of gestures, to tune the musical instrument.
+
+Piano: Repeat the tune the Diva has just sung!
+
+
+
+
+
+
+GAMEPLAY & MAP
+
+https://i.imgur.com/XWmx5Oj.png
+
+A rough sketch of the event map:
+
+https://i.imgur.com/XWmx5Oj.png
+
+Here you can read the steps to complete the event:
+
+1. The players will spawn next to the Conductor NPC and clicking on him will give them instructions about the gameplay of the event as well as the background story. The players have to perform a series of tasks to complete the event. First of all, the musical instruments and music scores are missing from the musicians' seats. The player will go to each musician and press spacebar/duck to receive a hint about the instrument they play. It will appear in the chat section of the screen in brightly colored letters, with the word instrument in bold, as an extra indication for the next destination.
+
+2. Then, the player must go through the trapdoor, under the stage, to the board where the musical instruments are hung and select the correct instrument by clicking on it with the mouse. If the board is too small in the map, a blowout version of it could appear after clicking on the board, in a new popup window.
+
+
+3. Next stop is the pile of music scores where the player must find the matching score. The scores have instrument names, the player must browse through them in a popup window, clicking on arrow buttons, and recognize the name of the instrument they are "holding" and choose the right score. The music score will show a unique sequence of gestures, that the player will have to perform at the musician's seat, to tune the instrument and complete this particular musician's set. As soon as this is complete, this musician's image will change to now include their instrument, indicating they are ready to perform. The number of musicians will determine the time required to complete this first stage of the event, I believe 20 is a fair number. Finishing all instrument/score/seats combos will give the first event reward to the player.
+
+4. The second phase of the event will give the second and final reward. It will require the player to interact with the Diva NPC. First they will click on her to receive instructions and begin the second phase, where they play the melody the Diva sings. Τhe Diva will give the player a sequence of notes, on a piano keyboard in a popup window. Then the player will have to click on the piano nearby and replicate the sequence of notes on an identical popup window. The keyboard will be an octave wide (7 keys/notes) and perhaps even have letters on the keys, to reduce difficulty. This process will have to be repeated a few more times, each time with a longer sequence of notes, which will always be randomly generated. Or they could be simple and well-known tunes, such as the Ode to Joy and the Happy Birthday song. After the last sequence has been successfully copied, the second stage will be completed and the player will receive the second reward.
+
+
+Some notes about the map. There will be a layer over the basement/backstage parts where the instruments and scores are located. The layer will depict the audience area, with rows of seats and perhaps some VIPs in the front row, like King Fromagnus. Whenever the player's character is over the trapdoor or inside the bottom area, the background layer would become visible. Perhaps the water grounds that are used to access the musicians' seats can be behind the curtains (the curtains will be a layer also) and show some scaffolding or ladders, or even another set of curtains, to highlight the fact that it’s a backstage area. Whenever the player's character uses the curtains they can see the background layer.
+
+Regarding the event’s difficulty, there should be 20 musicians (and therefore 20 instruments and scores, too), sitting in 4 rows of 5. I have chosen the instruments and written down their respective clues. This number can change of course, if and when my event is chosen to be developed and implemented in the game. The same goes for the gesture sequences inside the music scores, it’s flexible. My idea is to have varied lengths. For example, 10 scores will have a sequence of 3 gestures, 6 scores a sequence of 4 gestures and 4 scores a sequence of 5 gestures. You’d have plenty of easy ones mixed with some moderate and a few difficult ones, it seems fair. Now, about the first step, where the players have to pick the right instrument from the board, based on the clues the musicians give them. In case this is deemed too complex, I’ve already thought of changes. One option is to divide the instruments in 4 families, signified by color; string, woodwind, brass and percussion. If it’s still too difficult, the clues’ idea can be abandoned altogether, they would simply be turned to trivia info and the musicians would simply give the player the name of their instrument from the beginning.
+
+
+		
+REWARDS
+
+I believe there should be an orb and a title, as rewards. The title can be given when completing the first stage and the orb after the second part is completed. The title can be Maestro/Maestra or another music/orchestra related noun or adjective. I have some examples for an orb, but nothing definitive yet. The main idea is a grey circle with black contour and a stave with a clef and some notes around it:
