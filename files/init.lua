@@ -9,6 +9,7 @@ tfm.exec.disableAutoShaman(true)
 tfm.exec.disableAutoTimeLeft(true)
 tfm.exec.disableMinimalistMode(true)
 tfm.exec.disableMortCommand(true)
+tfm.exec.disableAutoNewGame(true)
 tfm.exec.disablePhysicalConsumables(true)
 
 local currentTime = os.time
@@ -37,6 +38,9 @@ local textAreaHandle = {}
 local textAreaNum = 0
 
 local playerKeys = {
+	[0] = true,
+	[1] = true,
+	[2] = true,
 	[3] = true, -- Down
 	[32] = true -- Space
 }

@@ -1,4 +1,4 @@
-function Player.new(name, data)
+function Player.new(name)
     local self = setmetatable({}, Player)
     self.name = name
     self.progress = {}
@@ -43,12 +43,72 @@ function Player.new(name, data)
 	}
     self.onDialog = false
 	
+	tfm.exec.lowerSyncDelay(self.name)
 	for keyId, _ in next, playerKeys do
 		system.bindKeyboard(self.name, keyId, true, true)
 		system.bindKeyboard(self.name, keyId, false, true)
 	end
 	
 	return self
+end
+
+function Player:setData(dataString)
+	
+end
+
+function Player:updatePosition(x, y, vx, vy, facingRight)
+	self.x = x or self.x
+	self.y = y or self.y
+	self.vx = vx or self.vx
+	self.vy = vy or self.vy
+	
+	if facingRight ~= nil then
+		self.isFacingRight = facingRight
+	end
+	
+	self:setOverlay()
+	
+	if self.onDialog then
+		local npc = self.onDialog.Npc
+		if math.distance(self.x, self.y, npc.x, npc.y) > 75 then
+			self:closeDialog()
+		end
+	end
+	
+	if (self.x > 0 and self.x < 275) and (self.y > 940) then
+		ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
+	else
+		uiRemoveWindow(1, self.name)
+		ui.removeClickable(1, self.name)
+	end
+	
+	if (self.x > 700 and self.x < 975) and (self.y > 1050) then
+		ui.addClickable(2, 730, 1030, 215, 80, self.name, "sheetsWindow", false)
+	else
+		ui.removeClickable(2, self.name)
+	end
+end
+
+function Player:setOverlay(show)
+	if show ~= nil then	
+		if show then
+			self.overlayId = tfm.exec.addImage("18405b309b5.png", "!420", -1, 927, self.name, 1.0, 1.0, 0, 1.0, 0, 0, true)
+		else
+			if self.overlayId then
+				self.overlayId = tfm.exec.removeImage(self.overlayId, true)
+			end
+		end
+	else
+		if self.y < 905 then
+			if not self.overlayId then
+				self:setOverlay(true)
+			end
+		elseif self.y > 930 then
+			if self.overlayId then
+				self:setOverlay(false)
+			end
+		end
+	end
 end
 
 function Player:setInstrument(instrumentName)
@@ -122,6 +182,7 @@ function Player:newDialog(npcName)
 		oldCursor = 1,
 		cursor = 1,
 		Text = textInfo,
+		Npc = {x = Npc.xPosition, y = Npc.yPosition},
 		currentText = "",
 		displayText = "",
 		directAccess = 0,
@@ -142,15 +203,26 @@ function Player:setDialogDisplay(instruction)
 	if Dialog then
 		if instruction == "new" then
 			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 240, self.name, 0.25, 0.25, 0, 1.0, 0, 0, true) or 0)
-			ui.addTextArea(Dialog.directAccess, "", self.name, 50, 340, 685, 35, 0x000000, 0x000000, 1.0, true)
+			ui.addTextArea(Dialog.directAccess, "", self.name, 50, 335, 685, 38, 0x000000, 0x000000, 1.0, true)
 			self:setDialogDisplay("next")
 		elseif instruction == "update" then
 			ui.updateTextArea(
 				Dialog.directAccess,
-				("<font face='Century Schoolbook' size='13' color='#1A0E00'><p align='left'>%s</p></font>"):format(Dialog.displayText or Dialog.currentText),
+				("<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>"):format(Dialog.displayText or Dialog.currentText),
 				self.name
 			) -- Update text
+			
+			if Dialog.finished then
+				Dialog.timerId = Timer.new(2000, false, function()
+					self:setDialogDisplay("next")
+				end)
+			end
 		elseif instruction == "next" then
+			if Dialog.timerId then
+				Timer.remove(Dialog.timerId)
+				Dialog.timerId = nil
+			end
+			
 			local Text = Dialog.Text
 			Dialog.pointer = Dialog.pointer + 1
 			if Dialog.pointer <= #Text then

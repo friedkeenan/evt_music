@@ -5,7 +5,6 @@ function eventNewGame()
         ui.setMapName("Music Orchesta !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
-		ui.addClickable(1, 50, 937, 190, 98, nil, "instrumentWindow", false)
 	else
 		return system.exit()
 	end
@@ -13,12 +12,16 @@ end
 
 function eventNewPlayer(playerName)
 	if not isEventLoaded then
+		playerList[playerName] = Player.new(playerName)
 		system.loadPlayerData(playerName)
 	end
 end
 
 function eventPlayerDataLoaded(playerName, playerData)
-	playerList[playerName] = _Player.new(playerName, playerData)
+	local player = playerList[playerName]
+	if player then
+		--player:setData(playerData)
+	end
 end
 
 function eventFastLoop(dif) -- To do
@@ -31,12 +34,30 @@ end
 
 function eventLoop(elapsed, remaining)
 	--eventFastLoop()
+	
+	for playerName, player in next, playerList do
+		local obj = tfm.get.room.playerList[playerName]
+		player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
+	end
+	
+	if remaining < 0 then
+		--tfm.exec.chatMessage("system.exit()")
+	end
 end
 
 function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	local player = playerList[playerName]
 	
 	if player then
+		local facing
+		if key < 4 then
+			if key % 2 == 0 then
+				facing = (key == 2)
+			end
+		end
+		
+		player:updatePosition(x, y, vx, vy, facing)
+		
 		if down then
 			if player.onDialog then
 				if key == 32 then
@@ -53,11 +74,22 @@ end
 
 function eventTextAreaCallback(textAreaId, playerName, eventName)
 	local Window = textAreaHandle[textAreaId]
+	local player = playerList[playerName]
+	if not player then return end
 	if Window then
 		eventWindowCallback(Window, playerName, eventName)
 	else
-		if eventName == "instrumentWindow" then
-			uiAddWindow(1, 2, {title = "", default="w"}, nil, 0, 0, 1.0, false)
+		if npcList[eventName] then
+			local Npc = npcList[eventName]
+			
+			if math.distance(player.x, player.y, Npc.xPosition, Npc.yPosition) < 45 then
+				player:newDialog(eventName)
+			end
+			
+		elseif eventName == "instrumentWindow" then
+			uiAddWindow(1, 2, {title = "", default="w"}, playerName, 0, 0, 1.0, false)
+		elseif eventName == "sheetsWindow" then
+			tfm.exec.chatMessage("sheets", playerName)
 		end
 	end
 end

@@ -84,3 +84,87 @@ table.inherit = function(tbl, ex)
 	
 	return obj
 end
+
+local Timer = {
+    uniqueId = -1,
+    list = {},
+    counter = 0
+}
+Timer.__index = Timer
+
+function Timer.handle()
+    local currentTime = os.time
+    local unpack = table.unpack
+    local removeList = {}
+    local setRemoved = function(t)
+        removeList[#removeList + 1] = t.uniqueId
+    end
+    local ok, result
+    local List = table.unreference(Timer.list)
+    for index, timer in pairs(List) do
+        if Timer.list[index] then
+			if currentTime() >= timer.expireTime then
+				local ok, result = pcall(timer.callback, unpack(timer.arguments))
+
+				if ok then
+					if timer.isLooping and Timer.list[index] then
+						Timer.list[index]:renew()
+					else
+						setRemoved(timer)
+					end
+				else
+					printf("[Timer #%d] %s", timer.uniqueId, result)
+
+					setRemoved(timer)
+				end
+			end
+		end
+    end
+
+    for _, timerId in ipairs(removeList) do
+        Timer.remove(timerId)
+    end
+end
+
+function Timer.get(timerId)
+    return Timer.list[timerId]
+end
+
+function Timer.remove(timerId)
+    local timer = Timer.list[timerId]
+
+    if timer then
+        timer:kill()
+        Timer.list[timerId] = nil
+    end
+
+    return nil
+end
+
+function Timer.new(awaitTime, loop, callback, ...)
+    local self = setmetatable({}, Timer)
+    Timer.counter = Timer.counter  + 1
+
+    self.uniqueId = Timer.counter
+
+    self.awaitTime = math.max(awaitTime, 500)
+    self.expireTime = os.time() + self.awaitTime
+
+    self.isLooping = (not not loop)
+    self.callback = callback
+    self.arguments = {...}
+
+    Timer.list[self.uniqueId] = self
+
+    return self.uniqueId--timersList[self.uniqueId]
+end
+
+function Timer:renew()
+    if self.isLooping then
+        self.expireTime = os.time() + self.awaitTime
+    end
+end
+
+function Timer:kill()
+    Timer.list[self.uniqueId] = nil
+end

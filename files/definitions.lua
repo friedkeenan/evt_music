@@ -45,31 +45,31 @@ instrumentList = {
 
 npcList = {}
     do
-		npcList["m1"] = Character.new("Musician", 230, 640, "Timpani")
-		npcList["m2"] = Character.new("Musician", 325, 595, "Cymbals")
-		npcList["m3"] = Character.new("Musician", 410, 570, "Gong")
-		npcList["m4"] = Character.new("Musician", 505, 555, "Vibraphone")
-		npcList["m5"] = Character.new("Musician", 585, 550, "Marimba")
+		npcList["m1"] = Character.new("Musician", "m1", 230, 640, "Timpani")
+		npcList["m2"] = Character.new("Musician", "m2", 325, 595, "Cymbals")
+		npcList["m3"] = Character.new("Musician", "m3", 410, 570, "Gong")
+		npcList["m4"] = Character.new("Musician", "m4", 505, 555, "Vibraphone")
+		npcList["m5"] = Character.new("Musician", "m5", 585, 550, "Marimba")
 		
-		npcList["m6"] = Character.new("Musician", 700, 560, "Horn")
-		npcList["m7"] = Character.new("Musician", 800, 580, "Trumpet")
-		npcList["m8"] = Character.new("Musician", 890, 600, "Trombone")
-		npcList["m9"] = Character.new("Musician", 970, 635, "Tuba")
-		npcList["m10"] = Character.new("Musician", 315, 700, "Euphonium")
+		npcList["m6"] = Character.new("Musician", "m6", 700, 560, "Horn")
+		npcList["m7"] = Character.new("Musician", "m7", 800, 580, "Trumpet")
+		npcList["m8"] = Character.new("Musician", "m8", 890, 600, "Trombone")
+		npcList["m9"] = Character.new("Musician", "m9", 970, 635, "Tuba")
+		npcList["m10"] = Character.new("Musician", "m10", 315, 700, "Euphonium")
         
-		npcList["m11"] = Character.new("Musician", 405, 665, "Flute")
-		npcList["m12"] = Character.new("Musician", 485, 655, "Oboe")
-		npcList["m13"] = Character.new("Musician", 580, 650, "Clarinet")
-		npcList["m14"] = Character.new("Musician", 705, 650, "Basson")
-		npcList["m15"] = Character.new("Musician", 800, 665, "Saxophone")
+		npcList["m11"] = Character.new("Musician", "m11", 405, 665, "Flute")
+		npcList["m12"] = Character.new("Musician", "m12", 485, 655, "Oboe")
+		npcList["m13"] = Character.new("Musician", "m13", 580, 650, "Clarinet")
+		npcList["m14"] = Character.new("Musician", "m14", 705, 650, "Basson")
+		npcList["m15"] = Character.new("Musician", "m15", 800, 665, "Saxophone")
 		
-		npcList["m16"] = Character.new("Musician", 895, 700, "Violin")
-		npcList["m17"] = Character.new("Musician", 395, 755, "Viola")
-		npcList["m18"] = Character.new("Musician", 395, 745, "Cello")
-		npcList["m19"] = Character.new("Musician", 695, 750, "Bass")
-		npcList["m20"] = Character.new("Musician", 790, 755, "Harp")
+		npcList["m16"] = Character.new("Musician", "m16", 895, 700, "Violin")
+		npcList["m17"] = Character.new("Musician", "m17", 395, 755, "Viola")
+		npcList["m18"] = Character.new("Musician", "m18", 500, 745, "Cello")
+		npcList["m19"] = Character.new("Musician", "m19", 695, 750, "Bass")
+		npcList["m20"] = Character.new("Musician", "m20", 790, 755, "Harp")
         
-        npcList["Conductor"] = Character.new("Conductor", 575, 845, _, "18334202aeb.png")
+        npcList["Conductor"] = Character.new("Conductor", "Conductor", 575, 845, _, "18334202aeb.png")
         
-        npcList["Diva"] = Character.new("Diva", 705, 860, _, "1833e58ced9.png")
+        npcList["Diva"] = Character.new("Diva", "Diva", 705, 860, _, "1833e58ced9.png")
     end
