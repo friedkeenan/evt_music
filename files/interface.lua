@@ -17,6 +17,10 @@ ui.addClickableImage = function(imageId, targetPlayer, height, width, event, x, 
 	return id
 end
 
+ui.removeClickable = function(id, targetPlayer)
+	ui.removeTextArea(id + 25000, targetPlayer)
+end
+
 ui.addClickable = function(id, xPosition, yPosition, height, width, targetPlayer, event, fixedPos)
 	id = (id or 0) + 25000
 	ui.addTextArea(
@@ -25,8 +29,8 @@ ui.addClickable = function(id, xPosition, yPosition, height, width, targetPlayer
 		targetPlayer,
 		xPosition, yPosition,
 		height, width,
-		0x0, 0x0,
-		0.0, fixedPos
+		0xFFAA00, 0xFFAA00,--0x0, 0x0,
+		0.4, fixedPos--0.0, fixedPos
 	)
 	
 	return id

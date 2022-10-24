@@ -1,6 +1,8 @@
-Character.new = function(name, x, y, instrumentName, dialogSprite)
+local characterId = 0
+Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     local self = setmetatable({}, Character)
     
+    self.keyName = keyName or "m1"
     self.name = name or "Musician"
     
     self.xPosition = x or -400
@@ -9,7 +11,8 @@ Character.new = function(name, x, y, instrumentName, dialogSprite)
     self.instrument = table.unreference(instrumentList[instrumentName])
     
     self.dialog = {}
-    
+    characterId = characterId + 1
+    self.uniqueId = characterId
     self.dialog = translate("npcDialogs " .. name:lower(), room.language)
     
     if self.instrument then
@@ -17,6 +20,21 @@ Character.new = function(name, x, y, instrumentName, dialogSprite)
     end
     
     self.dialogSprite = dialogSprite or "18334202aeb.png" -- Should go musician
+    local xpos, ypos, xsize, ysize
+    
+    if self.keyName:match("m%d+") then
+        xpos = self.xPosition - 8
+        ypos = self.yPosition - 50
+        xsize = 46
+        ysize = 55
+    else
+        xpos = self.xPosition - 18
+        ypos = self.yPosition - 18
+        xsize, ysize = 35, 35
+    end
+    
+    ui.addClickable(self.uniqueId + 200, xpos, ypos, xsize, ysize, nil, self.keyName, false)
+    
     return self
 end
 

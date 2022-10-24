@@ -5,7 +5,7 @@ do
 	
 	-- Fast loop
 	local interval = 500
-	local SUBCYCLES = interval / 100
+	local SUBCYCLES = interval / 50
 	local diftime = interval / SUBCYCLES
 	for i=0, SUBCYCLES-1 do
 		system.newTimer(function(id)
