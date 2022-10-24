@@ -1,7 +1,7 @@
 function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
-        
+
         ui.setMapName("Music Orchesta !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
@@ -18,7 +18,7 @@ function eventNewPlayer(playerName)
 end
 
 function eventPlayerDataLoaded(playerName, playerData)
-	playerList[playerName] = _Player.new(playerName, playerData)
+	playerList[playerName] = Player.new(playerName, playerData)
 end
 
 function eventFastLoop(dif) -- To do
@@ -35,7 +35,7 @@ end
 
 function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	local player = playerList[playerName]
-	
+
 	if player then
 		if down then
 			if player.onDialog then
@@ -71,10 +71,10 @@ end
 
 function eventWindowDisplay(windowId, playerName, Window)
 	local Player = playerList[playerName]
-	
+
 	if Player then
 		Player:newWindowDisplay(windowId)
-		
+
 		Player.windowHandle.timestamp = currentTime() + 500
 	end
 end
@@ -82,7 +82,7 @@ end
 
 function eventWindowHide(windowId, playerName, Window)
 	local Player = playerList[playerName]
-		
+
 	if Player then
 		Player:deleteWindowDisplay(windowId)
 	end
