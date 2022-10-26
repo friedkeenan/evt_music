@@ -1,7 +1,28 @@
+if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not tfm.get.room.playerList["Indexinel#5948"]) then
+	return system.exit()
+end
+
+local debugMode = true
 local isEventLoaded = false
 
-if tfm.get.room.uniquePlayers < 1 or tfm.get.room.uniquePlayers > 60 then
-	return system.exit()
+local admins = {
+	["Indexinel#5948"] = true,
+	["Ricardinhotv#0000"] = true,
+	["Drgenius#0000"] = true
+}
+
+do
+	local p = print
+	local tc = table.concat
+	print = function(...)
+		if debugMode then
+			p(tc({...}, " "))
+		end
+	end
+
+	printfd = function(str, ...)
+		print(("[Debug] %s"):format(str:format(...)))
+	end
 end
 
 tfm.exec.disableAfkDeath(true)
@@ -9,7 +30,7 @@ tfm.exec.disableAutoShaman(true)
 tfm.exec.disableAutoTimeLeft(true)
 tfm.exec.disableMinimalistMode(true)
 tfm.exec.disableMortCommand(true)
-tfm.exec.disableAutoNewGame(true)
+tfm.exec.disableAutoNewGame(debugMode)
 tfm.exec.disablePhysicalConsumables(true)
 
 local currentTime = os.time

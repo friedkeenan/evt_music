@@ -21,15 +21,15 @@ ui.removeClickable = function(id, targetPlayer)
 	ui.removeTextArea(id + 25000, targetPlayer)
 end
 
-ui.addClickable = function(id, xPosition, yPosition, height, width, targetPlayer, event, fixedPos)
+ui.addClickable = function(id, xPosition, yPosition, width, height, targetPlayer, event, fixedPos)
 	id = (id or 0) + 25000
 	ui.addTextArea(
 		id,
 		("<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>%s</a></textformat>"):format(event or "clickable", ("\n"):rep(20)),
 		targetPlayer,
 		xPosition, yPosition,
-		height, width,
-		0xFFAA00, 0xFFAA00,--0x0, 0x0,
+		width, height,
+		0x8800FF, 0x8800ff,--0x0, 0x0,
 		0.4, fixedPos--0.0, fixedPos
 	)
 	

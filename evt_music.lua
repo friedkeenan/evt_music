@@ -2,10 +2,31 @@
 local xml = [[<C><P L="1200" H="1200" MEDATA=";;;;-0;0::0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22:1-"/><Z><S><S T="12" X="5" Y="5" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,18333ae4685.png"/><S T="12" X="599" Y="1169" L="1198" H="64" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="678" Y="832" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eef9d5a.png"/><S T="12" X="555" Y="1037" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eef515a.png"/><S T="12" X="555" Y="810" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828ef0cd58.png"/><S T="12" X="573" Y="1134" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828eeca458.png"/><S T="12" X="731" Y="834" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1831d514006.png"/><S T="12" X="652" Y="379" L="52" H="24" P="0,0,0.3,0.2,0,0,0,0" i="-600,0,1828eec085a.png"/><S T="12" X="891" Y="861" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eebbc5a.png"/><S T="12" X="556" Y="868" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eeb6fe2.png"/><S T="12" X="56" Y="943" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,182f576fc59.png"/><S T="12" X="-35" Y="923" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,1828eeeb959.png"/><S T="12" X="906" Y="863" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828f00c8df.png"/><S T="12" X="553" Y="816" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eefe959.png"/><S T="12" X="873" Y="951" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828eed895c.png"/><S T="12" X="430" Y="923" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,1828eeeb959.png"/><S T="12" X="934" Y="885" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eed3d5a.png"/><S T="12" X="862" Y="928" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18296b25566.png"/><S T="12" X="1017" Y="944" L="132" H="17" P="0,0,0.3,0.2,-40,0,0,0"/><S T="12" X="959" Y="1053" L="128" H="29" P="0,0,0.3,0.2,41,0,0,0" N=""/><S T="12" X="461" Y="898" L="932" H="41" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="898" Y="1009" L="44" H="18" P="0,0,0.3,0.2,0,0,0,0" N=""/><S T="12" X="1129" Y="912" L="137" H="29" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="389" Y="790" L="155" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="621" Y="785" L="166" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="768" Y="790" L="133" H="15" P="0,0,0.3,0.2,4,0,0,0"/><S T="12" X="-10" Y="490" L="20" H="977" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="482" Y="811" L="63" H="15" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="524" Y="719" L="41" H="10" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="444" Y="713" L="156" H="15" P="0,0,0.3,0.2,-10,0,0,0"/><S T="12" X="649" Y="701" L="127" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="543" Y="625" L="53" H="15" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="448" Y="622" L="170" H="15" P="0,0,0.3,0.2,-10,0,0,0"/><S T="12" X="640" Y="604" L="66" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="733" Y="615" L="130" H="15" P="0,0,0.3,0.2,10,0,0,0"/><S T="12" X="861" Y="649" L="130" H="15" P="0,0,0.3,0.2,20,0,0,0"/><S T="12" X="943" Y="684" L="68" H="15" P="0,0,0.3,0.2,30,0,0,0"/><S T="12" X="768" Y="711" L="122" H="15" P="0,0,0.3,0.2,10,0,0,0"/><S T="12" X="871" Y="738" L="100" H="15" P="0,0,0.3,0.2,20,0,0,0"/><S T="12" X="331" Y="649" L="77" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="264" Y="680" L="77" H="16" P="0,0,0.3,0.2,-30,0,0,0"/><S T="12" X="200" Y="698" L="68" H="16" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1004" Y="699" L="72" H="16" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="340" Y="736" L="72" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="270" Y="746" L="80" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1210" Y="490" L="20" H="980" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="600" Y="-2" L="20" H="1240" P="0,0,0,0.2,-90,0,0,0"/><S T="12" X="315" Y="765" L="10" H="33" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="224" Y="726" L="10" H="45" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="832" Y="761" L="10" H="64" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="918" Y="716" L="10" H="85" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="1087" Y="549" L="109" H="315" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="167" Y="551" L="10" H="299" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="445" Y="977" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,18333987b6e.png"/><S T="12" X="5" Y="155" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,18314ade9de.png"/><S T="12" X="327" Y="786" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,183240e55f6.png"/><S T="12" X="11" Y="1054" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,182f57402ad.png"/><S T="12" X="564" Y="368" L="1152" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="564" Y="184" L="1151" H="62" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1013" Y="1094" L="33" H="26" P="0,0,5,0.2,0,0,0,0" N=""/><S T="12" X="424" Y="1070" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1833388f2fa.png"/><S T="12" X="876" Y="981" L="10" H="62" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="474" Y="1080" L="55" H="24" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="523" Y="1090" L="49" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="436" Y="1080" L="26" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="487" Y="1089" L="119" H="10" P="0,0,0.3,0.2,7,0,0,0"/><S T="12" X="376" Y="862" L="31" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,183338472d5.png"/><S T="12" X="397" Y="977" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,183337f98c4.png"/><S T="12" X="289" Y="1054" L="88" H="14" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="241" Y="1059" L="10" H="15" P="0,0,0.3,0.2,30,0,0,0"/><S T="12" X="334" Y="1055" L="10" H="13" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="289" Y="1059" L="97" H="12" P="0,0,0.3,0.2,-3,0,0,0"/><S T="12" X="415" Y="1087" L="10" H="22" P="0,0,0.3,0.2,15,0,0,0"/><S T="12" X="431" Y="1018" L="10" H="42" P="0,0,0.3,0.2,16,0,0,0"/><S T="12" X="459" Y="995" L="31" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="0" Y="911" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18333b539da.png"/><S T="12" X="578" Y="881" L="51" H="34" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="935" Y="882" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18333c1f181.png"/><S T="12" X="1077" Y="742" L="96" H="113" P="0,0,0,0.2,20,0,0,0"/><S T="12" X="970" Y="781" L="266" H="50" P="0,0,0.3,0.2,3,0,0,0"/><S T="12" X="1195" Y="530" L="25" H="736" P="1,99999,50,0.2,0,1,0,0" c="3" nosync=""/><S T="12" X="1196" Y="157" L="27" H="11" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="163" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="704" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="814" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="924" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="1034" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="274" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="384" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="484" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="54" Y="320" L="20" H="20" P="0,0,0.3,0.2,0,1,0,0" o="324650" c="4" i="-45,50,1835b4fbb5c.png"/><S T="12" X="1138" Y="320" L="20" H="20" P="0,0,0.3,0.2,0,1,0,0" c="4" nosync="" i="-45,50,18356b29d5d.png"/><S T="12" X="599" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" i="-45,50,1835b4f397a.png"/><S T="12" X="570" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" nosync="" i="-140,50,18356b2e95d.png"/><S T="12" X="478" Y="385" L="20" H="20" P="0,0,0.3,0.2,0,0,0,0" o="324650" c="4" i="-400,0,18356b25161.png"/><S T="12" X="509" Y="367" L="20" H="20" P="0,0,0.3,0.2,0,0,0,0" o="324650" c="4" i="-500,0,18356b2054a.png"/><S T="12" X="1147" Y="207" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eee2157.png"/><S T="12" X="564" Y="270" L="50" H="37" P="1,999999,0.3,0.2,0,1,0,0" c="4" v="5000" nosync=""/><S T="12" X="53" Y="1097" L="38" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="42" Y="1074" L="38" H="10" P="0,0,0.3,0.2,80,0,0,0"/><S T="12" X="38" Y="1074" L="38" H="10" P="0,0,0.3,0.2,90,0,0,0"/><S T="12" X="930" Y="898" L="10" H="42" P="0,0,5,0.2,0,0,0,0"/><S T="0" X="-10" Y="1090" L="20" H="220" P="0,0,0.3,0.2,0,0,0,0" m=""/><S T="0" X="1210" Y="1090" L="20" H="220" P="0,0,0.3,0.2,0,0,0,0" m=""/></S><D><DS X="1114" Y="1117"/></D><O/><L><JP M1="80" M2="1" AXIS="0,1" MV="Infinity,3.3333333333333335"/><JR M1="80" M2="1"/><JP M1="93" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="14.26370023953142" MV="99999,1.6666666666666667"/><JP M1="92" M2="1" AXIS="1,0" LIM1="-14.093921856992297" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="83" M2="1" AXIS="1,0" LIM1="-14.2178917833084" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="84" M2="1" AXIS="1,0" LIM1="-10.537891783308396" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="85" M2="1" AXIS="1,0" LIM1="-6.871225116641729" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="86" M2="1" AXIS="1,0" LIM1="-3.2445584499750644" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="88" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="11" MV="99999,1.6666666666666667"/><JP M1="89" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="14.345401006197228" MV="99999,1.6666666666666667"/><JP M1="87" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="7.333333333333333" MV="99999,1.6666666666666667"/><JP M1="82" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="3.6666666666666665" MV="99999,1.6666666666666667"/><JR M1="1" M2="97"/><JR M1="97" M2="93"/><JR M1="97" M2="88"/><JR M1="97" M2="87"/><JR M1="97" M2="82"/><JR M1="97" M2="89"/><JR M1="97" M2="92"/><JR M1="97" M2="83"/><JR M1="97" M2="84"/><JR M1="97" M2="85"/><JR M1="97" M2="86"/></L></Z></C>]]
 -- xml.lua << --
 -- >> init.lua
+if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not tfm.get.room.playerList["Indexinel#5948"]) then
+	return system.exit()
+end
+
+local debugMode = true
 local isEventLoaded = false
 
-if tfm.get.room.uniquePlayers < 1 or tfm.get.room.uniquePlayers > 60 then
-	return system.exit()
+local admins = {
+	["Indexinel#5948"] = true,
+	["Ricardinhotv#0000"] = true,
+	["Drgenius#0000"] = true
+}
+
+do
+	local p = print
+	local tc = table.concat
+	print = function(...)
+		if debugMode then
+			p(tc({...}, " "))
+		end
+	end
+
+	printfd = function(str, ...)
+		print(("[Debug] %s"):format(str:format(...)))
+	end
 end
 
 tfm.exec.disableAfkDeath(true)
@@ -13,7 +34,7 @@ tfm.exec.disableAutoShaman(true)
 tfm.exec.disableAutoTimeLeft(true)
 tfm.exec.disableMinimalistMode(true)
 tfm.exec.disableMortCommand(true)
-tfm.exec.disableAutoNewGame(true)
+tfm.exec.disableAutoNewGame(debugMode)
 tfm.exec.disablePhysicalConsumables(true)
 
 local currentTime = os.time
@@ -245,15 +266,15 @@ ui.removeClickable = function(id, targetPlayer)
 	ui.removeTextArea(id + 25000, targetPlayer)
 end
 
-ui.addClickable = function(id, xPosition, yPosition, height, width, targetPlayer, event, fixedPos)
+ui.addClickable = function(id, xPosition, yPosition, width, height, targetPlayer, event, fixedPos)
 	id = (id or 0) + 25000
 	ui.addTextArea(
 		id,
 		("<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>%s</a></textformat>"):format(event or "clickable", ("\n"):rep(20)),
 		targetPlayer,
 		xPosition, yPosition,
-		height, width,
-		0xFFAA00, 0xFFAA00,--0x0, 0x0,
+		width, height,
+		0x8800FF, 0x8800ff,--0x0, 0x0,
 		0.4, fixedPos--0.0, fixedPos
 	)
 	
@@ -662,7 +683,8 @@ Text["en"] = {
 		},
 		musician = {
 			[-1] = {"Err... This is not my instrument."},
-			[2] = {"I already have my instrument."}
+			[2] = {"Thanks! This is my instrument."},
+			[3] = {"Uhm... I already have my instrument."}
 		}
 	}
 }
@@ -715,21 +737,40 @@ function Player.new(name)
 		
 	}
     self.onDialog = false
+	self.viewingInstruments = nil
+	
+	self.isFacingRight = true
+	self.isMoving = false
+	
+	self.keys = {}
 	
 	tfm.exec.lowerSyncDelay(self.name)
 	for keyId, _ in next, playerKeys do
 		system.bindKeyboard(self.name, keyId, true, true)
 		system.bindKeyboard(self.name, keyId, false, true)
+		self.keys[keyId] = false
 	end
 	
 	return self
 end
 
-function Player:setData(dataString)
+function Player:setData(key, subIndex, value)
+	local obj = self.progress[key]
+	if type(obj) == "table" then
+		obj[subIndex] = value
+	else
+		obj = subIndex
+	end
+	
+	self:saveData()
+end
+
+function Player:saveData()
 	
 end
 
-function Player:updatePosition(x, y, vx, vy, facingRight)
+function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
+	local f, m
 	self.x = x or self.x
 	self.y = y or self.y
 	self.vx = vx or self.vx
@@ -737,6 +778,19 @@ function Player:updatePosition(x, y, vx, vy, facingRight)
 	
 	if facingRight ~= nil then
 		self.isFacingRight = facingRight
+		f = true
+	end
+	
+	if isMoving ~= nil then
+		local k = self.keys
+		self.isMoving = isMoving or k[0] or k[1] or k[2]
+		m = true
+	end
+	
+	if f or m then
+		if self.seekingInstrument.holdingIt then
+			self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
+		end
 	end
 	
 	self:setOverlay()
@@ -751,7 +805,7 @@ function Player:updatePosition(x, y, vx, vy, facingRight)
 	if (self.x > 0 and self.x < 275) and (self.y > 940) then
 		ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
 	else
-		uiRemoveWindow(1, self.name)
+		self:showInstruments(false)
 		ui.removeClickable(1, self.name)
 	end
 	
@@ -784,12 +838,28 @@ function Player:setOverlay(show)
 	end
 end
 
-function Player:setInstrument(instrumentName)
+function Player:setInstrument(instrumentName, hold, hideShow)
 	local seeking = self.seekingInstrument
+	local instrument = instrumentList[instrumentName]
 	
-	seeking.onIt = true
-	seeking.instrumentName = instrumentName
-	seeking.holdingIt = false
+	self:releaseInstrument()
+	
+	if instrument then
+		seeking.onIt = true
+		seeking.instrumentName = instrumentName
+		seeking.holdingIt = false
+		seeking.npcName = instrument.Npc
+		seeking.sprite = instrument.sprite
+		seeking.spriteId = -1
+		
+		if hold then
+			self:holdInstrument()
+		end
+		
+		if hideShow then
+			self:showInstruments(false)
+		end
+	end
 end
 
 function Player:giveNpcInstrument(npcName)
@@ -797,31 +867,122 @@ function Player:giveNpcInstrument(npcName)
 	local seeking = self.seekingInstrument
 	local success = false
 	
-	if seeking.onIt then
+	printfd("Giving instrument to %s", npcName)
+	
+	if self.progress[npcName] == 3 then
+		self:newDialog(npcName, 3)
+	elseif seeking.onIt then
+		printfd("on it")
 		if seeking.holdingIt then
+			printfd("holding it")
 			success = Musician:giveInstrument(seeking.instrumentName)
 			
 			if success then
-				
+				printfd("Dialog 2")
 				-- Do stuff
 				self:releaseInstrument()
-				return true
+				self:newDialog(npcName, 2)
+				self:setData(npcName, 3)
+			else
+				printfd("Dialog -1")
+				self:newDialog(npcName, -1)
 			end
+			
+			return true
 		end
 	end
 	
 	return false
 end
 
-function Player:releaseInstrument()
-	local Instrument = self.seekingInstrument
-
-	Instrument.holdginIt = false
+function Player:holdInstrument()
+	local seeking = self.seekingInstrument
 	
-	if Instrument.id then
-		tfm.exec.removeImage(Instrument.id, false)
+	if seeking.holdingIt then
+		self:releaseInstrument()
 	end
-	Instrument.id = nil
+
+	self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
+	
+	seeking.holdingIt = true
+end
+
+function Player:setInstrumentHolding(display, isFacingRight, isMoving)
+	local seeking = self.seekingInstrument
+	local instrument = instrumentList[seeking.instrumentName]
+	
+	if seeking.spriteId then
+		tfm.exec.removeImage(seeking.spriteId, false)
+		seeking.spriteId = nil
+	end
+	
+	if display then
+		local xf = isFacingRight and 1 or -1
+		local rot = math.rad(isMoving and 10 or 60)
+		local scale = 0.4
+		local xpos = isMoving and 4 or 24
+		local ypos = isMoving and 20 or 10
+		seeking.spriteId = tfm.exec.addImage(
+			instrument.sprite,
+			"$" .. self.name,
+			-xpos * xf, -ypos,
+			nil,
+			scale * xf, scale,
+			-rot * xf, 1.0,
+			0.5 * xf, 0.5,
+			false
+		)
+	end
+end
+
+function Player:releaseInstrument()
+	local seeking = self.seekingInstrument
+	self:setInstrumentHolding(false)
+	
+	seeking.holdingIt = false
+	seeking.onIt = false
+	seeking.instrumentName = nil
+	seeking.holdingIt = false
+	seeking.npcName = nil
+	seeking.sprite = nil
+	seeking.spriteId = -1
+end
+
+
+function Player:showInstruments(show)
+	if show ~= nil then
+		if show then
+			if self.viewingInstruments then
+				self:showInstruments(false)
+			end
+			
+			self.viewingInstruments = {}
+			uiAddWindow(1, 2, {title = "", default=""}, self.name, 0, 0, 1.0, false)
+			
+			local counter = 100
+			for instrumentName, Ins in next, instrumentList do
+				counter = counter + 1
+				self.viewingInstruments[counter] = counter
+				ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
+				print(Ins.Npc)
+			end
+		else
+			uiRemoveWindow(1, self.name)
+			for index, id in next, (self.viewingInstruments or {}) do
+				ui.removeClickable(id, self.name)
+			end
+			
+			self.viewingInstruments = nil
+		end
+	end
+	
+	if show == nil then
+		if not self.viewingInstruments then
+			self:showInstruments(true)
+		end
+		
+		-- update 
+	end
 end
 
 function Player:newWindowDisplay(windowId)
@@ -842,15 +1003,16 @@ function Player:closeAllWindows()
 end
 
 
-function Player:newDialog(npcName)
+function Player:newDialog(npcName, dialogId)
 	if self.onDialog then
 		self:closeDialog()
 	end
 	
     local Npc = npcList[npcName]
-    local dialog = self.progress[npcName] or 1
+    local dialog = dialogId or self.progress[npcName] or 1
+	print(dialog)
 	local textInfo = Npc:getDialog(dialog)
-    
+	
     self.onDialog = {
 		oldCursor = 1,
 		cursor = 1,
@@ -963,10 +1125,34 @@ function Player:closeDialog()
 	self.onDialog = false
 end
 
-function Player:interactWithNpc(x, y)
-	for npcName, Npc in next, npcList do
+function Player:npcInteraction(npcName, x, y)
+	local Npc = npcList[npcName]
+	x = x or self.x
+	y = y or self.y
+	
+	if Npc then
 		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < 45 then
-			self:newDialog(npcName)
+			local success = false
+			if self.seekingInstrument.onIt and Npc.instrument then
+				success = self:giveNpcInstrument(npcName)
+			end
+			
+			if not success then
+				self:newDialog(npcName)
+			end
+			
+			return true
+		end
+	end
+	
+	return false
+end
+
+function Player:interactWithNpc(x, y)
+	x = x or self.x
+	y = y or self.y
+	for npcName, Npc in next, npcList do
+		if self:npcInteraction(npcName, x, y) then
 			break
 		end
 	end
@@ -983,14 +1169,17 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     self.xPosition = x or -400
     self.yPosition = y or 1024
     
-    self.instrument = table.unreference(instrumentList[instrumentName])
+    self.instrument = instrumentList[instrumentName]
+    
     
     self.dialog = {}
     characterId = characterId + 1
     self.uniqueId = characterId
     self.dialog = translate("npcDialogs " .. name:lower(), room.language)
-    
+
     if self.instrument then
+        instrumentList[instrumentName].Npc = self.keyName
+        self.instrument.Npc = self.keyName
         self.dialog[1] = {self.instrument.dialog}
     end
     
@@ -1003,9 +1192,9 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
         xsize = 46
         ysize = 55
     else
-        xpos = self.xPosition - 18
-        ypos = self.yPosition - 18
-        xsize, ysize = 35, 35
+        xpos = self.xPosition - 20
+        ypos = self.yPosition - 20
+        xsize, ysize = 40, 40
     end
     
     ui.addClickable(self.uniqueId + 200, xpos, ypos, xsize, ysize, nil, self.keyName, false)
@@ -1051,56 +1240,59 @@ function Character:getDialog(dialog)
 end
 
 function Character:giveInstrument(instrumentName)
-    if instrumentName == self.instrument then
-        return true
-    end
-    
-    return false
+    printfd("Ins name: %s - self instrument: %s", instrumentName, self.instrument.keyName)
+    return instrumentName == self.instrument.keyName
 end
 -- character.lua << --
 -- >> definitions.lua
-local setInstrument = function(instrumentName, sprite, height, width, scaleX, scaleY)
-	local Instrument = {}
+local setInstrument = function(instrumentName, sprite, width, height, xw, yw)
+	local self = {}
 	local tpath = ("instruments %s"):format(instrumentName)
-	Instrument.localeName = translate(tpath .. " 1", room.language) or "Placeholder"
-	Instrument.keyName = instrumentName
+	self.localeName = translate(tpath .. " 1", room.language) or "Placeholder"
+	self.keyName = instrumentName
 	
-	Instrument.dialog = translate(tpath .. " 2", room.language) or Instrument.localeName
+	self.dialog = translate(tpath .. " 2", room.language) or self.localeName
 	
-	Instrument.sprite = sprite or "1825ffbe04a.png"
-	Instrument.height = height or 576
-	Instrument.width = width or 553
+	self.sprite = sprite or "1825ffbe04a.png"
+	self.height = height or 576
+	self.width = width or 553
 	
-	Instrument.scaleX = scaleX or 1.0
-	Instrument.scaleY = scaleY or 1.0
+	self.scale = scale or 1.0
+	self.tscale = 0.8
 	
-	return Instrument
+	self.txs = self.tscale * self.width
+	self.tys = self.tscale * self.height
+	
+	self.tdx = xw or 0
+	self.tdy = yw or 0
+	
+	return self
 end
 
 instrumentList = {
-    ["Timpani"] = setInstrument("Timpani"),
-    ["Cymbals"] = setInstrument("Cymbals"),
-    ["Gong"] = setInstrument("Gong"),
-    ["Vibraphone"] = setInstrument("Vibraphone"),
-    ["Marimba"] = setInstrument("Marimba"),
+    ["Timpani"] = setInstrument("Timpani", "184058f9b56.png", 225, 77, 516, 203),
+    ["Cymbals"] = setInstrument("Cymbals", "184058f4f5b.png", 81, 88, 233, 99),
+    ["Gong"] = setInstrument("Gong", "18405907f5a.png", 100, 108, 353, 259),
+    ["Vibraphone"] = setInstrument("Vibraphone", "1840592df5f.png", 147, 90, 602, 279),
+    ["Marimba"] = setInstrument("Marimba", "18405932b5c.png", 171, 76, 446, 284),
 	
-    ["Horn"] = setInstrument("Horn"),
-    ["Trumpet"] = setInstrument("Trumpet"),
-    ["Trombone"] = setInstrument("Trombone"),
-    ["Tuba"] = setInstrument("Tuba"),
-    ["Euphonium"] = setInstrument("Euphonium"),
+    ["Horn"] = setInstrument("Horn", "1840590335b.png", 93, 78, 326, 101),
+    ["Trumpet"] = setInstrument("Trumpet", "1840591fb5b.png", 175, 55, 224, 50),
+    ["Trombone"] = setInstrument("Trombone", "1840591af5b.png", 140, 41, 464, 71),
+    ["Tuba"] = setInstrument("Tuba", "1840592935c.png", 69, 125, 80, 65),
+    ["Euphonium"] = setInstrument("Euphonium", "1840592475b.png", 59, 108, 148, 76),
 	
-    ["Flute"] = setInstrument("Flute"),
-    ["Oboe"] = setInstrument("Oboe"),
-    ["Clarinet"] = setInstrument("Clarinet"),
-    ["Bassoon"] = setInstrument("Bassoon"),
-    ["Saxophone"] = setInstrument("Saxophone"),
+    ["Flute"] = setInstrument("Flute", "184058fe758.png", 163, 23, 80, 195),
+    ["Oboe"] = setInstrument("Oboe", "184058dd358.png", 180, 33, 268, 185),
+    ["Clarinet"] = setInstrument("Clarinet", "1840591175d.png", 167, 30, 510, 133),
+    ["Bassoon"] = setInstrument("Bassoon", "184058d86df.png", 94, 133, 426, 137),
+    ["Saxophone"] = setInstrument("Saxophone", "1840591635b.png", 92, 116, 391, 59),
 	
-    ["Violin"] = setInstrument("Violin"),
-    ["Viola"] = setInstrument("Viola"),
-    ["Cello"] = setInstrument("Cello"),
-    ["Bass"] = setInstrument("Bass"),
-    ["Harp"] = setInstrument("Harp")
+    ["Violin"] = setInstrument("Violin", "184058f0358.png", 35, 90, 82, 269),
+    ["Viola"] = setInstrument("Viola", "184058eb758.png", 49, 134, 296, 233),
+    ["Cello"] = setInstrument("Cello", "184058e6b59.png", 55, 158, 133, 231),
+    ["Bass"] = setInstrument("Bass", "184058e1f5c.png", 79, 199, 203, 196),
+    ["Harp"] = setInstrument("Harp", "1840590cb58.png", 91, 136, 647, 60)
 }
 
 
@@ -1121,7 +1313,7 @@ npcList = {}
 		npcList["m11"] = Character.new("Musician", "m11", 405, 665, "Flute")
 		npcList["m12"] = Character.new("Musician", "m12", 485, 655, "Oboe")
 		npcList["m13"] = Character.new("Musician", "m13", 580, 650, "Clarinet")
-		npcList["m14"] = Character.new("Musician", "m14", 705, 650, "Basson")
+		npcList["m14"] = Character.new("Musician", "m14", 705, 650, "Bassoon")
 		npcList["m15"] = Character.new("Musician", "m15", 800, 665, "Saxophone")
 		
 		npcList["m16"] = Character.new("Musician", "m16", 895, 700, "Violin")
@@ -1139,7 +1331,7 @@ npcList = {}
 function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
-        
+
         ui.setMapName("Music Orchesta !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
@@ -1185,16 +1377,23 @@ end
 
 function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	local player = playerList[playerName]
-	
+
 	if player then
-		local facing
+		player.keys[key] = down
+		
+		local facing, moving
 		if key < 4 then
 			if key % 2 == 0 then
+				moving = down
 				facing = (key == 2)
+			end
+			
+			if key == 1 then
+				moving = down
 			end
 		end
 		
-		player:updatePosition(x, y, vx, vy, facing)
+		player:updatePosition(x, y, vx, vy, facing, moving)
 		
 		if down then
 			if player.onDialog then
@@ -1210,41 +1409,83 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	end
 end
 
+function eventMouse(playerName, x, y)
+	local player = playerList[playerName]
+	
+	if player then
+		if player.viewingInstruments then
+			player:showInstrumets(false)
+		end
+	end
+end
+
 function eventTextAreaCallback(textAreaId, playerName, eventName)
 	local Window = textAreaHandle[textAreaId]
 	local player = playerList[playerName]
+	
+	local args = {}
+	for arg in eventName:gmatch("[^%-]+") do
+		args[#args + 1] = tonumber(arg) or arg
+	end
+
+	local eventCommand = table.remove(args, 1)
+	
 	if not player then return end
 	if Window then
-		eventWindowCallback(Window, playerName, eventName)
+		eventWindowCallback(Window, playerName, eventCommand)
 	else
-		if npcList[eventName] then
-			local Npc = npcList[eventName]
-			
-			if math.distance(player.x, player.y, Npc.xPosition, Npc.yPosition) < 45 then
-				player:newDialog(eventName)
-			end
-			
-		elseif eventName == "instrumentWindow" then
-			uiAddWindow(1, 2, {title = "", default="w"}, playerName, 0, 0, 1.0, false)
-		elseif eventName == "sheetsWindow" then
+		if npcList[eventCommand] then
+			player:npcInteraction(eventCommand)			
+		elseif eventCommand == "instrumentWindow" then
+			player:showInstruments()
+		elseif eventCommand == "sheetsWindow" then
 			tfm.exec.chatMessage("sheets", playerName)
+		elseif eventCommand == "ins" then
+			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
 		end
 	end
 end
 
 function eventWindowCallback(windowId, playerName, eventName)
+	local player = playerList[playerName]
 	if eventName == "close" then
-		uiRemoveWindow(windowId, playerName)
+		if windowId == 1 then
+			player:showInstruments(false)
+		end
 	end
 	-- ...
 end
 
+function eventChatCommand(playerName, message)
+	if not admins[playerName] then return end
+	local player = playerList[playerName]
+	
+	local args = {}
+	local val
+	local command
+	
+	for arg in message:gmatch("%S+") do
+		if (arg == "true" or arg == "false") then
+			val = (arg == "true")
+		else
+			val = tonumber(arg) or arg
+		end
+		args[#args + 1] = val		
+	end
+	
+	command = table.remove(args, 1)
+	
+	if command == "setIns" then
+		player:setInstrument(args[1], true, false)
+	end
+end
+
 function eventWindowDisplay(windowId, playerName, Window)
 	local Player = playerList[playerName]
-	
+
 	if Player then
 		Player:newWindowDisplay(windowId)
-		
+
 		Player.windowHandle.timestamp = currentTime() + 500
 	end
 end
@@ -1252,7 +1493,7 @@ end
 
 function eventWindowHide(windowId, playerName, Window)
 	local Player = playerList[playerName]
-		
+
 	if Player then
 		Player:deleteWindowDisplay(windowId)
 	end

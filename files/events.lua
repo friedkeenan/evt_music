@@ -49,14 +49,21 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	local player = playerList[playerName]
 
 	if player then
-		local facing
+		player.keys[key] = down
+		
+		local facing, moving
 		if key < 4 then
 			if key % 2 == 0 then
+				moving = down
 				facing = (key == 2)
+			end
+			
+			if key == 1 then
+				moving = down
 			end
 		end
 		
-		player:updatePosition(x, y, vx, vy, facing)
+		player:updatePosition(x, y, vx, vy, facing, moving)
 		
 		if down then
 			if player.onDialog then
@@ -72,33 +79,75 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	end
 end
 
+function eventMouse(playerName, x, y)
+	local player = playerList[playerName]
+	
+	if player then
+		if player.viewingInstruments then
+			player:showInstrumets(false)
+		end
+	end
+end
+
 function eventTextAreaCallback(textAreaId, playerName, eventName)
 	local Window = textAreaHandle[textAreaId]
 	local player = playerList[playerName]
+	
+	local args = {}
+	for arg in eventName:gmatch("[^%-]+") do
+		args[#args + 1] = tonumber(arg) or arg
+	end
+
+	local eventCommand = table.remove(args, 1)
+	
 	if not player then return end
 	if Window then
-		eventWindowCallback(Window, playerName, eventName)
+		eventWindowCallback(Window, playerName, eventCommand)
 	else
-		if npcList[eventName] then
-			local Npc = npcList[eventName]
-			
-			if math.distance(player.x, player.y, Npc.xPosition, Npc.yPosition) < 45 then
-				player:newDialog(eventName)
-			end
-			
-		elseif eventName == "instrumentWindow" then
-			uiAddWindow(1, 2, {title = "", default="w"}, playerName, 0, 0, 1.0, false)
-		elseif eventName == "sheetsWindow" then
+		if npcList[eventCommand] then
+			player:npcInteraction(eventCommand)			
+		elseif eventCommand == "instrumentWindow" then
+			player:showInstruments()
+		elseif eventCommand == "sheetsWindow" then
 			tfm.exec.chatMessage("sheets", playerName)
+		elseif eventCommand == "ins" then
+			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
 		end
 	end
 end
 
 function eventWindowCallback(windowId, playerName, eventName)
+	local player = playerList[playerName]
 	if eventName == "close" then
-		uiRemoveWindow(windowId, playerName)
+		if windowId == 1 then
+			player:showInstruments(false)
+		end
 	end
 	-- ...
+end
+
+function eventChatCommand(playerName, message)
+	if not admins[playerName] then return end
+	local player = playerList[playerName]
+	
+	local args = {}
+	local val
+	local command
+	
+	for arg in message:gmatch("%S+") do
+		if (arg == "true" or arg == "false") then
+			val = (arg == "true")
+		else
+			val = tonumber(arg) or arg
+		end
+		args[#args + 1] = val		
+	end
+	
+	command = table.remove(args, 1)
+	
+	if command == "setIns" then
+		player:setInstrument(args[1], true, false)
+	end
 end
 
 function eventWindowDisplay(windowId, playerName, Window)

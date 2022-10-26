@@ -8,14 +8,17 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     self.xPosition = x or -400
     self.yPosition = y or 1024
     
-    self.instrument = table.unreference(instrumentList[instrumentName])
+    self.instrument = instrumentList[instrumentName]
+    
     
     self.dialog = {}
     characterId = characterId + 1
     self.uniqueId = characterId
     self.dialog = translate("npcDialogs " .. name:lower(), room.language)
-    
+
     if self.instrument then
+        instrumentList[instrumentName].Npc = self.keyName
+        self.instrument.Npc = self.keyName
         self.dialog[1] = {self.instrument.dialog}
     end
     
@@ -28,9 +31,9 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
         xsize = 46
         ysize = 55
     else
-        xpos = self.xPosition - 18
-        ypos = self.yPosition - 18
-        xsize, ysize = 35, 35
+        xpos = self.xPosition - 20
+        ypos = self.yPosition - 20
+        xsize, ysize = 40, 40
     end
     
     ui.addClickable(self.uniqueId + 200, xpos, ypos, xsize, ysize, nil, self.keyName, false)
@@ -76,9 +79,6 @@ function Character:getDialog(dialog)
 end
 
 function Character:giveInstrument(instrumentName)
-    if instrumentName == self.instrument then
-        return true
-    end
-    
-    return false
+    printfd("Ins name: %s - self instrument: %s", instrumentName, self.instrument.keyName)
+    return instrumentName == self.instrument.keyName
 end
