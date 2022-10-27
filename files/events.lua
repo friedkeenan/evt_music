@@ -2,7 +2,7 @@ function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
 
-        ui.setMapName("Music Orchesta !")
+        ui.setMapName("Music Orchestra !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
 	else

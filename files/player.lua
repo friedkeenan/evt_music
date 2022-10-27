@@ -149,6 +149,7 @@ function Player:setInstrument(instrumentName, hold, hideShow)
 		seeking.holdingIt = false
 		seeking.npcName = instrument.Npc
 		seeking.sprite = instrument.sprite
+		seeking.tries = 3
 		seeking.spriteId = -1
 		
 		if hold then
@@ -164,17 +165,18 @@ end
 function Player:giveNpcInstrument(npcName)
 	local Musician = npcList[npcName]
 	local seeking = self.seekingInstrument
-	local success = false
-	
+	local wrongAttempt = false
 	printfd("Giving instrument to %s", npcName)
 	
 	if self.progress[npcName] == 3 then
 		self:newDialog(npcName, 3)
+		
+		wrongAttempt = true
 	elseif seeking.onIt then
 		printfd("on it")
 		if seeking.holdingIt then
 			printfd("holding it")
-			success = Musician:giveInstrument(seeking.instrumentName)
+			local success = Musician:giveInstrument(seeking.instrumentName)
 			
 			if success then
 				printfd("Dialog 2")
@@ -182,16 +184,25 @@ function Player:giveNpcInstrument(npcName)
 				self:releaseInstrument()
 				self:newDialog(npcName, 2)
 				self:setData(npcName, 3)
+				wrongAttempt = false
 			else
 				printfd("Dialog -1")
 				self:newDialog(npcName, -1)
+				wrongAttempt = true
 			end
-			
-			return true
 		end
 	end
 	
-	return false
+	if wrongAttempt then
+		seeking.tries = seeking.tries - 1
+		
+		if seeking.tries <= 0 then
+			self:releaseInstrument()
+			tfm.exec.chatMessage("Oops you dropped it", self.name)
+		end
+	end
+	
+	return not wrongAttempt
 end
 
 function Player:holdInstrument()
@@ -245,6 +256,7 @@ function Player:releaseInstrument()
 	seeking.npcName = nil
 	seeking.sprite = nil
 	seeking.spriteId = -1
+	seeking.tries = 0
 end
 
 

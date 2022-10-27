@@ -5,6 +5,8 @@ end
 local debugMode = true
 local isEventLoaded = false
 
+system.disableChatCommandDisplay(nil)
+
 local admins = {
 	["Indexinel#5948"] = true,
 	["Ricardinhotv#0000"] = true,
