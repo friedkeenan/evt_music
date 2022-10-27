@@ -30,7 +30,7 @@ ui.addClickable = function(id, xPosition, yPosition, width, height, targetPlayer
 		xPosition, yPosition,
 		width, height,
 		0x8800FF, 0x8800ff,--0x0, 0x0,
-		0.4, fixedPos--0.0, fixedPos
+		0.15, fixedPos--0.0, fixedPos
 	)
 	
 	return id

@@ -59,14 +59,8 @@ function Player.new(name)
 	return self
 end
 
-function Player:setData(key, subIndex, value)
-	local obj = self.progress[key]
-	if type(obj) == "table" then
-		obj[subIndex] = value
-	else
-		obj = subIndex
-	end
-	
+function Player:setData(key, value)
+	self.progress[key] = value
 	self:saveData()
 end
 
@@ -342,7 +336,7 @@ function Player:setDialogDisplay(instruction)
 	
 	if Dialog then
 		if instruction == "new" then
-			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 240, self.name, 0.25, 0.25, 0, 1.0, 0, 0, true) or 0)
+			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 394, self.name, 0.25, 0.25, 0, 1.0, 0, 1.0, true) or 0)
 			ui.addTextArea(Dialog.directAccess, "", self.name, 50, 335, 685, 38, 0x000000, 0x000000, 1.0, true)
 			self:setDialogDisplay("next")
 		elseif instruction == "update" then

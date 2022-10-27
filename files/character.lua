@@ -23,6 +23,7 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     end
     
     self.dialogSprite = dialogSprite or "18334202aeb.png" -- Should go musician
+    tfm.exec.removeImage(tfm.exec.addImage(self.dialogSprite, ":4", 0, 500, nil, 0.1, 0.1, 0, 0, 0, 0, false), false)
     local xpos, ypos, xsize, ysize
     
     if self.keyName:match("m%d+") then

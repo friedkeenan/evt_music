@@ -93,7 +93,7 @@ Text["en"] = {
 		},
 		musician = {
 			[-1] = {"Err... This is not my instrument."},
-			[2] = {"Thanks! This is my instrument."},
+			[2] = {"I am ready for the concert!"},
 			[3] = {"Uhm... I already have my instrument."}
 		}
 	}
