@@ -20,7 +20,7 @@ end
 function eventPlayerDataLoaded(playerName, playerData)
 	local player = playerList[playerName]
 	if player then
-		--player:setData(playerData)
+		player:init(playerData)
 	end
 end
 

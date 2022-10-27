@@ -2,6 +2,7 @@ local fileList = {
     "xml",
     "init",
     "utilities",
+    "dataHandling",
     "interface",
     "translations",
     "player",

@@ -76,7 +76,7 @@ table.inherit = function(tbl, ex)
 	
 	for k, v in next, ex do
 		if type(v) == "table" then
-			obj[k] = inherit(obj[k], v)
+			obj[k] = table.inherit(obj[k], v)
 		else
 			obj[k] = table.unreference(v)
 		end

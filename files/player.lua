@@ -7,14 +7,6 @@ function Player.new(name)
 			self.progress[npcName] = 1
 		end
 	end
-	--[[load player data
-		instruments = {
-			viola = true
-		},
-		diva = true
-		level = 1, 2, 3, ...
-		hasFinished = true
-	]]
     
     
 	self.onWindow = {}
@@ -59,13 +51,50 @@ function Player.new(name)
 	return self
 end
 
+function Player:init(data)
+	local moduleData = dataHan.getModuleData(data, "MUS")
+	self.progress = dataHan.decodeData(moduleData)
+	self.dataFile = data
+	
+	do -- Sets musicias to default
+		local index
+		for i=1, 20 do
+			index = ("m%d"):format(i)
+			self.progress[index] = self.progress[index] or 1
+		end
+	end
+	
+	self.progress = table.inherit({
+		diva = 1,
+		cond = 1,
+		lev = 1,
+		times = 0
+	}, self.progress)
+	
+		--[[load player data
+		instruments = {
+			viola = true
+		},
+		diva = true
+		level = 1, 2, 3, ...
+		hasFinished = true
+	]]
+end
+
+function Player:saveData()
+	local data = dataHan.encodeData(self.progress)
+	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
+	
+	system.savePlayerData(self.name, self.dataFile)
+end
+
 function Player:setData(key, value)
 	self.progress[key] = value
 	self:saveData()
 end
 
-function Player:saveData()
-	
+function Player:getData(key)
+	return self.progress[key]
 end
 
 function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
@@ -165,7 +194,8 @@ end
 function Player:giveNpcInstrument(npcName)
 	local Musician = npcList[npcName]
 	local seeking = self.seekingInstrument
-	local wrongAttempt = false
+	local wrongAttempt = nil
+	
 	printfd("Giving instrument to %s", npcName)
 	
 	if self.progress[npcName] == 3 then
@@ -193,16 +223,20 @@ function Player:giveNpcInstrument(npcName)
 		end
 	end
 	
-	if wrongAttempt then
-		seeking.tries = seeking.tries - 1
-		
-		if seeking.tries <= 0 then
-			self:releaseInstrument()
-			tfm.exec.chatMessage("Oops you dropped it", self.name)
+	if wrongAttempt ~= nil then
+		if wrongAttempt then
+			seeking.tries = seeking.tries - 1
+			
+			if seeking.tries <= 0 then
+				self:releaseInstrument()
+				tfm.exec.chatMessage("Oops you dropped it", self.name)
+			end
 		end
+		
+		return not wrongAttempt
 	end
 	
-	return not wrongAttempt
+	return nil
 end
 
 function Player:holdInstrument()
@@ -443,12 +477,12 @@ function Player:npcInteraction(npcName, x, y)
 	
 	if Npc then
 		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < 45 then
-			local success = false
+			local success
 			if self.seekingInstrument.onIt and Npc.instrument then
 				success = self:giveNpcInstrument(npcName)
 			end
 			
-			if not success then
+			if success == nil then
 				self:newDialog(npcName)
 			end
 			

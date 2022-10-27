@@ -2,7 +2,7 @@
 local xml = [[<C><P L="1200" H="1200" MEDATA="85,1;;;;-0;0::0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22:1-"/><Z><S><S T="12" X="5" Y="5" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,18333ae4685.png"/><S T="12" X="599" Y="1169" L="1198" H="64" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="678" Y="832" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eef9d5a.png"/><S T="12" X="555" Y="1037" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eef515a.png"/><S T="12" X="555" Y="810" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828ef0cd58.png"/><S T="12" X="573" Y="1134" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828eeca458.png"/><S T="12" X="731" Y="834" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1831d514006.png"/><S T="12" X="652" Y="379" L="52" H="24" P="0,0,0.3,0.2,0,0,0,0" N="" i="-600,0,1828eec085a.png"/><S T="12" X="891" Y="861" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eebbc5a.png"/><S T="12" X="556" Y="868" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eeb6fe2.png"/><S T="12" X="56" Y="943" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,182f576fc59.png"/><S T="12" X="-35" Y="923" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,1828eeeb959.png"/><S T="12" X="906" Y="863" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828f00c8df.png"/><S T="12" X="553" Y="816" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eefe959.png"/><S T="12" X="873" Y="951" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,1828eed895c.png"/><S T="12" X="430" Y="923" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,1828eeeb959.png"/><S T="12" X="934" Y="885" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eed3d5a.png"/><S T="12" X="862" Y="928" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18296b25566.png"/><S T="12" X="1017" Y="944" L="132" H="17" P="0,0,0.3,0.2,-40,0,0,0"/><S T="12" X="959" Y="1053" L="128" H="29" P="0,0,0.3,0.2,41,0,0,0" N=""/><S T="12" X="461" Y="898" L="932" H="41" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="898" Y="1009" L="44" H="18" P="0,0,0.3,0.2,0,0,0,0" N=""/><S T="12" X="1129" Y="912" L="137" H="29" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="389" Y="790" L="155" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="621" Y="785" L="166" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="768" Y="790" L="133" H="15" P="0,0,0.3,0.2,4,0,0,0"/><S T="12" X="-10" Y="490" L="20" H="977" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="482" Y="811" L="63" H="15" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="524" Y="719" L="41" H="10" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="444" Y="713" L="156" H="15" P="0,0,0.3,0.2,-10,0,0,0"/><S T="12" X="649" Y="701" L="127" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="543" Y="625" L="53" H="15" P="0,0,0.3,0.2,70,0,0,0"/><S T="12" X="448" Y="622" L="170" H="15" P="0,0,0.3,0.2,-10,0,0,0"/><S T="12" X="640" Y="604" L="66" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="733" Y="615" L="130" H="15" P="0,0,0.3,0.2,10,0,0,0"/><S T="12" X="861" Y="649" L="130" H="15" P="0,0,0.3,0.2,20,0,0,0"/><S T="12" X="943" Y="684" L="68" H="15" P="0,0,0.3,0.2,30,0,0,0"/><S T="12" X="768" Y="711" L="122" H="15" P="0,0,0.3,0.2,10,0,0,0"/><S T="12" X="871" Y="738" L="100" H="15" P="0,0,0.3,0.2,20,0,0,0"/><S T="12" X="331" Y="649" L="77" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="264" Y="680" L="77" H="16" P="0,0,0.3,0.2,-30,0,0,0"/><S T="12" X="200" Y="698" L="68" H="16" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1004" Y="699" L="72" H="16" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="340" Y="736" L="72" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="270" Y="746" L="80" H="15" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1210" Y="490" L="20" H="980" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="600" Y="-2" L="20" H="1240" P="0,0,0,0.2,-90,0,0,0"/><S T="12" X="315" Y="765" L="10" H="33" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="224" Y="726" L="10" H="45" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="832" Y="761" L="10" H="64" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="918" Y="716" L="10" H="85" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="1087" Y="549" L="109" H="315" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="167" Y="551" L="10" H="299" P="0,0,0,0.2,0,0,0,0"/><S T="12" X="445" Y="977" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,18333987b6e.png"/><S T="12" X="5" Y="155" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18314ade9de.png"/><S T="12" X="327" Y="786" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,183240e55f6.png"/><S T="12" X="11" Y="1054" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,182f57402ad.png"/><S T="12" X="564" Y="368" L="1152" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="564" Y="184" L="1151" H="62" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="1013" Y="1094" L="33" H="26" P="0,0,5,0.2,0,0,0,0" N=""/><S T="12" X="424" Y="1070" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1833388f2fa.png"/><S T="12" X="876" Y="981" L="10" H="62" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="474" Y="1080" L="55" H="24" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="523" Y="1090" L="49" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="436" Y="1080" L="26" H="15" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="487" Y="1089" L="119" H="10" P="0,0,0.3,0.2,7,0,0,0"/><S T="12" X="376" Y="862" L="31" H="10" P="0,0,0.3,0.2,0,0,0,0" i="0,0,183338472d5.png"/><S T="12" X="397" Y="977" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,183337f98c4.png"/><S T="12" X="289" Y="1054" L="88" H="14" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="241" Y="1059" L="10" H="15" P="0,0,0.3,0.2,30,0,0,0"/><S T="12" X="334" Y="1055" L="10" H="13" P="0,0,0.3,0.2,-20,0,0,0"/><S T="12" X="289" Y="1059" L="97" H="12" P="0,0,0.3,0.2,-3,0,0,0"/><S T="12" X="415" Y="1087" L="10" H="22" P="0,0,0.3,0.2,15,0,0,0"/><S T="12" X="431" Y="1018" L="10" H="42" P="0,0,0.3,0.2,16,0,0,0"/><S T="12" X="459" Y="995" L="31" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="0" Y="911" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18333b539da.png"/><S T="12" X="578" Y="881" L="51" H="34" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="935" Y="882" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" N="" i="0,0,18333c1f181.png"/><S T="12" X="1077" Y="742" L="96" H="113" P="0,0,0,0.2,20,0,0,0"/><S T="12" X="970" Y="781" L="266" H="50" P="0,0,0.3,0.2,3,0,0,0"/><S T="12" X="1195" Y="530" L="25" H="736" P="1,99999,50,0.2,0,1,0,0" c="3" nosync=""/><S T="12" X="1196" Y="157" L="27" H="11" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="163" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="7250" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="704" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="14250" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="814" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="12000" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="924" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="9750" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="1034" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="7250" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="274" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="9750" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="384" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="12000" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="484" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" v="14250" nosync="" i="-45,50,1835b4f5a8b.png"/><S T="12" X="54" Y="320" L="20" H="20" P="0,0,0.3,0.2,0,1,0,0" o="324650" c="4" i="-45,50,1835b4fbb5c.png"/><S T="12" X="1138" Y="320" L="20" H="20" P="0,0,0.3,0.2,0,1,0,0" c="4" nosync="" i="-45,50,18356b29d5d.png"/><S T="12" X="599" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" nosync="" i="-45,50,1835b4f397a.png"/><S T="12" X="570" Y="320" L="20" H="20" P="1,0,0.3,0.2,0,1,0,0" o="324650" c="4" N="" nosync="" i="-140,50,18356b2e95d.png"/><S T="12" X="478" Y="385" L="20" H="20" P="0,0,0.3,0.2,0,0,0,0" o="324650" c="4" N="" i="-400,0,18356b25161.png"/><S T="12" X="509" Y="367" L="20" H="20" P="0,0,0.3,0.2,0,0,0,0" o="324650" c="4" N="" i="-500,0,18356b2054a.png"/><S T="12" X="1147" Y="207" L="10" H="10" P="0,0,0.3,0.2,0,0,0,0" c="4" i="0,0,1828eee2157.png"/><S T="12" X="564" Y="270" L="50" H="37" P="1,999999,0.3,0.2,0,1,0,0" c="4" v="5000" nosync=""/><S T="12" X="53" Y="1097" L="38" H="10" P="0,0,0.3,0.2,0,0,0,0"/><S T="12" X="42" Y="1074" L="38" H="10" P="0,0,0.3,0.2,80,0,0,0"/><S T="12" X="38" Y="1074" L="38" H="10" P="0,0,0.3,0.2,90,0,0,0"/><S T="12" X="930" Y="898" L="10" H="42" P="0,0,5,0.2,0,0,0,0"/><S T="0" X="-10" Y="1090" L="20" H="220" P="0,0,0.3,0.2,0,0,0,0" m=""/><S T="0" X="1210" Y="1090" L="20" H="220" P="0,0,0.3,0.2,0,0,0,0" m=""/></S><D><DS X="1114" Y="1117"/></D><O/><L><JP M1="80" M2="1" AXIS="0,1" MV="Infinity,3.3333333333333335"/><JR M1="80" M2="1"/><JP M1="93" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="14.26370023953142" MV="99999,1.6666666666666667"/><JP M1="92" M2="1" AXIS="1,0" LIM1="-14.093921856992297" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="83" M2="1" AXIS="1,0" LIM1="-14.2178917833084" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="84" M2="1" AXIS="1,0" LIM1="-10.537891783308396" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="85" M2="1" AXIS="1,0" LIM1="-6.871225116641729" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="86" M2="1" AXIS="1,0" LIM1="-3.2445584499750644" LIM2="Infinity" MV="99999,-1.6666666666666667"/><JP M1="88" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="11" MV="99999,1.6666666666666667"/><JP M1="89" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="14.345401006197228" MV="99999,1.6666666666666667"/><JP M1="87" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="7.333333333333333" MV="99999,1.6666666666666667"/><JP M1="82" M2="1" AXIS="1,0" LIM1="-Infinity" LIM2="3.6666666666666665" MV="99999,1.6666666666666667"/><JR M1="1" M2="97"/><JR M1="97" M2="93"/><JR M1="97" M2="88"/><JR M1="97" M2="87"/><JR M1="97" M2="82"/><JR M1="97" M2="89"/><JR M1="97" M2="92"/><JR M1="97" M2="83"/><JR M1="97" M2="84"/><JR M1="97" M2="85"/><JR M1="97" M2="86"/></L></Z></C>]]
 -- xml.lua << --
 -- >> init.lua
-if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not tfm.get.room.playerList["Indexinel#5948"]) then
+if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not tfm.get.room.playerList["Indexinel#5948"] and not tfm.get.room.playerList["Drgenius#0000"]) then
 	return system.exit()
 end
 
@@ -151,7 +151,7 @@ table.inherit = function(tbl, ex)
 	
 	for k, v in next, ex do
 		if type(v) == "table" then
-			obj[k] = inherit(obj[k], v)
+			obj[k] = table.inherit(obj[k], v)
 		else
 			obj[k] = table.unreference(v)
 		end
@@ -244,6 +244,177 @@ function Timer:kill()
     Timer.list[self.uniqueId] = nil
 end
 -- utilities.lua << --
+-- >> dataHandling.lua
+local dataHan = {}
+
+do
+	local xCHAR = string.char(17)
+	dataHan.getModuleData = function(str, MODULE)
+		
+		local data = str:match(("%s (.-)%s"):format(MODULE or "", xCHAR))
+		if data and data ~= ("") then
+			return data
+		else
+			print(("Could not find data for module '%s'"):format(MODULE))
+		end
+		
+		return ""
+	end
+
+	dataHan.setModuleData = function(str, MODULE, data)
+		local oldModuleData = str:match(("%s (.-)%s"):format(MODULE or "", xCHAR))
+		local newData
+		
+		if oldModuleData then
+			newData = str:gsub(oldModuleData, data)
+		else
+			if MODULE then
+				newData = ("%s%s %s%s"):format(str, MODULE, data, xCHAR)
+			end
+		end
+		
+		return newData, data, str, oldModuleData
+	end
+end
+
+dataHan.decodeData = function(str, depth)
+	depth = depth or 1
+	local data = {}
+	local count = 1
+
+	local pattern = "[^" .. string.char(17 + depth) .. "]+"
+	
+	local key, value
+	for INFO in str:gmatch(pattern) do
+		key, value = INFO:match("(%w+)=(.+)")
+		if not key then
+			key = count
+			value = INFO
+			count = count + 1
+		end
+		data[key] = dataHan.convert(value or "", depth)
+	end
+	
+	return data
+end
+
+dataHan.convert = function(str, depth)
+	local booleans = {
+		["+"] = true,
+		["-"] = false
+	}
+	if booleans[str] ~= nil then
+		return booleans[str]
+	end
+	
+	local retval = str:match('^"(.-)"$')
+	if retval then
+		return retval
+	else
+		retval = str:match("^{(.-)}$")
+		if retval then
+			return dataHan.decodeData(retval, depth + 1)
+		else
+			return tonumber(str) or str
+		end
+	end
+end
+
+dataHan.reconvert = function(data, depth)
+	local str = ""
+	depth = depth or 0
+	if type(data) == "table" then
+		local concat = {}
+		for k, v in next, data do
+			concat[#concat + 1] = dataHan.reconvert(v, depth + 1)
+		end
+		str = ("{%s}"):format(table.concat(concat, string.char(17 + depth)))
+	else
+		if type(data) == "number" then
+			str = tostring(data)
+		elseif type(data) == "boolean" then
+			str = data and "+" or "-"
+		elseif type(data) == "string" then
+			str = ('"%s"'):format(data)
+		end
+	end
+	
+	return str
+end
+
+dataHan.encodeData = function(data, depth)
+	depth = depth or 1
+	local separator = string.char(17 + depth)
+	local str = {}
+	for key, value in next, data do
+		local kk, vv = key, dataHan.reconvert(value, depth + 1)
+		str[#str + 1] = ("%s=%s"):format(kk, vv)
+	end
+	
+	return table.concat(str, separator)
+end
+
+
+--[[
+function _Player:saveData(onDatabase)
+    local Data = {
+        inv = self:serializeInventory(),
+        lng = self.language,
+        pos = {self.x, self.y},
+        hlt = self.healthHandle.max
+    }
+        
+    local data = string.saveData(Data)
+    self.dataFile = string.saveModuleData(self.dataFile, "MCC", data)
+    if onDatabase then
+        system.savePlayerData(self.name, self.dataFile)
+    else
+        room.tempData[self.name] = self.dataFile
+    end
+    
+    self.dataSaveTimestamp = currentTime()
+end
+
+function _Player:loadData(playerData)
+    if type(playerData) == "table" then
+        self:loadInventory(playerData.inv or "")
+        self.language = playerData.lng or tfm.get.room.playerList[self.name].language
+        
+        local x, y = table.unpack(playerData.pos or {})
+
+        self:move(map.spawnPoint.x, map.spawnPoint.y)
+        
+        self.healthHandle.points = playerData.hlt or 20
+    end
+    
+    self.awaitingData = false
+end
+
+
+onEvent("PlayerDataLoaded", function(playerName, playerData)
+	local Player = room.player[playerName]
+	if Player then
+		if Player.awaitingData then
+			local moduleData = string.getModuleData(playerData, "MCC")
+			Player.dataFile = playerData
+			Player:loadData(string.readData(moduleData))
+			
+			if not modulo.loading then
+				setUserInterface(playerName)
+			end
+			
+			tfm.exec.chatMessage(translate("help chattip", Player.language), playerName)
+		end
+	else
+		if modulo.dataHandlers[playerName] then
+			modulo:readStatus(playerData)
+		end
+	end
+end)
+
+]]
+
+-- dataHandling.lua << --
 -- >> interface.lua
 ui.addClickableImage = function(imageId, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
 	local tHeight = height * yScale
@@ -704,14 +875,6 @@ function Player.new(name)
 			self.progress[npcName] = 1
 		end
 	end
-	--[[load player data
-		instruments = {
-			viola = true
-		},
-		diva = true
-		level = 1, 2, 3, ...
-		hasFinished = true
-	]]
     
     
 	self.onWindow = {}
@@ -756,13 +919,50 @@ function Player.new(name)
 	return self
 end
 
+function Player:init(data)
+	local moduleData = dataHan.getModuleData(data, "MUS")
+	self.progress = dataHan.decodeData(moduleData)
+	self.dataFile = data
+	
+	do -- Sets musicias to default
+		local index
+		for i=1, 20 do
+			index = ("m%d"):format(i)
+			self.progress[index] = self.progress[index] or 1
+		end
+	end
+	
+	self.progress = table.inherit({
+		diva = 1,
+		cond = 1,
+		lev = 1,
+		times = 0
+	}, self.progress)
+	
+		--[[load player data
+		instruments = {
+			viola = true
+		},
+		diva = true
+		level = 1, 2, 3, ...
+		hasFinished = true
+	]]
+end
+
+function Player:saveData()
+	local data = dataHan.encodeData(self.progress)
+	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
+	
+	system.savePlayerData(self.name, self.dataFile)
+end
+
 function Player:setData(key, value)
 	self.progress[key] = value
 	self:saveData()
 end
 
-function Player:saveData()
-	
+function Player:getData(key)
+	return self.progress[key]
 end
 
 function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
@@ -862,7 +1062,8 @@ end
 function Player:giveNpcInstrument(npcName)
 	local Musician = npcList[npcName]
 	local seeking = self.seekingInstrument
-	local wrongAttempt = false
+	local wrongAttempt = nil
+	
 	printfd("Giving instrument to %s", npcName)
 	
 	if self.progress[npcName] == 3 then
@@ -890,16 +1091,20 @@ function Player:giveNpcInstrument(npcName)
 		end
 	end
 	
-	if wrongAttempt then
-		seeking.tries = seeking.tries - 1
-		
-		if seeking.tries <= 0 then
-			self:releaseInstrument()
-			tfm.exec.chatMessage("Oops you dropped it", self.name)
+	if wrongAttempt ~= nil then
+		if wrongAttempt then
+			seeking.tries = seeking.tries - 1
+			
+			if seeking.tries <= 0 then
+				self:releaseInstrument()
+				tfm.exec.chatMessage("Oops you dropped it", self.name)
+			end
 		end
+		
+		return not wrongAttempt
 	end
 	
-	return not wrongAttempt
+	return nil
 end
 
 function Player:holdInstrument()
@@ -1140,12 +1345,12 @@ function Player:npcInteraction(npcName, x, y)
 	
 	if Npc then
 		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < 45 then
-			local success = false
+			local success
 			if self.seekingInstrument.onIt and Npc.instrument then
 				success = self:giveNpcInstrument(npcName)
 			end
 			
-			if not success then
+			if success == nil then
 				self:newDialog(npcName)
 			end
 			
@@ -1359,7 +1564,7 @@ end
 function eventPlayerDataLoaded(playerName, playerData)
 	local player = playerList[playerName]
 	if player then
-		--player:setData(playerData)
+		player:init(playerData)
 	end
 end
 
