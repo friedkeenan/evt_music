@@ -43,7 +43,7 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
 end
 
 function Character:interact(Player, action)
-    if distance(self.xPosition, self.yPosition, Player.x, Player.y) < 45 then
+    if distance(self.xPosition, self.yPosition, Player.x, Player.y) < npcTalkDist then
         return self:getDialog(action)
     end
 end

@@ -64,6 +64,8 @@ local uiResources = {}
 local textAreaHandle = {}
 local textAreaNum = 0
 
+local npcTalkDist = 55
+
 local playerKeys = {
 	[0] = true,
 	[1] = true,
@@ -956,9 +958,11 @@ function Player:saveData()
 	system.savePlayerData(self.name, self.dataFile)
 end
 
-function Player:setData(key, value)
+function Player:setData(key, value, write)
 	self.progress[key] = value
-	self:saveData()
+	if write then
+		self:saveData()
+	end
 end
 
 function Player:getData(key)
@@ -1034,7 +1038,7 @@ function Player:setOverlay(show)
 	end
 end
 
-function Player:setInstrument(instrumentName, hold, hideShow)
+function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[instrumentName]
 	
@@ -1043,7 +1047,7 @@ function Player:setInstrument(instrumentName, hold, hideShow)
 	if instrument then
 		seeking.onIt = true
 		seeking.instrumentName = instrumentName
-		seeking.holdingIt = false
+		seeking.holdingIt = holdOv or false
 		seeking.npcName = instrument.Npc
 		seeking.sprite = instrument.sprite
 		seeking.tries = 3
@@ -1059,15 +1063,19 @@ function Player:setInstrument(instrumentName, hold, hideShow)
 	end
 end
 
-function Player:giveNpcInstrument(npcName)
+function Player:giveNpcInstrument(npcName, showDialog)
 	local Musician = npcList[npcName]
+	if not Musician.instrument then return end
+	
 	local seeking = self.seekingInstrument
 	local wrongAttempt = nil
 	
 	printfd("Giving instrument to %s", npcName)
 	
 	if self.progress[npcName] == 3 then
-		self:newDialog(npcName, 3)
+		if showDialog then
+			self:newDialog(npcName, 3)
+		end
 		
 		wrongAttempt = true
 	elseif seeking.onIt then
@@ -1077,20 +1085,26 @@ function Player:giveNpcInstrument(npcName)
 			local success = Musician:giveInstrument(seeking.instrumentName)
 			
 			if success then
-				printfd("Dialog 2")
-				-- Do stuff
 				self:releaseInstrument()
-				self:newDialog(npcName, 2)
-				self:setData(npcName, 3)
+				
+				if showDialog then
+					printfd("Dialog 2")
+					self:newDialog(npcName, 2)
+				end
+				
+				self:setData(npcName, 3, false)
 				wrongAttempt = false
 			else
-				printfd("Dialog -1")
-				self:newDialog(npcName, -1)
+				if showDialog then
+					printfd("Dialog -1")
+					self:newDialog(npcName, -1)
+				end
 				wrongAttempt = true
 			end
 		end
 	end
-	
+
+	local retval = nil
 	if wrongAttempt ~= nil then
 		if wrongAttempt then
 			seeking.tries = seeking.tries - 1
@@ -1101,10 +1115,32 @@ function Player:giveNpcInstrument(npcName)
 			end
 		end
 		
-		return not wrongAttempt
+		retval = not wrongAttempt
 	end
 	
-	return nil
+	self.instrumentsLeft = self:getInstrumentsLeft()
+	
+	if self.instrumentsLeft <= 0 then
+		self:setData("cond", 2)
+		self:setData("diva", 2)
+		
+		self:setData("lev", 2, true)
+	end
+	
+	return retval
+end
+
+function Player:getInstrumentsLeft()
+	local count = 20
+	
+	local pat = "m%d"
+	for i=1, 20 do
+		if self.progress[pat:format(i)] >= 2 then
+			count = count - 1
+		end
+	end
+	
+	return count
 end
 
 function Player:holdInstrument()
@@ -1344,10 +1380,10 @@ function Player:npcInteraction(npcName, x, y)
 	y = y or self.y
 	
 	if Npc then
-		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < 45 then
+		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < npcTalkDist then
 			local success
 			if self.seekingInstrument.onIt and Npc.instrument then
-				success = self:giveNpcInstrument(npcName)
+				success = self:giveNpcInstrument(npcName, true)
 			end
 			
 			if success == nil then
@@ -1417,7 +1453,7 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
 end
 
 function Character:interact(Player, action)
-    if distance(self.xPosition, self.yPosition, Player.x, Player.y) < 45 then
+    if distance(self.xPosition, self.yPosition, Player.x, Player.y) < npcTalkDist then
         return self:getDialog(action)
     end
 end
@@ -1512,33 +1548,36 @@ instrumentList = {
 
 npcList = {}
     do
-		npcList["m1"] = Character.new("Musician", "m1", 230, 640, "Timpani", "184166d665e.png")
-		npcList["m2"] = Character.new("Musician", "m2", 325, 595, "Cymbals", "184166a175d.png")
-		npcList["m3"] = Character.new("Musician", "m3", 410, 570, "Gong", "1841669ca58.png")
-		npcList["m4"] = Character.new("Musician", "m4", 505, 555, "Vibraphone", "18416697d5c.png")
-		npcList["m5"] = Character.new("Musician", "m5", 585, 550, "Marimba", "184166db35d.png")
+		npcList["m1"] = Character.new("Musician", "m1", 230, 640, "Cymbals", "184166d665e.png")
+		npcList["m2"] = Character.new("Musician", "m2", 325, 595, "Timpani", "184166a175d.png")
+		npcList["m3"] = Character.new("Musician", "m3", 410, 570, "Vibraphone", "1841669ca58.png")
 		
-		npcList["m6"] = Character.new("Musician", "m6", 700, 560, "Horn", "184166afe5b.png")
-		npcList["m7"] = Character.new("Musician", "m7", 800, 580, "Trumpet", "184166b4b5c.png")
-		npcList["m8"] = Character.new("Musician", "m8", 890, 600, "Trombone", "184166e0059.png")
-		npcList["m9"] = Character.new("Musician", "m9", 970, 635, "Tuba", "184166d195a.png")
-		npcList["m10"] = Character.new("Musician", "m10", 315, 700, "Euphonium", "184166a645c.png")
+		npcList["m4"] = Character.new("Musician", "m4", 505, 555, "Horn", "18416697d5c.png")
+		npcList["m5"] = Character.new("Musician", "m5", 585, 550, "Trumpet", "184166db35d.png")
+		npcList["m6"] = Character.new("Musician", "m6", 700, 560, "Trombone", "184166afe5b.png")
+		npcList["m7"] = Character.new("Musician", "m7", 800, 580, "Euphonium", "184166b4b5c.png")
+		
+		npcList["m8"] = Character.new("Musician", "m8", 890, 600, "Marimba", "18416684958.png")
+		npcList["m9"] = Character.new("Musician", "m9", 970, 635, "Gong", "184166d195a.png")
+		
+		npcList["m10"] = Character.new("Musician", "m10", 315, 700, "Harp", "184166a645c.png")
         
 		npcList["m11"] = Character.new("Musician", "m11", 405, 665, "Flute", "1841669305b.png")
 		npcList["m12"] = Character.new("Musician", "m12", 485, 655, "Oboe", "1841668e35a.png")
-		npcList["m13"] = Character.new("Musician", "m13", 580, 650, "Clarinet", "18416684958.png")
+		npcList["m13"] = Character.new("Musician", "m13", 580, 650, "Clarinet", "184166e0059.png")
 		npcList["m14"] = Character.new("Musician", "m14", 705, 650, "Bassoon", "184166ccc5b.png")
 		npcList["m15"] = Character.new("Musician", "m15", 800, 665, "Saxophone", "184166b985c.png")
 		
-		npcList["m16"] = Character.new("Musician", "m16", 895, 700, "Violin", "184166ab15d.png")
-		npcList["m17"] = Character.new("Musician", "m17", 395, 755, "Viola", "1841668965c.png")
-		npcList["m18"] = Character.new("Musician", "m18", 500, 745, "Cello", "184166e4d5b.png")
-		npcList["m19"] = Character.new("Musician", "m19", 695, 750, "Bass", "184166c3275.png")
-		npcList["m20"] = Character.new("Musician", "m20", 790, 755, "Harp", "184166be55e.png")
+		npcList["m16"] = Character.new("Musician", "m16", 895, 700, "Tuba", "184166ab15d.png")
+		
+		npcList["m17"] = Character.new("Musician", "m17", 395, 755, "Violin", "1841668965c.png")
+		npcList["m18"] = Character.new("Musician", "m18", 500, 745, "Viola", "184166e4d5b.png")
+		npcList["m19"] = Character.new("Musician", "m19", 695, 750, "Cello", "184166c3275.png")
+		npcList["m20"] = Character.new("Musician", "m20", 790, 755, "Bass", "184166be55e.png")
         
-        npcList["Conductor"] = Character.new("Conductor", "Conductor", 575, 845, _, "184166c7f5b.png")
+        npcList["cond"] = Character.new("Conductor", "cond", 575, 845, _, "184166c7f5b.png")
         
-        npcList["Diva"] = Character.new("Diva", "Diva", 705, 860, _, "1841667fc98.png")
+        npcList["diva"] = Character.new("Diva", "diva", 705, 860, _, "1841667fc98.png")
     end
 -- definitions.lua << --
 -- >> events.lua
@@ -1549,9 +1588,23 @@ function eventNewGame()
         ui.setMapName("Music Orchestra !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
+		
+		tfm.exec.addNPC("Dulce", {
+			title = 126,
+			look = "235;10_A38980,36_39322F+E9D1BC,0,0,65_E9D1BC+E9D1BC+E9D1BC+E9D1BC+D5A397+D5A397+E9D1BC+E9D1BC,99_53433D+53433D+53433D+53433D+53433D+E9D1BC+53433D,20_B99D8E+53433D,34,0",
+			x = 240,
+			y = 870,
+			female = true,
+			lookAtPlayer = true,
+			interactive = true
+		})
 	else
 		return system.exit()
 	end
+end
+
+function eventTalkToNPC(playerName, npcName)
+	system.openEventShop("evt_music", playerName)
 end
 
 function eventNewPlayer(playerName)
@@ -1670,30 +1723,6 @@ function eventWindowCallback(windowId, playerName, eventName)
 	-- ...
 end
 
-function eventChatCommand(playerName, message)
-	if not admins[playerName] then return end
-	local player = playerList[playerName]
-	
-	local args = {}
-	local val
-	local command
-	
-	for arg in message:gmatch("%S+") do
-		if (arg == "true" or arg == "false") then
-			val = (arg == "true")
-		else
-			val = tonumber(arg) or arg
-		end
-		args[#args + 1] = val		
-	end
-	
-	command = table.remove(args, 1)
-	
-	if command == "setIns" then
-		player:setInstrument(args[1], true, false)
-	end
-end
-
 function eventWindowDisplay(windowId, playerName, Window)
 	local Player = playerList[playerName]
 
@@ -1713,6 +1742,45 @@ function eventWindowHide(windowId, playerName, Window)
 	end
 end
 
+function eventChatCommand(playerName, message)
+	if not admins[playerName] then return end
+	local player = playerList[playerName]
+	
+	local args = {}
+	local val
+	local command
+	
+	for arg in message:gmatch("%S+") do
+		if (arg == "true" or arg == "false") then
+			val = (arg == "true")
+		else
+			val = tonumber(arg) or arg
+		end
+		args[#args + 1] = val		
+	end
+	
+	command = table.remove(args, 1)
+	
+	local answer = function(msg)
+		tfm.exec.chatMessage(msg, playerName)
+	end
+	
+	if command == "setIns" then
+		player:setInstrument(args[1], true, false)
+		answer(("Setting '%s' as your instrument"):format(args[1] or""))
+	elseif command == "allIns" then
+		for npcName, Npc in next, npcList do
+			if Npc.instrument then
+				player:setInstrument(Npc.instrument.keyName, false, false, true)
+				player:giveNpcInstrument(npcName, false)
+			end
+		end
+		answer("Giving all instruments to Musicians")
+	elseif command == "save" then
+		player:saveData()
+		answer("Your data has been saved")
+	end
+end
 -- events.lua << --
 -- >> start.lua
 do

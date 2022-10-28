@@ -88,9 +88,11 @@ function Player:saveData()
 	system.savePlayerData(self.name, self.dataFile)
 end
 
-function Player:setData(key, value)
+function Player:setData(key, value, write)
 	self.progress[key] = value
-	self:saveData()
+	if write then
+		self:saveData()
+	end
 end
 
 function Player:getData(key)
@@ -166,7 +168,7 @@ function Player:setOverlay(show)
 	end
 end
 
-function Player:setInstrument(instrumentName, hold, hideShow)
+function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[instrumentName]
 	
@@ -175,7 +177,7 @@ function Player:setInstrument(instrumentName, hold, hideShow)
 	if instrument then
 		seeking.onIt = true
 		seeking.instrumentName = instrumentName
-		seeking.holdingIt = false
+		seeking.holdingIt = holdOv or false
 		seeking.npcName = instrument.Npc
 		seeking.sprite = instrument.sprite
 		seeking.tries = 3
@@ -191,15 +193,19 @@ function Player:setInstrument(instrumentName, hold, hideShow)
 	end
 end
 
-function Player:giveNpcInstrument(npcName)
+function Player:giveNpcInstrument(npcName, showDialog)
 	local Musician = npcList[npcName]
+	if not Musician.instrument then return end
+	
 	local seeking = self.seekingInstrument
 	local wrongAttempt = nil
 	
 	printfd("Giving instrument to %s", npcName)
 	
 	if self.progress[npcName] == 3 then
-		self:newDialog(npcName, 3)
+		if showDialog then
+			self:newDialog(npcName, 3)
+		end
 		
 		wrongAttempt = true
 	elseif seeking.onIt then
@@ -209,20 +215,26 @@ function Player:giveNpcInstrument(npcName)
 			local success = Musician:giveInstrument(seeking.instrumentName)
 			
 			if success then
-				printfd("Dialog 2")
-				-- Do stuff
 				self:releaseInstrument()
-				self:newDialog(npcName, 2)
-				self:setData(npcName, 3)
+				
+				if showDialog then
+					printfd("Dialog 2")
+					self:newDialog(npcName, 2)
+				end
+				
+				self:setData(npcName, 3, false)
 				wrongAttempt = false
 			else
-				printfd("Dialog -1")
-				self:newDialog(npcName, -1)
+				if showDialog then
+					printfd("Dialog -1")
+					self:newDialog(npcName, -1)
+				end
 				wrongAttempt = true
 			end
 		end
 	end
-	
+
+	local retval = nil
 	if wrongAttempt ~= nil then
 		if wrongAttempt then
 			seeking.tries = seeking.tries - 1
@@ -233,10 +245,32 @@ function Player:giveNpcInstrument(npcName)
 			end
 		end
 		
-		return not wrongAttempt
+		retval = not wrongAttempt
 	end
 	
-	return nil
+	self.instrumentsLeft = self:getInstrumentsLeft()
+	
+	if self.instrumentsLeft <= 0 then
+		self:setData("cond", 2)
+		self:setData("diva", 2)
+		
+		self:setData("lev", 2, true)
+	end
+	
+	return retval
+end
+
+function Player:getInstrumentsLeft()
+	local count = 20
+	
+	local pat = "m%d"
+	for i=1, 20 do
+		if self.progress[pat:format(i)] >= 2 then
+			count = count - 1
+		end
+	end
+	
+	return count
 end
 
 function Player:holdInstrument()
@@ -476,10 +510,10 @@ function Player:npcInteraction(npcName, x, y)
 	y = y or self.y
 	
 	if Npc then
-		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < 45 then
+		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < npcTalkDist then
 			local success
 			if self.seekingInstrument.onIt and Npc.instrument then
-				success = self:giveNpcInstrument(npcName)
+				success = self:giveNpcInstrument(npcName, true)
 			end
 			
 			if success == nil then

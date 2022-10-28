@@ -60,6 +60,8 @@ local uiResources = {}
 local textAreaHandle = {}
 local textAreaNum = 0
 
+local npcTalkDist = 55
+
 local playerKeys = {
 	[0] = true,
 	[1] = true,

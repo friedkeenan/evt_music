@@ -5,9 +5,23 @@ function eventNewGame()
         ui.setMapName("Music Orchestra !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
+		
+		tfm.exec.addNPC("Dulce", {
+			title = 126,
+			look = "235;10_A38980,36_39322F+E9D1BC,0,0,65_E9D1BC+E9D1BC+E9D1BC+E9D1BC+D5A397+D5A397+E9D1BC+E9D1BC,99_53433D+53433D+53433D+53433D+53433D+E9D1BC+53433D,20_B99D8E+53433D,34,0",
+			x = 240,
+			y = 870,
+			female = true,
+			lookAtPlayer = true,
+			interactive = true
+		})
 	else
 		return system.exit()
 	end
+end
+
+function eventTalkToNPC(playerName, npcName)
+	system.openEventShop("evt_music", playerName)
 end
 
 function eventNewPlayer(playerName)
@@ -126,6 +140,25 @@ function eventWindowCallback(windowId, playerName, eventName)
 	-- ...
 end
 
+function eventWindowDisplay(windowId, playerName, Window)
+	local Player = playerList[playerName]
+
+	if Player then
+		Player:newWindowDisplay(windowId)
+
+		Player.windowHandle.timestamp = currentTime() + 500
+	end
+end
+
+
+function eventWindowHide(windowId, playerName, Window)
+	local Player = playerList[playerName]
+
+	if Player then
+		Player:deleteWindowDisplay(windowId)
+	end
+end
+
 function eventChatCommand(playerName, message)
 	if not admins[playerName] then return end
 	local player = playerList[playerName]
@@ -145,26 +178,23 @@ function eventChatCommand(playerName, message)
 	
 	command = table.remove(args, 1)
 	
+	local answer = function(msg)
+		tfm.exec.chatMessage(msg, playerName)
+	end
+	
 	if command == "setIns" then
 		player:setInstrument(args[1], true, false)
-	end
-end
-
-function eventWindowDisplay(windowId, playerName, Window)
-	local Player = playerList[playerName]
-
-	if Player then
-		Player:newWindowDisplay(windowId)
-
-		Player.windowHandle.timestamp = currentTime() + 500
-	end
-end
-
-
-function eventWindowHide(windowId, playerName, Window)
-	local Player = playerList[playerName]
-
-	if Player then
-		Player:deleteWindowDisplay(windowId)
+		answer(("Setting '%s' as your instrument"):format(args[1] or""))
+	elseif command == "allIns" then
+		for npcName, Npc in next, npcList do
+			if Npc.instrument then
+				player:setInstrument(Npc.instrument.keyName, false, false, true)
+				player:giveNpcInstrument(npcName, false)
+			end
+		end
+		answer("Giving all instruments to Musicians")
+	elseif command == "save" then
+		player:saveData()
+		answer("Your data has been saved")
 	end
 end
