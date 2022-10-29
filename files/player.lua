@@ -52,9 +52,11 @@ function Player.new(name)
 end
 
 function Player:init(data)
-	local moduleData = dataHan.getModuleData(data, "MUS")
-	self.progress = dataHan.decodeData(moduleData)
-	self.dataFile = data
+	if data then
+		local moduleData = dataHan.getModuleData(data, "MUS")
+		self.progress = dataHan.decodeData(moduleData)
+		self.dataFile = data
+	end
 	
 	do -- Sets musicias to default
 		local index
@@ -251,10 +253,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	self.instrumentsLeft = self:getInstrumentsLeft()
 	
 	if self.instrumentsLeft <= 0 then
-		self:setData("cond", 2)
-		self:setData("diva", 2)
-		
-		self:setData("lev", 2, true)
+		self:finishLevel(1)
 	end
 	
 	return retval
@@ -535,4 +534,39 @@ function Player:interactWithNpc(x, y)
 			break
 		end
 	end
+end
+
+function Player:finishLevel(levelId)
+	levelId = levelId or self:getData("lev")
+	
+	if levelId == 1 then -- Instruments delivering & tunning
+		self:setData("cond", 2)
+		self:setData("diva", 2)
+		-- Reward
+	elseif levelId == 2 then -- Diva's microphone fixing (puzzle)
+		-- ...
+		-- Reward
+	elseif levelId == 3 then -- Diva's performance (piano)
+		-- ...
+		-- Reward
+	end
+	
+	-- Always save to database when a level gets completed unless last one
+	self:setData("lev", levelId + 1, levelId < 3)
+	
+	if self:getData("lev") >= 4 then -- Event has been completed
+		local times = self:getData("times") + 1
+		
+		self:setData("times", times, false)
+		
+		self:resetAllData()
+		-- Rewards
+	end
+end
+
+function Player:resetAllData()
+	local times = self:getData("times")
+	self.progress = {}
+	self:init(nil)
+	self:setData("times", times, true)
 end

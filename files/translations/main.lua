@@ -85,6 +85,9 @@ Text["en"] = {
 				[3] = "Now, where did I put my pocket mirror..."
 			},
 			[2] = {
+				[1] = "Good mouse. Everything is going as planned... Ha ha hA HA HA!!1"
+			},
+			[3] = {
                 [1] = "Well, that took you a while, didn't it? I was beginning to despair.",
 				[2] = "Alright, you have one final task, don't mess this up.",
 				[3] = "I'll sing a few tunes and you'll repeat them on the piano. But make no mistakes, or we'll have to start all over again.",
@@ -98,6 +101,7 @@ Text["en"] = {
 		}
 	}
 }
+
 
 Text["xx"] = Text["en"]
 Text["pt"] = Text["br"]

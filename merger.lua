@@ -4,7 +4,10 @@ local fileList = {
     "utilities",
     "dataHandling",
     "interface",
-    "translations",
+    {path="translations", files={
+        "main",
+        "en", "es", "br", "fr" -- ...
+    }},
     "player",
     "character",
     "definitions",
@@ -16,18 +19,33 @@ local fileList = {
 local fileTable = {}
 local File
 
-for _, fileName in next, fileList do
-    File = io.open(("./files/%s.lua"):format(fileName), "r+")
-    if File then
-        fileTable[#fileTable + 1] = ("-- >> %s.lua\n%s\n-- %s.lua << --"):format(fileName, File:read("*all"), fileName)
-        File:close()
-        print((">>> [success] %s.lua"):format(fileName))
+local readPath
+readPath = function(pathName, subPath)
+    subPath = subPath or "./files"
+    local ft = {}
+    if type(pathName) == "table" then
+        subPath = pathName.path and ("./files/%s"):format(pathName.path) or "./files"
+        for fileIndex, fileName in next, pathName.files do
+            ft[fileIndex] = readPath(fileName, subPath)
+        end
+        
+        return table.concat(ft, '\n')
     else
-        print(("/!\\ [failure] %s.lua"):format(fileName))
+        local p = ("%s/%s.lua"):format(subPath, pathName)
+        print(p)
+        local File = io.open(p, "r")
+        if File then
+            local f = File:read("*all")
+            File:close()
+            print((">>> [success] %s.lua"):format(pathName))
+            return ("-- >> %s.lua\n%s\n-- %s.lua << --"):format(pathName, f, pathName)
+        else
+            print(("/!\\ [failure] %s.lua"):format(pathName))
+        end
     end
 end
 
-local evt_music = table.concat(fileTable, "\n")
+local evt_music = readPath({files=fileList})
 
 File = io.open("evt_music.lua", "w+")
 File:write(evt_music)

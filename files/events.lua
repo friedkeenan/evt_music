@@ -121,7 +121,9 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 		if npcList[eventCommand] then
 			player:npcInteraction(eventCommand)			
 		elseif eventCommand == "instrumentWindow" then
-			player:showInstruments()
+			if player:getData("lev") <= 1 then
+				player:showInstruments()
+			end
 		elseif eventCommand == "sheetsWindow" then
 			tfm.exec.chatMessage("sheets", playerName)
 		elseif eventCommand == "ins" then
