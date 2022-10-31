@@ -66,11 +66,12 @@ Text["en"] = {
 	},
 	npcDialogs = {
 		conductor = {
+			[-1] = {"..."},
 			[1] = {
-				[1] = "Finally, you're here! I need this orchestra ready as soon as possible.",
-				[2] = "There is no time to waste, so listen carefully:",
-				[3] = "Go to each musician and ask them what their instrument is. Then go backstage and fetch their instrument and its music score. Lastly, return to the musician and help them tune their instrument.",
-				[4] = "Now, hurry up, we need to get this concert started, I don't want to keep the Diva waiting and certainly not King Fromagnus! Oh, he'll never forget this birthday..."
+				[1] = "Finally, you're here! I need this orchestra ready as soon as possible. I don't want to keep the Diva waiting and certainly not King Fromagnus either!",
+				[2] = "Well, ask each musician about their instrument and go backstage to fetch it. They also need their music scores, get them from that... pile.",
+				[3] = "My poor neat stacks! Vandals...",
+				[4] = "Anyway, bring the music score to each musician and tune their instrument. Each score has instructions on it about that."
 			},
 			[2] = {
 				[1] = "You got everyone ready? Good mouse!",
@@ -79,25 +80,31 @@ Text["en"] = {
 			}
 		},
 		diva = {
-			[1] = {
+			[-1] = {"..."},
+			[1] = { -- Start of the event
 				[1] = "What are you staring at, do you want my autograph?",
-				[2] = "I don't see the orchestra ready! Make yourself useful already, we don't have all the time in the world.",
+				[2] = "I don't see the orchestra ready! Don't keep a lady waiting.",
 				[3] = "Now, where did I put my pocket mirror..."
 			},
-			[2] = {
-				[1] = "Good mouse. Everything is going as planned... Ha ha hA HA HA!!1"
+			[2] = { -- Microphone phase (instruments deliver finished)
+				[1] = "Well, that took you a while, I was beginning to despair.",
+				[2] = "Ok, firstly, can you untangle my microphone's cable? I can't do it in this dress."
 			},
-			[3] = {
-                [1] = "Well, that took you a while, didn't it? I was beginning to despair.",
-				[2] = "Alright, you have one final task, don't mess this up.",
-				[3] = "I'll sing a few tunes and you'll repeat them on the piano. But make no mistakes, or we'll have to start all over again.",
-				[4] = "Do you understand? Well then, let's go!"
+			[3] = { -- Last phase (performing on piano)
+                [1] = "I swear, I am surrounded by amateurs... Anyway, good work. Let's make some art!",
+				[2] = "Focus, now. I’ll sing my part and you’ll accompany me on the piano.",
+				[3] = "Make no mistakes, do you understand? Well then, let’s go!"
+			},
+			[4] = { -- Event finished (player will get rewards from here)
+				[1] = "Well done! You deserve some of the applause we received, we could not have done it without you.",
+				[2] = "See you at the after-party!"
 			}
 		},
 		musician = {
-			[-1] = {"Err... This is not my instrument."},
-			[2] = {"I am ready for the concert!"},
-			[3] = {"Uhm... I already have my instrument."}
+			[-1] = {"Err... This is not my instrument."}, -- When the player tries to give the instrument to the wrong musician
+			[0] = {"..."}
+			[2] = {"I am ready for the concert!"}, -- When the player gives the correct instrument to the musician
+			[3] = {"Uhm... I already have my instrument."} -- When the player tries to give an instrument to a musician that already has theirs
 		}
 	}
 }
@@ -105,3 +112,26 @@ Text["en"] = {
 
 Text["xx"] = Text["en"]
 Text["pt"] = Text["br"]
+
+
+--[[
+1. Player enters the event [1]
+2. Player talks to Conductor (unlocks Instruments quest) [1 > 2]
+
+3. Player talks to Npc [2]
+4. Player searches Npc's instrument [2]
+5. Player searches sheet of instrument for musician to tune it [2]
+6. Player takes instrument to Npc [2]
+^ {3 - 6} x 20
+
+7. Player talks to Conductor (finishes Instruments quest) [2 > 3]
+7.5 Player talks to Conductor (unlocks Diva 2nd Dialogue)  [3 > 4]
+8. Player talks to Diva (unlocks Micrphone quest) [4 > 5]
+
+9. Player solves puzzle [5 > 6]
+10. Player talks to Diva (finishes puzzle's quest) [6 > 7]
+11. Player talks to Diva (starts performing quest) [7 > 8]
+
+12. Player finishes performing [8 > 9]
+13. Player talks to Diva (finishes the EVENT) [9 > 10]
+]]

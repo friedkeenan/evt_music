@@ -77,3 +77,143 @@ Regarding the event’s difficulty, there should be 20 musicians (and therefore 
 REWARDS
 
 I believe there should be an orb and a title, as rewards. The title can be given when completing the first stage and the orb after the second part is completed. The title can be Maestro/Maestra or another music/orchestra related noun or adjective. I have some examples for an orb, but nothing definitive yet. The main idea is a grey circle with black contour and a stave with a clef and some notes around it:
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Module Start:
+Musicians, Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Diva: What are you staring at, do you want an autograph? I don�t see the orchestra ready! Don't keep a lady waiting. Now, where did I put my pocket mirror�
+
+Conductor: Finally, you�re here! I need this orchestra ready as soon as possible. I don�t want to keep the Diva waiting and certainly not King Fromagnus either! (Instrument Quest Start)
+
+Well, ask each musician about their instrument and go backstage to fetch it. They also need their music scores, get them from that... pile.
+
+My poor neat stacks! Vandals... Anyway, bring the music score to each musician and tune their instrument. Each score has instructions on it about that.
+
+Instrument Quest Start:
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Diva: (Same text like above)
+
+Conductor: (Same text like above)
+
+Musicians: Gives riddle
+
+Pressing space on a musician:
+
+19 other Musicians, Score Pile, Microphone, Piano: No Interaction
+
+Chosen mucisian: (Same riddle like above)
+
+Diva: (Same text like above)
+
+Conductor: (Same text like above)
+
+Instrument Board: Choose the right musical instrument, then fetch its matching music score.
+
+Successfully choosing a musical instrument:
+
+Musicians, Instrument Board, Microphone, Piano: No Interaction
+
+Diva: (Same text like above)
+
+Conductor: (Same text like above)
+
+Score Pile: Choose the right music score and memorize the sequence of gestures, to tune the instrument.
+
+Successfully choosing a music score:
+
+19 other Musicians, Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Chosen musician: (Same riddle like above)
+
+Diva: (Same text like above)
+
+Conductor: (Same text like above)
+
+Successfully tuning the instrument (Replicating the sequence):
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Chosen musician: I am ready for the concert!
+
+Other musicians that are not ready yet: Gives riddle
+
+Diva: (Same text like above)
+
+Conductor: (Same text like above)
+
+(Repeat pressing space on musicians until everyone is ready for the concert)
+
+Every musician ready:
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Musicians: I am ready for the concert!
+
+Diva: (Same text like above)
+
+Conductor: You got everyone ready? Good mouse! I knew I could count on you. Now, it's time to face the Diva... I don't envy you. (Instrument Quest Finish, First Reward Unlocked)
+
+She is getting nervous and it�s contagious. Go, she�ll tell you what to do. That�s her second favorite thing to do, after singing. I�ll handle the rest. Good luck!
+
+Instrument Quest Finish:
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Musicians: (Same text like above)
+
+Conductor: (Same text like above)
+
+Diva: Well, that took you a while, I was beginning to despair. Ok, firstly, can you untangle my microphone's cable? I can't do it in this dress. (Microphone Quest Start)
+
+Microphone Quest Start:
+
+nstrument Board, Score Pile, Piano: No Interaction
+
+Musicians: (Same text like above)
+
+Conductor: (Same text like above)
+
+Diva: (Same text like above)
+
+Microphone: Untangle the microphone's cable by moving the blocks around.
+
+Successfully untangling the microphone cable:
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Musicians: (Same text like above)
+
+Conductor: (Same text like above)
+
+Diva: I swear, I am surrounded by amateurs... Anyway, good work. Let's make some art! (Microphone Quest Finish)
+
+Focus, now. I�ll sing my part and you�ll accompany me on the piano. Make no mistakes, do you understand? Well then, let�s go! (Piano Quest Start)
+
+Piano Quest Start:
+
+Instrument Board, Score Pile, Microphone: No Interaction
+
+Musicians: (Same text like above)
+
+Conductor: (Same text like above)
+
+Diva: Focus, now. I�ll sing my part and you�ll accompany me on the piano. Make no mistakes, do you understand? Well then, let�s go!
+
+Piano: Repeat the tune the Diva has just sung!
+
+Successfully playing the piano (Replicating the sequences):
+
+Instrument Board, Score Pile, Microphone, Piano: No Interaction
+
+Musicians: There is our hero!
+
+Conductor: Excellent work! Now you can take your seat and enjoy the show. Don't forget to mute your smartphone, right? Aaand 1, 2, 3, 4... (Piano Quest Finish, Second Reward Unlocked)
+
+Diva: Well done! You deserve some of the applause we received, we could not have done it without you. See you at the after-party!

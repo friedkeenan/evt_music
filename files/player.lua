@@ -39,6 +39,8 @@ function Player.new(name)
 	self.isFacingRight = true
 	self.isMoving = false
 	
+	self.vignetteId = -1
+	
 	self.keys = {}
 	
 	tfm.exec.lowerSyncDelay(self.name)
@@ -101,6 +103,58 @@ function Player:getData(key)
 	return self.progress[key]
 end
 
+function Player:setVignette(coverage, adjustment, fadeIn)
+	coverage = coverage or 1
+	adjustment = adjustment or 0
+
+	local old = self.vignetteId or -1
+
+	local xscale = 1 -- 4
+	local yscale = xscale + (xscale * adjustment)
+
+	local xanchor = xscale / 2
+	local yanchor = (yscale / 2) - adjustment
+
+	-- local pulse = false  (self.currentMap == 1 and (math.random(1,4) == 1) or false)
+
+	self.vignetteId = tfm.exec.addImage("183b987c56f.png", "~1", 400, 200, self.name, xscale, yscale, 0, coverage, xanchor, yanchor, fadeIn)
+
+	tfm.exec.removeImage(old, fadeIn)
+end
+
+function Player:removeVignette(fadeOut)
+	if self.vignetteId then
+		self.vignetteId = tfm.exec.removeImage(self.vignetteId, fadeOut)
+	end
+end
+
+function Player:hideOffscreen(hide, color)
+	if hide == false then
+		for i=1901, 1904 do
+			ui.removeTextArea(i, self.name)
+		end
+	else
+		color = color or 0x010101
+
+		ui.addTextArea(1901, "", self.name, -1205, -400, 1200, 1200, color, color, 1.0, true)
+		ui.addTextArea(1902, "", self.name, 805, -400, 1200, 1200, color, color, 1.0, true)
+
+		ui.addTextArea(1903, "", self.name, -400, -1200, 1200, 1200, color, color, 1.0, true)
+		ui.addTextArea(1904, "", self.name, -400, 405, 1200, 1200, color, color, 1.0, true)
+
+		--self:setMute(self.ambienceMuted,true)
+	end
+end
+
+function Player:setForeground(display, color, alpha)
+	if display then
+		ui.addTextArea(9696, "", self.name, -1200, -1200, 3200, 2800, color, color, alpha, true)
+		--self:setMute(self.ambienceMuted,true)
+	else
+		ui.removeTextArea(9696, self.name)
+	end
+end
+
 function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
 	local f, m
 	self.x = x or self.x
@@ -160,10 +214,14 @@ function Player:setOverlay(show)
 	else
 		if self.y < 905 then
 			if not self.overlayId then
+				--self:removeVignette(true)
+				--self:setForeground(false)
 				self:setOverlay(true)
 			end
 		elseif self.y > 930 then
 			if self.overlayId then
+				--self:setVignette(0.45, nil, true)
+				--self:setForeground(true, 0xCC8166, 0.1)
 				self:setOverlay(false)
 			end
 		end
@@ -395,7 +453,8 @@ function Player:newDialog(npcName, dialogId)
 		oldCursor = 1,
 		cursor = 1,
 		Text = textInfo,
-		Npc = {x = Npc.xPosition, y = Npc.yPosition},
+		pInf = dialog,
+		Npc = {key = npcName, x = Npc.xPosition, y = Npc.yPosition},
 		currentText = "",
 		displayText = "",
 		directAccess = 0,
@@ -498,6 +557,9 @@ function Player:closeDialog()
     if self.onDialog then
         ui.removeTextArea(self.onDialog.directAccess, self.name)
 		tfm.exec.removeImage(self.onDialog.directAccess - 2000, true)
+		
+		--
+		--
     end
 	
 	self.onDialog = false
@@ -534,6 +596,159 @@ function Player:interactWithNpc(x, y)
 			break
 		end
 	end
+end
+
+function Player:initPuzzle(display)
+	if self.puzzle then
+		self:deletePuzzle()
+	end
+	
+	local pz = {
+		imageId = -1,
+		sprite = "",
+		dx = 273, -- (273 - 15)
+		dy = 63, -- "",
+		scale = 1.0,
+		selected = nil -- Index Id
+	}
+	
+	local images = {
+		"18428f8b41c.png",	"18428f928d6.png",	"18428f9acdf.png",
+		"18428fa65e5.png",	"18428fb1459.png",	"18428fba384.png",
+		"18428fd5736.png",	"18428fe522f.png",	"18428ff2a9d.png"
+	}
+	
+	local rand = {}
+	for i=1, 9 do
+		table.insert(rand, math.random(1, i), i)
+	end
+	
+	local scale = 0.125
+	local x, y
+	for i = 1, 9 do
+		x = ((i-1) % 3) + 1
+		y = math.ceil(i / 3)
+		pz[i] = {
+			id = rand[i],
+			imageId = -1,
+			sprite = images[rand[i]],
+			dx = 288 + ((x - 1) * (597 * scale)),
+			dy = 78 + ((y - 1) * (594 * scale)),
+			size = 595.5 * scale,
+			scale = scale
+		}
+	end
+	
+	self.puzzle = pz
+	
+	if display then
+		self:showPuzzle(true)
+	end
+end
+
+function Player:deletePuzzle()
+	if self.puzzle then
+		self:showPuzzle(false)
+		
+		self.puzzle = false
+	end
+end
+
+function Player:showPuzzle(show)
+	local pz = self.puzzle
+	if not pz then return end
+	
+	if not show then
+		pz.imageId = tfm.exec.removeImage(pz.imageId, false)
+		for i = 1, 9 do
+			self:displayPuzzleTile(i, false)
+		end
+	end
+	
+	if show then
+		pz.imageId = tfm.exec.addImage(pz.sprite, ":1", 400, 210, self.name, pz.scale, pz.scale, 0, 1.0, 0.5, 0.5, false)
+		
+		local tl
+		for i=1, 9 do
+			self:displayPuzzleTile(i, true)
+		end
+	end
+	
+	self.showingPuzzle = not not show
+end
+
+function Player:displayPuzzleTile(id, display)
+	local tl = self.puzzle[id]
+	if display and tl.id ~= 9 then
+		tl.imageId = tfm.exec.addImage(tl.sprite, ":2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, 1.0, 0, 0, false)
+		ui.addClickable(500 + id, tl.dx, tl.dy, tl.size, tl.size, self.name, "puzzle-" .. id, true)
+	else
+		tfm.exec.removeImage(tl.imageId, false)
+		tl.imageId = nil
+		ui.removeClickable(500 + id)
+	end
+end
+
+function Player:selectPuzzleTile(id)
+	local pz = self.puzzle
+	local old = pz.selected
+
+	if old ~= id then
+		pz.selected = id
+		
+		if pz[id].id == 9 then -- Empty tile (movement)
+			self:movePuzzleTile(old, id)
+		end
+	end
+end
+
+function Player:movePuzzleTile(from, to)
+	if to == 9 and from ~= 9 then
+		local pz = self.puzzle
+		local fr = pz[from]
+		local t = pz[to]
+		
+		local aux = {}
+		
+		aux.id = fr.id
+		aux.imageId = fr.imageId
+		aux.sprite = fr.sprite
+		
+		fr.id = t.id
+		fr.imageId = t.imageId
+		fr.sprite = t.sprite
+		
+		t.id = aux.id
+		t.imageId = aux.imageId
+		t.sprite = aux.sprite
+		
+		self:displayPuzzleTile(from, true)
+		self:displayPuzzleTile(to, true)
+		
+		if self:assertPuzzle() then
+			self:finishLevel(2)
+		end
+	end
+end
+
+function Player:assertPuzzle()
+	local pz = self.puzzle
+	local assembled = true
+	if pz then
+		for i=1, 9 do
+			if pz[i].id ~= i then
+				assembled = false
+				break
+			end
+		end
+		
+		print(assembled)
+		return assembled
+	end
+end
+
+function Player:setInstance(insId)
+	
 end
 
 function Player:finishLevel(levelId)
