@@ -1,28 +1,28 @@
 Text["en"] = {
 	instruments = {
-		["Timpani"] 	= {"Timpani", 		"I use a pedal to tune my instrument."},
-		["Cymbals"] 	= {"Cymbals", 		"My instrument doesn't really need tuning."},
-		["Gong"] 		= {"Gong", 			"My instrument originates in southeast Asia."},
-		["Vibraphone"] 	= {"Vibraphone", 	"My instrument is not even 100 years old."},
-		["Marimba"] 	= {"Marimba", 		"Rosewood is often used to make my instrument."},
+		["timpani"] 	= {"Timpani", 		"I use a pedal to tune my instrument."},
+		["cymbals"] 	= {"Cymbals", 		"My instrument doesn't really need tuning."},
+		["gong"] 		= {"Gong", 			"My instrument originates in southeast Asia."},
+		["vibraphone"] 	= {"Vibraphone", 	"My instrument is not even 100 years old."},
+		["marimba"] 	= {"Marimba", 		"Rosewood is often used to make my instrument."},
 		
-		["Horn"] 		= {"Horn", 			"The english claim my instrument is french."},
-		["Trumpet"] 	= {"Trumpet", 		"My instrument can make the walls of Jericho tremble."},
-		["Trombone"] 	= {"Trombone", 		"Don Drummond was the man with a big instrument like mine."},
-		["Tuba"] 		= {"Tuba", 			"My instrument replaced the ophicleide in the orchestra."},
-		["Euphonium"] 	= {"Euphonium", 	"The name of my instrument means \"well-sounding\" in greek."},
+		["horn"] 		= {"Horn", 			"The english claim my instrument is french."},
+		["trumpet"] 	= {"Trumpet", 		"My instrument can make the walls of Jericho tremble."},
+		["trombone"] 	= {"Trombone", 		"Don Drummond was the man with a big instrument like mine."},
+		["tuba"] 		= {"Tuba", 			"My instrument replaced the ophicleide in the orchestra."},
+		["euphonium"] 	= {"Euphonium", 	"The name of my instrument means \"well-sounding\" in greek."},
 		
-		["Flute"] 		= {"Flute", 		"Mine is a slender instrument found in Jethro Tull music."},
-		["Oboe"] 		= {"Oboe", 			"The shawm is my instrument's ancestor."},
-		["Clarinet"] 	= {"Clarinet", 		"Rhapsody in Blue opens with a solo for my instrument."},
-		["Bassoon"] 	= {"Bassoon", 		"My instrument's mouthpiece is called the bocal."},
-		["Saxophone"] 	= {"Saxophone", 	"My instrument is ideal for sensual music."},
+		["flute"] 		= {"Flute", 		"Mine is a slender instrument found in Jethro Tull music."},
+		["oboe"] 		= {"Oboe", 			"The shawm is my instrument's ancestor."},
+		["clarinet"] 	= {"Clarinet", 		"Rhapsody in Blue opens with a solo for my instrument."},
+		["bassoon"] 	= {"Bassoon", 		"My instrument's mouthpiece is called the bocal."},
+		["saxophone"] 	= {"Saxophone", 	"My instrument is ideal for sensual music."},
 		
-		["Violin"] 		= {"Violin", 		"With my instrument, I could be the second-in-command of the whole orchestra."},
-		["Viola"] 		= {"Viola", 		"My instrument is the female member of a string quartet."},
-		["Cello"] 		= {"Cello", 		"I play my instrument between my legs."},
-		["Bass"] 		= {"Bass", 			"My stringed instrument is taller than you."},
-		["Harp"] 		= {"Harp", 			"Supposedly, angels also play my instrument."}
+		["violin"] 		= {"Violin", 		"With my instrument, I could be the second-in-command of the whole orchestra."},
+		["viola"] 		= {"Viola", 		"My instrument is the female member of a string quartet."},
+		["cello"] 		= {"Cello", 		"I play my instrument between my legs."},
+		["bass"] 		= {"Bass", 			"My stringed instrument is taller than you."},
+		["harp"] 		= {"Harp", 			"Supposedly, angels also play my instrument."}
 	},
 	npcDialogs = {
 		conductor = {
