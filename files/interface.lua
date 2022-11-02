@@ -1,7 +1,7 @@
 ui.addClickableImage = function(imageId, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
 	local tHeight = height * yScale
 	local tWidth = width * xScale
-	local id = tfm.exec.addImage(imageId, "~1", x, y, targetPlayer, xScale, yScale, 1.0, alpha, 0, 0, fadeIn)
+	local id = tfm.exec.addImage(imageId, "~1", x, y, targetPlayer, xScale, yScale, 0.0, alpha, 0, 0, fadeIn)
 	
 	ui.addClickable(10000 + id, x, y, tWidth, tHeight, targetPlayer, event, true)
 	
