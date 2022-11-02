@@ -38,7 +38,7 @@ function Player.new(name)
 
 	-- Sound
 	self.loopSounds={}
-	self.loopPaused=false
+	self.loopPaused=true
 	self.pauseImg=nil
 
 
@@ -93,7 +93,7 @@ function Player:init(data,reset)
 	]]
 
 	if not reset then
-	    self:pauseMusic(false,true)
+	    self:pauseMusic(self.loopPaused,true)
 	end
 end
 
@@ -762,10 +762,10 @@ end
 function Player:setInstrumentSound(npcName, add)
 	local Npc = npcList[npcName]
 	if not Npc then return end
-	
+
 	local soundName = Npc.instrument and Npc.instrument.sound or nil
 	if not soundName then return end
-	
+
 	if add == nil then
 		self:setInstrumentSound(npcName, not self.loopSounds[soundName])
 	else
