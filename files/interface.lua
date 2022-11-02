@@ -1,18 +1,9 @@
 ui.addClickableImage = function(imageId, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
 	local tHeight = height * yScale
 	local tWidth = width * xScale
-	local id = tfm.exec.addImage(imageId, ":1", x, y, targetPlayer, xScale, yScale, 1.0, alpha, 0, 0, fadeIn)
+	local id = tfm.exec.addImage(imageId, "~1", x, y, targetPlayer, xScale, yScale, 1.0, alpha, 0, 0, fadeIn)
 	
-	
-	ui.addTextArea(
-		25000 + id,
-		("<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>%s</a></textformat>"):format(event, ("\n"):rep(20)),
-		targetPlayer,
-		x, y,
-		tWidth, tHeight,
-		0x000000, 0x000000,
-		0, true
-	)
+	ui.addClickable(10000 + id, x, y, tWidth, tHeight, targetPlayer, event, true)
 	
 	return id
 end
@@ -38,7 +29,7 @@ end
 
 ui.removeClickableImage = function(id, fadeOut)
 	tfm.exec.removeImage(id, fadeOut)
-	ui.removeTextArea(25000 + id, nil)
+	ui.removeClickable(10000 + id)
 end
 
 
