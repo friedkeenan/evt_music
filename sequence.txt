@@ -1,0 +1,176 @@
+[1] Module Start:
+Player joins module for the first time.
+	- Blocked:
+		- Musicians (0 / nil)
+		- Instrument Board
+		- Score Pile
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Diva (1)
+		- Conductor (1)
+		> Note: dialogue order doesn't matter.
+
+
+[2] Instrument Quest starts:
+Conductor dialog triggers start of this quest, however player needs to talk to a musician to activate it.
+	- Blocked:
+		- Instrument Board
+		- Score Pile
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Musicians (1)
+		- Diva (1)
+		- Conductor (2)
+			- [1 > 2] First sentence is removed, the rest of the dialogue is the same.
+		> Note: dialogue order doesn't matter.
+
+
+[3] Talks to Musician:
+Musician dialog activates the quest and player has to seek and tune the correct instrument
+	- Blocked:
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Instrument Board (a, b, c; 1)
+		- Score Pile (b; 1)
+		- Musicians (n: 1, x: (-1 | 0 | 3) )
+			- The Quest' Npc keeps its dialogue
+			- All other Npc's dialogues are either
+				- 0: No dialogue (hasn't seeked an instrument)
+				- -1: Wrong instrument (gives the instrument to the wrong npc, or the wrong instrument to the correct Npc)
+				- 3: Already has (this Npc already had their instrument)
+				> Note: -1 and 3 are triggered by the same circumstance and the only difference is the progress of the Npc for the player
+				> Note: Only statuses 1 or 3 should be saved to the database, the rest of status are internal to the execution.
+		- Diva (1)
+		- Conductor (2)
+		> Note: dialogue order doesn't matter.
+
+> [a] Takes an instrument from the Board, based on the riddle given by the musician (pile deactivated)
+> [b] Takes a sheet from the pile based on the instrument name (pile gets activated)
+> [c] Takes the instrument to the musician (pile gets deactivated again)
+	> Penalization:
+		- If the instrument is wrong (-1 code) then the player will have to search another instrument. 
+		- If the Npc is wrong (not the quest one) (-1 or 3 code), then player will drop their instrument and search another one.
+> [d] Tunes the instrument to the musician (failsafe: board & sheet deactivates).
+	> Penalization: Doing it wrong many (3) times could cause the player to loose the sheet and they must search it again on the pile.
+> [e] All the process above is done correctly
+	- Npc displays dialogue (2) "ready", but their status is set as (3) "already has".
+	- Player returns to 3.x: sequence repeats for each musician.
+	- All dialogues for the rest of musicians are unlocked
+
+
+[4] Instrument Quest finished:
+Player delivers every instrument to the correct musician.
+	- Blocked:
+		- Musicians
+			> Note: While this hasn't been settled, I'd prefer to change their status to (2) "ready", instead of blocking their dialogue (0).
+		- Instrument Board
+		- Score Pile
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Diva (1 - 2)
+			- [1 > 2] Dialogue changes completely
+			> Note: After talking to conductor, this dialogue is unlocked
+			> Note: This dialogue activates next quest
+		- Conductor (3)
+			- [2 > 3] Dialogue changes completely
+			> Note: This dialogue activates Diva's 2nd dialogue
+		> Note: Dialogue order MATTERS.
+
+[a] Talks to Conductor, changing Diva's dialogue to (2)
+	- [ONCE] Gets reward from this part of the event.
+[b] Talks to Diva, starting the next quest.
+
+
+[5] Microphone Quest Starts:
+Player has to fix Diva's microphone by solving the puzzle.
+	- Blocked:
+		- Musicians (check [4])
+		- Instrument Board
+		- Score Pile
+		- Piano
+	- Unlocked:
+		- Microphone
+		- Diva (3)
+			- [2 > 3] First sentence is removed, the rest is kept the same as 2nd.
+		- Conductor (3)
+		> Note: dialogue order doesn't matter.
+
+[a] Opens Puzzle window.
+	- When the player is near, either ducking/spacing/clicking opens the puzzle.
+	- Puzzle consists of 9 tiles in a random order.
+	- Player has to re-order the tiles to ressemble the image of a microphone.
+[b] Player solves puzzle.
+	- No penalization for doing it wrong.
+	- Player won't pass to next stage once completing it.
+
+
+
+[6] Microphone Quest Finished:
+Player managed to solve the microphone puzzle.
+	- Blocked:
+		- Musicians (check [4])
+		- Instrument Board
+		- Score Pile
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Diva (4)
+			- [3 > 4] Dialogue changes completely.
+			> Note: This dialogue activates next quest
+		- Conductor (3)
+		> Note: dialogue order doesn't matter.
+
+
+[7] Piano Quest Starts:
+Player has to perform a musical piece, accompaning Diva's singing.
+	- Blocked:
+		- Musicians (check [4])
+		- Instrument Board
+		- Score Pile
+		- Microphone
+	- Unlocked:
+		- Piano
+		- Diva (5)
+			- [4 > 5] First paragraph gets removed, the rest is kept the same.
+			> Note: This Dialogue ACTIVATES the quest
+		- Conductor (3)
+		> Note: dialogue order doesn't matter.
+
+[a] Diva will provide some sequences that player will analyse and perform.
+[b] Player will perform the sequences provided.
+	- Use either keys or numbers to perform.
+	- Player will have to touch the correct keys at the correct moment.
+	> Penalization:
+		- If player touches the wrong key, quest will re-start.
+		- If player touches key on the wrong moment (either too soon or too later), the specific instance they're playing will restart.
+
+
+[8] Piano Quest Finished / Event Completed:
+Players successfully performs all the sequences provided.
+	- Blocked:
+		- Instrument Board
+		- Score Pile
+		- Microphone
+		- Piano
+	- Unlocked:
+		- Musicians (4)
+			- [3 > 4] Dialogue changes completely ("hero")
+		- Diva (6)
+			- [5 > 6] Dialogue changes completely
+		- Conductor (4)
+			- [3 > 4] Dialogue changes completely
+			> Note: This marks the end of the event. 
+			> Note: This dialogue activates next instance
+		> Note: dialogue order matters.
+
+
+[9] MUSICAL ORCHESTRA:
+Player hears the Orchestra performing.
+	- Blocked:
+		- Everything (players just spectates)
+	- After finishing to watch the orchesta, player's data resets.
+	> Note: (left to define WHEN should it play)

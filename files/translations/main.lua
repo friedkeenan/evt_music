@@ -112,26 +112,3 @@ Text["en"] = {
 
 Text["xx"] = Text["en"]
 Text["pt"] = Text["br"]
-
-
---[[
-1. Player enters the event [1]
-2. Player talks to Conductor (unlocks Instruments quest) [1 > 2]
-
-3. Player talks to Npc [2]
-4. Player searches Npc's instrument [2]
-5. Player searches sheet of instrument for musician to tune it [2]
-6. Player takes instrument to Npc [2]
-^ {3 - 6} x 20
-
-7. Player talks to Conductor (finishes Instruments quest) [2 > 3]
-7.5 Player talks to Conductor (unlocks Diva 2nd Dialogue)  [3 > 4]
-8. Player talks to Diva (unlocks Micrphone quest) [4 > 5]
-
-9. Player solves puzzle [5 > 6]
-10. Player talks to Diva (finishes puzzle's quest) [6 > 7]
-11. Player talks to Diva (starts performing quest) [7 > 8]
-
-12. Player finishes performing [8 > 9]
-13. Player talks to Diva (finishes the EVENT) [9 > 10]
-]]
