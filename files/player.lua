@@ -63,8 +63,8 @@ function Player.new(name)
 	return self
 end
 
-function Player:init(data,reset)
-    reset=reset or false
+function Player:init(data, reset)
+    reset = reset or false
 	if data then
 		local moduleData = dataHan.getModuleData(data, "MUS")
 		self.progress = dataHan.decodeData(moduleData)
@@ -83,18 +83,17 @@ function Player:init(data,reset)
 		diva = 1,
 		cond = 1,
 		lev = 1,
-		times = 0
+		ins = -1,
+		times = 0,
+		le1 = false,
+		le2 = false,
+		le3 = false
 	}, self.progress)
-
-		--[[load player data
-		instruments = {
-			viola = true
-		},
-		diva = true
-		level = 1, 2, 3, ...
-		hasFinished = true
-	]]
-
+	
+	if self.progress.ins == -1 then
+		self:setInstance(1)
+	end
+	
 	if not reset then
 	    self:pauseMusic(self.loopPaused,true)
 	end
@@ -161,9 +160,16 @@ function Player:hideOffscreen(hide, color)
 	end
 end
 
-function Player:setForeground(display, color, alpha)
+function Player:setForeground(display, color, alpha, uiLayer)
 	if display then
-		ui.addTextArea(9696, "", self.name, -1200, -1200, 3200, 2800, color, color, alpha, true)
+		local x, y, w, h
+		if uiLayer then
+			x, y, w, h = -1200, -1200, 3200, 2800
+		else
+			x, y, w, h = -1200, -1200, 20000, 19800
+		end
+		
+		ui.addTextArea(9696, "", self.name, x, y, w, h, color, color, alpha, uiLayer)
 		--self:setMute(self.ambienceMuted,true)
 	else
 		ui.removeTextArea(9696, self.name)
@@ -203,17 +209,21 @@ function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
 		end
 	end
 
-	if (self.x > 0 and self.x < 275) and (self.y > 940) then
-		ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
-	else
-		self:showInstruments(false)
-		ui.removeClickable(1, self.name)
-	end
+	local instance = self:getData("ins") == 3
+	do
+		if (self.x > 0 and self.x < 275) and (self.y > 940) and instance then
+			ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
+		else
+			self:showInstruments(false)
+			ui.removeClickable(1, self.name)
+		end
 
-	if (self.x > 700 and self.x < 975) and (self.y > 1050) then
-		ui.addClickable(2, 730, 1030, 215, 80, self.name, "sheetsWindow", false)
-	else
-		ui.removeClickable(2, self.name)
+		local cond = self.seekingInstrument.holdingIt and instance
+		if (self.x > 700 and self.x < 975) and (self.y > 1050) and cond then
+			ui.addClickable(2, 730, 1030, 215, 80, self.name, "sheetsWindow", false)
+		else
+			ui.removeClickable(2, self.name)
+		end
 	end
 end
 
@@ -230,13 +240,13 @@ function Player:setOverlay(show)
 		if self.y < 905 then
 			if not self.overlayId then
 				--self:removeVignette(true)
-				--self:setForeground(false)
+				self:setForeground(false)
 				self:setOverlay(true)
 			end
 		elseif self.y > 930 then
 			if self.overlayId then
 				--self:setVignette(0.45, nil, true)
-				--self:setForeground(true, 0xCC8166, 0.1)
+				self:setForeground(true, 0x804800, 0.15, false) -- 0xCC8166
 				self:setOverlay(false)
 			end
 		end
@@ -247,16 +257,19 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[instrumentName]
 
-	self:releaseInstrument()
+	
+	-- self:releaseInstrument()
 
 	if instrument then
-		seeking.onIt = true
-		seeking.instrumentName = instrumentName
-		seeking.holdingIt = holdOv or false
-		seeking.npcName = instrument.Npc
-		seeking.sprite = instrument.sprite
-		seeking.tries = 3
-		seeking.spriteId = -1
+		if not seeking.onIt then
+			seeking.onIt = true
+			seeking.instrumentName = instrumentName
+			seeking.holdingIt = holdOv or false
+			seeking.npcName = instrument.Npc
+			seeking.sprite = instrument.sprite
+			seeking.tries = 3
+			seeking.spriteId = -1
+		end
 
 		if hold then
 			self:holdInstrument()
@@ -326,9 +339,9 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	self.instrumentsLeft = self:getInstrumentsLeft()
 
 	if self.instrumentsLeft <= 0 then
-		self:finishLevel(1)
+		self:setInstance(4)
 	end
-
+	
 	return retval
 end
 
@@ -498,6 +511,8 @@ function Player:setDialogDisplay(instruction)
 				("<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>"):format(Dialog.displayText or Dialog.currentText),
 				self.name
 			) -- Update text
+			
+			tfm.exec.playSound("transformice/son/fleche.mp3", 80, nil, nil, self.name) -- tfmadv/sel.mp3
 
 			if Dialog.finished then
 				Dialog.timerId = Timer.new(2000, false, function()
@@ -572,12 +587,42 @@ function Player:closeDialog()
     if self.onDialog then
         ui.removeTextArea(self.onDialog.directAccess, self.name)
 		tfm.exec.removeImage(self.onDialog.directAccess - 2000, true)
-
-		--
-		--
+		
+		self:onDialogClosed(self.onDialog.Npc.key, self.onDialog.pInf)
     end
 
 	self.onDialog = false
+end
+
+function Player:onDialogClosed(npcName, pid)
+	if npcName == "cond" then
+		if pid == 1 then
+			self:setInstance(2)
+		elseif pid == 3 then
+			self:finishLevel(1)
+			self:setData("diva", 2)
+		elseif pid == 4 then
+			self:finishLevel(3)
+			self:setInstance(9)
+		end
+	elseif npcName == "diva" then
+		if pid == 2 then
+			self:setInstance(5)
+		elseif pid == 4 then
+			self:finishLevel(3)
+			self:setInstance(7)
+		elseif pid == 5 then
+			-- Activates Piano Quest (display board)
+		end
+	else
+		if pid == 1 then
+			if self:getData("ins") < 3 then
+				self:setInstance(3)
+			end
+			
+			-- Search instrument
+		end
+	end
 end
 
 function Player:npcInteraction(npcName, x, y)
@@ -780,46 +825,92 @@ function Player:setInstrumentSound(npcName, add)
 	end
 end
 
-function Player:setInstance(insId)
-
+function Player:setInstance(id)
+	
+	-- pls dont laugh at me im learning from yanderedev
+	
+	if id == 1 then -- Module Start
+		for i=1, 20 do
+			self:setData("m" .. i, 0) -- "..."
+		end
+		
+		self:setData("cond", 1)
+		self:setData("diva", 1)
+	elseif id == 2 then -- Instrument quest starts
+		for i=1, 20 do
+			self:setData("m" .. i, 1) -- riddle
+		end
+		self:setData("cond", 2)
+	elseif id == 3 then -- Instrument quest active
+	elseif id == 4 then -- Instrument quest finished
+		for i=1, 20 do
+			self:setData("m" .. i, 2) -- "ready"
+		end
+		self:setData("cond", 3) -- This dialogue activates Diva's one
+	elseif id == 5 then -- Microphone quest starts
+		self:setData("diva", 3)
+	elseif id == 6 then -- Microphone quest finished
+		self:setData("diva", 4)
+	elseif id == 7 then -- Piano quest starts
+		self:setData("diva", 5)
+	elseif id == 8 then -- Piano quest finished
+		for i=1, 20 do
+			self:setData("m" .. i, 4) -- "hero"
+		end
+		self:setData("diva", 6)
+		self:setData("cond", 4)
+	elseif id == 9 then -- Event finished (spectating orchestra)
+		for i=1, 20 do
+			self:setData("m" .. i, 0) -- "hero"
+		end
+		self:setData("diva", 0)
+		self:setData("cond", 0)
+	elseif id == 10 then -- Orcestra finished
+		self:finishLevel(4)
+	end
+	
+	self:setData("ins", id, true)
 end
 
 function Player:finishLevel(levelId)
 	levelId = levelId or self:getData("lev")
+	
+	local pl = "le" .. levelId
+	if not self:getData(pl) then
+		if levelId == 1 then -- Instruments delivering & tunning
+			-- Rewards
+		elseif levelId == 2 then -- Diva's microphone fixing (puzzle)
+			-- ...
+			-- Reward
+		elseif levelId == 3 then -- Diva's performance (piano)
+			-- ...
+			-- Reward
+		end
+		
+		self:setData(pl, true)
+		
+			-- Always save to database when a level gets completed unless last one
+		self:setData("lev", levelId + 1, levelId < 3)
 
-	if levelId == 1 then -- Instruments delivering & tunning
-		self:setData("cond", 2)
-		self:setData("diva", 2)
-		-- Reward
-	elseif levelId == 2 then -- Diva's microphone fixing (puzzle)
-		-- ...
-		-- Reward
-	elseif levelId == 3 then -- Diva's performance (piano)
-		-- ...
-		-- Reward
 	end
 
-	-- Always save to database when a level gets completed unless last one
-	self:setData("lev", levelId + 1, levelId < 3)
-
-	if self:getData("lev") >= 4 then -- Event has been completed
+	if self:getData("lev") > 4 then -- Event has been completed
 		local times = self:getData("times") + 1
 
 		self:setData("times", times, false)
 
 		self:resetAllData()
-		-- Rewards
 	end
 end
 
 function Player:resetAllData()
 	local times = self:getData("times")
 	self.progress = {}
-	self:init(nil,true)
+	self:init(nil, true)
 	self:setData("times", times, true)
 end
 
 function Player:updatePing()
-    self.pingTime=os.time()
-    tfm.exec.addBonus(0,self.x,self.y,-1,0,false,self.name)
+    self.pingTime = os.time()
+    tfm.exec.addBonus(0, self.x, self.y, -1, 0, false, self.name)
 end

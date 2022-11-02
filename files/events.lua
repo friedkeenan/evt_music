@@ -41,7 +41,7 @@ end
 function eventFastLoop(dif) -- To do
 	for _, player in next, playerList do
 		if player.onDialog then
-			player:updateDialog(3)
+			player:updateDialog(2)
 		end
 	end
 end
@@ -60,7 +60,7 @@ function eventLoop(elapsed, remaining)
 				if ins then
 					local npc=getCharacterByInstrumentName(ins.keyName)
 					if npc then
-						tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),0,0,0,0,player.name)
+						tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),-player.vx/5,-player.vy/5,0,0,player.name)
 					end
 				end
 			end
@@ -144,7 +144,9 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 				player:showInstruments()
 			end
 		elseif eventCommand == "sheetsWindow" then
-			tfm.exec.chatMessage("sheets", playerName)
+			if player.seekingInstrument.holdingIt then
+				tfm.exec.chatMessage("sheets", playerName)
+			end
 		elseif eventCommand == "ins" then
 			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
 		elseif eventCommand == "toggle_pause" then
@@ -219,6 +221,12 @@ function eventChatCommand(playerName, message)
 	elseif command == "save" then
 		player:saveData()
 		answer("Your data has been saved")
+	elseif command == "removealldata" then
+		player:resetAllData()
+		answer("Data restored")
+	elseif command == "instance" then
+		player:setInstance(args[1])
+		answer("Instance set as " ..  (args[1] or "?"))
 	elseif command == "ping" then
 		player:updatePing()
 	end

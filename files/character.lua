@@ -1,5 +1,5 @@
 local characterId = 0
-Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
+Character.new = function(name, keyName, x, y, instrumentName, dialogSprite, gender)
     local self = setmetatable({}, Character)
 
     self.keyName = keyName or "m1"
@@ -8,6 +8,7 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     self.xPosition = x or -400
     self.yPosition = y or 1024
 
+    
     self.instrument = instrumentList[instrumentName]
     if not self.instrument then
         printfd("InstrumentName: %s, NpcName: %s", instrumentName or "nil", keyName or "nil")
@@ -20,8 +21,13 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     self.dialog = translate("npcDialogs " .. name:lower(), room.language)
 
     if self.instrument then
+        local tpath = ("instruments %s %%d"):format(self.instrument.keyName)
+        self.instrument.localeName = translate(tpath:format(1), room.language, gender)
+        self.instrument.dialog = translate(tpath:format(2), room.language, gender)
+        
         instrumentList[instrumentName].Npc = self.keyName
         self.instrument.Npc = self.keyName
+        
         self.dialog[1] = {self.instrument.dialog}
     end
 
