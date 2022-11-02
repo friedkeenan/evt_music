@@ -59,6 +59,10 @@ Musician dialog activates the quest and player has to seek and tune the correct 
 	- Npc displays dialogue (2) "ready", but their status is set as (3) "already has".
 	- Player returns to 3.x: sequence repeats for each musician.
 	- All dialogues for the rest of musicians are unlocked
+	
+> Note: After the first instrument is delivered, a pause / play button will appear.
+	- Every time an instrument is delivered, its sound will play on the loop as well.
+	- Players can click on a musician to add or remove their instrument from the loop.
 
 
 [4] Instrument Quest finished:
@@ -80,9 +84,9 @@ Player delivers every instrument to the correct musician.
 			> Note: This dialogue activates Diva's 2nd dialogue
 		> Note: Dialogue order MATTERS.
 
-[a] Talks to Conductor, changing Diva's dialogue to (2)
+> [a] Talks to Conductor, changing Diva's dialogue to (2)
 	- [ONCE] Gets reward from this part of the event.
-[b] Talks to Diva, starting the next quest.
+> [b] Talks to Diva, starting the next quest.
 
 
 [5] Microphone Quest Starts:
@@ -99,11 +103,11 @@ Player has to fix Diva's microphone by solving the puzzle.
 		- Conductor (3)
 		> Note: dialogue order doesn't matter.
 
-[a] Opens Puzzle window.
+> [a] Opens Puzzle window.
 	- When the player is near, either ducking/spacing/clicking opens the puzzle.
 	- Puzzle consists of 9 tiles in a random order.
 	- Player has to re-order the tiles to ressemble the image of a microphone.
-[b] Player solves puzzle.
+> [b] Player solves puzzle.
 	- No penalization for doing it wrong.
 	- Player won't pass to next stage once completing it.
 
@@ -120,10 +124,13 @@ Player managed to solve the microphone puzzle.
 	- Unlocked:
 		- Diva (4)
 			- [3 > 4] Dialogue changes completely.
-			> Note: This dialogue activates next quest
+			> Note: This dialogue activates next quest.
 		- Conductor (3)
 		> Note: dialogue order doesn't matter.
 
+> [a] Player talks to Diva
+	- [ONCE] Gets rewards from this part
+> [b] Next quest starts
 
 [7] Piano Quest Starts:
 Player has to perform a musical piece, accompaning Diva's singing.
@@ -136,20 +143,21 @@ Player has to perform a musical piece, accompaning Diva's singing.
 		- Piano
 		- Diva (5)
 			- [4 > 5] First paragraph gets removed, the rest is kept the same.
-			> Note: This Dialogue ACTIVATES the quest
+			> Note: This Dialogue ACTIVATES the quest.
 		- Conductor (3)
 		> Note: dialogue order doesn't matter.
 
-[a] Diva will provide some sequences that player will analyse and perform.
-[b] Player will perform the sequences provided.
+> [a] Diva will provide some sequences that player will analyse and perform.
+> [b] Player will perform the sequences provided.
 	- Use either keys or numbers to perform.
 	- Player will have to touch the correct keys at the correct moment.
 	> Penalization:
 		- If player touches the wrong key, quest will re-start.
 		- If player touches key on the wrong moment (either too soon or too later), the specific instance they're playing will restart.
+> [c] If this is to short, it could be repeated as many times as necessary (could be 2 or 3 times).
 
 
-[8] Piano Quest Finished / Event Completed:
+> [8] Piano Quest Finished / Event Completed:
 Players successfully performs all the sequences provided.
 	- Blocked:
 		- Instrument Board
@@ -164,13 +172,19 @@ Players successfully performs all the sequences provided.
 		- Conductor (4)
 			- [3 > 4] Dialogue changes completely
 			> Note: This marks the end of the event. 
-			> Note: This dialogue activates next instance
+			> Note: This dialogue activates next instance.
 		> Note: dialogue order matters.
 
+> [a] Player talks to Conductor.
+	- [ONCE] Gets rewards from this part of the event.
+> [b] Orchestra plays.
 
 [9] MUSICAL ORCHESTRA:
 Player hears the Orchestra performing.
 	- Blocked:
 		- Everything (players just spectates)
-	- After finishing to watch the orchesta, player's data resets.
-	> Note: (left to define WHEN should it play)
+
+> [a] Orchestra plays (left to define WHEN should it play)
+> [b] Player finishes event.
+	- [ONCE] Gets rewards
+	- [ONCE] Data resets.
