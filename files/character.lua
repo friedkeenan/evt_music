@@ -9,6 +9,9 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     self.yPosition = y or 1024
     
     self.instrument = instrumentList[instrumentName]
+    if not self.instrument then
+        printfd("InstrumentName: %s, NpcName: %s", instrumentName or "nil", keyName or "nil")
+    end
     
     
     self.dialog = {}

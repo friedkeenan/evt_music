@@ -118,21 +118,14 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 	if Window then
 		eventWindowCallback(Window, playerName, eventCommand)
 	else
+		
 		if npcList[eventCommand] then
-			player:npcInteraction(eventCommand)
+			local Npc = npcList[eventCommand]
+			local interaction = player:npcInteraction(eventCommand)
 
 			print(1)
-			local npc=npcList[eventCommand]
-			local insName=npc.instrument.keyName
-			if npc.instrument then
-			    print(2)
-			    if not player.loopSounds[insName] then
-			        print(3)
-					player:addSoundLoop(insName)
-				else
-				    print(4)
-				    player:removeSoundLoop(insName)
-				end
+			if not interaction then
+				player:setInstrumentSound(eventCommand, nil)
 			end
 		elseif eventCommand == "instrumentWindow" then
 			if player:getData("lev") <= 1 then

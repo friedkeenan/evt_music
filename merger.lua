@@ -1,19 +1,22 @@
 local fileList = {
-    "xml",
-    "init",
-    "utilities",
-    "dataHandling",
-    "interface",
-    {path="translations", files={
-        "main",
-        "en", "es", "br", "fr" -- ...
-    }},
-    "player",
-    "sound",
-    "character",
-    "definitions",
-    "events",
-    "start"
+    [1] = "xml",
+    [2] = "init",
+    [3] = "utilities",
+    [4] = "dataHandling",
+    [5] = "interface",
+    [6] = {
+        path = "translations",
+        files = {
+            "main",
+            "en", "es", "br", "fr" -- ...
+        }
+    },
+    [7] = "player",
+    [8] = "sound",
+    [9] = "character",
+    [10] = "definitions",
+    [11] = "events",
+    [12] = "start"
 }
 
 

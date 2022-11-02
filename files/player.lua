@@ -759,6 +759,24 @@ function Player:assertPuzzle()
 	end
 end
 
+function Player:setInstrumentSound(npcName, add)
+	local Npc = npcList[npcName]
+	if not Npc then return end
+	
+	local soundName = Npc.instrument and Npc.instrument.sound or nil
+	if not soundName then return end
+	
+	if add == nil then
+		self:setInstrumentSound(npcName, not self.loopSounds[soundName])
+	else
+		if add then
+			self:addSoundLoop(soundName)
+		else
+			self:removeSoundLoop(soundName)
+		end
+	end
+end
+
 function Player:setInstance(insId)
 
 end

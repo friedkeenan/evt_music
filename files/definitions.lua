@@ -1,4 +1,4 @@
-local setInstrument = function(instrumentName, sprite, width, height, xw, yw)
+local setInstrument = function(instrumentName, sprite, width, height, xw, yw, sound)
 	local self = {}
 	self.keyName = instrumentName:lower()
 	local tpath = ("instruments %s %%d"):format(self.keyName)
@@ -7,6 +7,7 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw)
 	self.dialog = translate(tpath:format(2), room.language) or self.localeName
 	
 	self.sprite = sprite or "1825ffbe04a.png"
+	self.sound = sound and ("lua/music_event/individual/%s.mp3"):format(sound) or "deadmaze/voiture.mp3"
 	self.height = height or 576
 	self.width = width or 553
 
@@ -23,29 +24,29 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw)
 end
 
 instrumentList = {
-    ["timpani"] = setInstrument("Timpani", "184058f9b56.png", 225, 77, 516, 203),
-    ["cymbals"] = setInstrument("Cymbals", "184058f4f5b.png", 81, 88, 233, 99),
-    ["gong"] = setInstrument("Gong", "18405907f5a.png", 100, 108, 353, 259),
-    ["vibraphone"] = setInstrument("Vibraphone", "1840592df5f.png", 147, 90, 602, 279),
-    ["marimba"] = setInstrument("Marimba", "18405932b5c.png", 171, 76, 446, 284),
+    ["timpani"] = setInstrument("Timpani", "184058f9b56.png", 225, 77, 516, 203, "timpani"),
+    ["cymbals"] = setInstrument("Cymbals", "184058f4f5b.png", 81, 88, 233, 99, "cymbals"),
+    ["gong"] = setInstrument("Gong", "18405907f5a.png", 100, 108, 353, 259, "tubular_bells"),
+    ["vibraphone"] = setInstrument("Vibraphone", "1840592df5f.png", 147, 90, 602, 279, "vibraphone"),
+    ["marimba"] = setInstrument("Marimba", "18405932b5c.png", 171, 76, 446, 284, "marimba"),
 	
-    ["horn"] = setInstrument("Horn", "1840590335b.png", 93, 78, 326, 101),
-    ["trumpet"] = setInstrument("Trumpet", "1840591fb5b.png", 175, 55, 224, 50),
-    ["trombone"] = setInstrument("Trombone", "1840591af5b.png", 140, 41, 464, 71),
-    ["tuba"] = setInstrument("Tuba", "1840592935c.png", 69, 125, 80, 65),
-    ["euphonium"] = setInstrument("Euphonium", "1840592475b.png", 59, 108, 148, 76),
+    ["horn"] = setInstrument("Horn", "1840590335b.png", 93, 78, 326, 101, "french_horn"),
+    ["trumpet"] = setInstrument("Trumpet", "1840591fb5b.png", 175, 55, 224, 50, "trumpets"),
+    ["trombone"] = setInstrument("Trombone", "1840591af5b.png", 140, 41, 464, 71, "trombones"),
+    ["tuba"] = setInstrument("Tuba", "1840592935c.png", 69, 125, 80, 65, "tuba"),
+    ["euphonium"] = setInstrument("Euphonium", "1840592475b.png", 59, 108, 148, 76, "euphonium"),
 	
-    ["Flute"] = setInstrument("Flute", "184058fe758.png", 163, 23, 80, 195),
-    ["Oboe"] = setInstrument("Oboe", "184058dd358.png", 180, 33, 268, 185),
-    ["Clarinet"] = setInstrument("Clarinet", "1840591175d.png", 167, 30, 510, 133),
-    ["Bassoon"] = setInstrument("Bassoon", "184058d86df.png", 94, 133, 426, 137),
-    ["Saxophone"] = setInstrument("Saxophone", "1840591635b.png", 92, 116, 391, 59),
+    ["flute"] = setInstrument("Flute", "184058fe758.png", 163, 23, 80, 195, "flute"),
+    ["oboe"] = setInstrument("Oboe", "184058dd358.png", 180, 33, 268, 185, "oboe"),
+    ["clarinet"] = setInstrument("Clarinet", "1840591175d.png", 167, 30, 510, 133, "clarinet"),
+    ["bassoon"] = setInstrument("Bassoon", "184058d86df.png", 94, 133, 426, 137, "basoon"),
+    ["saxophone"] = setInstrument("Saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone"),
 
-    ["Violin"] = setInstrument("Violin", "184058f0358.png", 35, 90, 82, 269),
-    ["Viola"] = setInstrument("Viola", "184058eb758.png", 49, 134, 296, 233),
-    ["Cello"] = setInstrument("Cello", "184058e6b59.png", 55, 158, 133, 231),
-    ["Bass"] = setInstrument("Bass", "184058e1f5c.png", 79, 199, 203, 196),
-    ["Harp"] = setInstrument("Harp", "1840590cb58.png", 91, 136, 647, 60)
+    ["violin"] = setInstrument("Violin", "184058f0358.png", 35, 90, 82, 269, "violins"),
+    ["viola"] = setInstrument("Viola", "184058eb758.png", 49, 134, 296, 233, "violas"),
+    ["cello"] = setInstrument("Cello", "184058e6b59.png", 55, 158, 133, 231, "cellos"),
+    ["bass"] = setInstrument("Bass", "184058e1f5c.png", 79, 199, 203, 196, "basses"),
+    ["harp"] = setInstrument("Harp", "1840590cb58.png", 91, 136, 647, 60, "harp")
 }
 
 

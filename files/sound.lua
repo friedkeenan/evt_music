@@ -7,20 +7,21 @@ end
 local loopLength=23275
 
 function Player:addSoundLoop(soundName,volume) -- Add an instrument to the loop
-    print('Add sound '..tostring(soundName))
     volume=volume or 100
+	printfd("Adding sound %s (volume: %d)", soundName, volume)
     self.loopSounds[soundName]={volume=volume}
 end
 function Player:removeSoundLoop(soundName) -- Remove an instrument from the loop
-    print('Remove sound '..tostring(soundName))
+    printfd("Removing sound %s", soundName)
     self.loopSounds[soundName]=nil
 end
 
 function Player:soundLoop() -- Loop of instrument sounds
-    local startTime=os.time()
+    local startTime = os.time()
+	local sound
 	for i,v in pairs(self.loopSounds) do
-		tfm.exec.playSound(('lua/music_event/individual/%s.mp3'):format(i:lower()),(v.volume or 100),nil,nil,self.name)
-		print('Playing sound '..('lua/music_event/individual/%s.mp3'):format(i:lower()))
+		self:playSound(i, v.volume or 100, nil, nil)
+		printfd('Playing sound %s', i)
 	end
 end
 function Player:playSoundLoop(play) -- Play or stop the loop of instrument sounds
