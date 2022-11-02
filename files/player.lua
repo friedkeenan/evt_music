@@ -7,14 +7,14 @@ function Player.new(name)
 			self.progress[npcName] = 1
 		end
 	end
-    
-    
+
+
 	self.onWindow = {}
 	self.windowHandle = {
 		count = 0,
 		timestamp = 0
 	}
-	
+
 	self.seekingInstrument = {
 		onIt = false,
 		timestamp = 0,
@@ -24,42 +24,50 @@ function Player.new(name)
 		sprite = "",
 		id = 0
 	}
-	
+
 	self.performingMusic = {
 		onIt = false,
 		timestamp = 0,
 		npcName = "",
 		instrumentName = ""
-		
-		
+
+
 	}
     self.onDialog = false
 	self.viewingInstruments = nil
-	
+
+	-- Sound
+	self.loopSounds={}
+	self.loopPaused=false
+	self.pauseImg=nil
+
+
 	self.isFacingRight = true
 	self.isMoving = false
-	
+
+
 	self.vignetteId = -1
-	
+
 	self.keys = {}
-	
+
 	tfm.exec.lowerSyncDelay(self.name)
 	for keyId, _ in next, playerKeys do
 		system.bindKeyboard(self.name, keyId, true, true)
 		system.bindKeyboard(self.name, keyId, false, true)
 		self.keys[keyId] = false
 	end
-	
+
 	return self
 end
 
-function Player:init(data)
+function Player:init(data,reset)
+    reset=reset or false
 	if data then
 		local moduleData = dataHan.getModuleData(data, "MUS")
 		self.progress = dataHan.decodeData(moduleData)
 		self.dataFile = data
 	end
-	
+
 	do -- Sets musicias to default
 		local index
 		for i=1, 20 do
@@ -67,14 +75,14 @@ function Player:init(data)
 			self.progress[index] = self.progress[index] or 1
 		end
 	end
-	
+
 	self.progress = table.inherit({
 		diva = 1,
 		cond = 1,
 		lev = 1,
 		times = 0
 	}, self.progress)
-	
+
 		--[[load player data
 		instruments = {
 			viola = true
@@ -83,12 +91,16 @@ function Player:init(data)
 		level = 1, 2, 3, ...
 		hasFinished = true
 	]]
+
+	if not reset then
+	    self:pauseMusic(false,true)
+	end
 end
 
 function Player:saveData()
 	local data = dataHan.encodeData(self.progress)
 	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
-	
+
 	system.savePlayerData(self.name, self.dataFile)
 end
 
@@ -161,40 +173,40 @@ function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
 	self.y = y or self.y
 	self.vx = vx or self.vx
 	self.vy = vy or self.vy
-	
+
 	if facingRight ~= nil then
 		self.isFacingRight = facingRight
 		f = true
 	end
-	
+
 	if isMoving ~= nil then
 		local k = self.keys
 		self.isMoving = isMoving or k[0] or k[1] or k[2]
 		m = true
 	end
-	
+
 	if f or m then
 		if self.seekingInstrument.holdingIt then
 			self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
 		end
 	end
-	
+
 	self:setOverlay()
-	
+
 	if self.onDialog then
 		local npc = self.onDialog.Npc
 		if math.distance(self.x, self.y, npc.x, npc.y) > 75 then
 			self:closeDialog()
 		end
 	end
-	
+
 	if (self.x > 0 and self.x < 275) and (self.y > 940) then
 		ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
 	else
 		self:showInstruments(false)
 		ui.removeClickable(1, self.name)
 	end
-	
+
 	if (self.x > 700 and self.x < 975) and (self.y > 1050) then
 		ui.addClickable(2, 730, 1030, 215, 80, self.name, "sheetsWindow", false)
 	else
@@ -203,7 +215,7 @@ function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
 end
 
 function Player:setOverlay(show)
-	if show ~= nil then	
+	if show ~= nil then
 		if show then
 			self.overlayId = tfm.exec.addImage("18405b309b5.png", "!420", -1, 927, self.name, 1.0, 1.0, 0, 1.0, 0, 0, true)
 		else
@@ -231,9 +243,9 @@ end
 function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[instrumentName]
-	
+
 	self:releaseInstrument()
-	
+
 	if instrument then
 		seeking.onIt = true
 		seeking.instrumentName = instrumentName
@@ -242,11 +254,11 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 		seeking.sprite = instrument.sprite
 		seeking.tries = 3
 		seeking.spriteId = -1
-		
+
 		if hold then
 			self:holdInstrument()
 		end
-		
+
 		if hideShow then
 			self:showInstruments(false)
 		end
@@ -256,32 +268,32 @@ end
 function Player:giveNpcInstrument(npcName, showDialog)
 	local Musician = npcList[npcName]
 	if not Musician.instrument then return end
-	
+
 	local seeking = self.seekingInstrument
 	local wrongAttempt = nil
-	
+
 	printfd("Giving instrument to %s", npcName)
-	
+
 	if self.progress[npcName] == 3 then
 		if showDialog then
 			self:newDialog(npcName, 3)
 		end
-		
+
 		wrongAttempt = true
 	elseif seeking.onIt then
 		printfd("on it")
 		if seeking.holdingIt then
 			printfd("holding it")
 			local success = Musician:giveInstrument(seeking.instrumentName)
-			
+
 			if success then
 				self:releaseInstrument()
-				
+
 				if showDialog then
 					printfd("Dialog 2")
 					self:newDialog(npcName, 2)
 				end
-				
+
 				self:setData(npcName, 3, false)
 				wrongAttempt = false
 			else
@@ -298,59 +310,59 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	if wrongAttempt ~= nil then
 		if wrongAttempt then
 			seeking.tries = seeking.tries - 1
-			
+
 			if seeking.tries <= 0 then
 				self:releaseInstrument()
 				tfm.exec.chatMessage("Oops you dropped it", self.name)
 			end
 		end
-		
+
 		retval = not wrongAttempt
 	end
-	
+
 	self.instrumentsLeft = self:getInstrumentsLeft()
-	
+
 	if self.instrumentsLeft <= 0 then
 		self:finishLevel(1)
 	end
-	
+
 	return retval
 end
 
 function Player:getInstrumentsLeft()
 	local count = 20
-	
+
 	local pat = "m%d"
 	for i=1, 20 do
 		if self.progress[pat:format(i)] >= 2 then
 			count = count - 1
 		end
 	end
-	
+
 	return count
 end
 
 function Player:holdInstrument()
 	local seeking = self.seekingInstrument
-	
+
 	if seeking.holdingIt then
 		self:releaseInstrument()
 	end
 
 	self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
-	
+
 	seeking.holdingIt = true
 end
 
 function Player:setInstrumentHolding(display, isFacingRight, isMoving)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[seeking.instrumentName]
-	
+
 	if seeking.spriteId then
 		tfm.exec.removeImage(seeking.spriteId, false)
 		seeking.spriteId = nil
 	end
-	
+
 	if display then
 		local xf = isFacingRight and 1 or -1
 		local rot = math.rad(isMoving and 10 or 60)
@@ -373,7 +385,7 @@ end
 function Player:releaseInstrument()
 	local seeking = self.seekingInstrument
 	self:setInstrumentHolding(false)
-	
+
 	seeking.holdingIt = false
 	seeking.onIt = false
 	seeking.instrumentName = nil
@@ -391,10 +403,10 @@ function Player:showInstruments(show)
 			if self.viewingInstruments then
 				self:showInstruments(false)
 			end
-			
+
 			self.viewingInstruments = {}
 			uiAddWindow(1, 2, {title = "", default=""}, self.name, 0, 0, 1.0, false)
-			
+
 			local counter = 100
 			for instrumentName, Ins in next, instrumentList do
 				counter = counter + 1
@@ -407,17 +419,17 @@ function Player:showInstruments(show)
 			for index, id in next, (self.viewingInstruments or {}) do
 				ui.removeClickable(id, self.name)
 			end
-			
+
 			self.viewingInstruments = nil
 		end
 	end
-	
+
 	if show == nil then
 		if not self.viewingInstruments then
 			self:showInstruments(true)
 		end
-		
-		-- update 
+
+		-- update
 	end
 end
 
@@ -443,12 +455,12 @@ function Player:newDialog(npcName, dialogId)
 	if self.onDialog then
 		self:closeDialog()
 	end
-	
+
     local Npc = npcList[npcName]
     local dialog = dialogId or self.progress[npcName] or 1
 	print(dialog)
 	local textInfo = Npc:getDialog(dialog)
-	
+
     self.onDialog = {
 		oldCursor = 1,
 		cursor = 1,
@@ -465,13 +477,13 @@ function Player:newDialog(npcName, dialogId)
 		pointer = 0,
 		sprite = Npc.dialogSprite
     }
-	
+
 	self:setDialogDisplay("new")
 end
 
 function Player:setDialogDisplay(instruction)
 	local Dialog = self.onDialog
-	
+
 	if Dialog then
 		if instruction == "new" then
 			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 394, self.name, 0.25, 0.25, 0, 1.0, 0, 1.0, true) or 0)
@@ -483,7 +495,7 @@ function Player:setDialogDisplay(instruction)
 				("<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>"):format(Dialog.displayText or Dialog.currentText),
 				self.name
 			) -- Update text
-			
+
 			if Dialog.finished then
 				Dialog.timerId = Timer.new(2000, false, function()
 					self:setDialogDisplay("next")
@@ -494,7 +506,7 @@ function Player:setDialogDisplay(instruction)
 				Timer.remove(Dialog.timerId)
 				Dialog.timerId = nil
 			end
-			
+
 			local Text = Dialog.Text
 			Dialog.pointer = Dialog.pointer + 1
 			if Dialog.pointer <= #Text then
@@ -503,7 +515,7 @@ function Player:setDialogDisplay(instruction)
 				Dialog.lenght = Dialog.currentText:len()
 				Dialog.cursor = 1
 				Dialog.oldCursor = 1
-				
+
 				Dialog.finished = false
 			else
 				Dialog.completed = true
@@ -526,23 +538,23 @@ function Player:updateDialog(increment)
 					Dialog.oldCursor = Dialog.cursor
 					Dialog.cursor = Dialog.currentText:len()
 					Dialog.displayText = Dialog.currentText
-					
+
 					Dialog.finished = true
-					
+
 					return self:setDialogDisplay("update")
 				end
 			elseif not Dialog.finished then
 				Dialog.lenght = Dialog.currentText:len()
 				Dialog.oldCursor = Dialog.cursor
 				Dialog.cursor = math.min(Dialog.cursor + increment, Dialog.lenght)
-				
+
 				if Dialog.cursor >= Dialog.lenght then
 					Dialog.displayText = Dialog.currentText
 					Dialog.finished = true
 				else
 					Dialog.displayText = Dialog.currentText:sub(1, Dialog.cursor)
 				end
-				
+
 				return self:setDialogDisplay("update")
 			end
 		else
@@ -557,11 +569,11 @@ function Player:closeDialog()
     if self.onDialog then
         ui.removeTextArea(self.onDialog.directAccess, self.name)
 		tfm.exec.removeImage(self.onDialog.directAccess - 2000, true)
-		
+
 		--
 		--
     end
-	
+
 	self.onDialog = false
 end
 
@@ -569,22 +581,22 @@ function Player:npcInteraction(npcName, x, y)
 	local Npc = npcList[npcName]
 	x = x or self.x
 	y = y or self.y
-	
+
 	if Npc then
 		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < npcTalkDist then
 			local success
 			if self.seekingInstrument.onIt and Npc.instrument then
 				success = self:giveNpcInstrument(npcName, true)
 			end
-			
+
 			if success == nil then
 				self:newDialog(npcName)
 			end
-			
+
 			return true
 		end
 	end
-	
+
 	return false
 end
 
@@ -602,7 +614,7 @@ function Player:initPuzzle(display)
 	if self.puzzle then
 		self:deletePuzzle()
 	end
-	
+
 	local pz = {
 		imageId = -1,
 		sprite = "",
@@ -611,18 +623,18 @@ function Player:initPuzzle(display)
 		scale = 1.0,
 		selected = nil -- Index Id
 	}
-	
+
 	local images = {
 		"18428f8b41c.png",	"18428f928d6.png",	"18428f9acdf.png",
 		"18428fa65e5.png",	"18428fb1459.png",	"18428fba384.png",
 		"18428fd5736.png",	"18428fe522f.png",	"18428ff2a9d.png"
 	}
-	
+
 	local rand = {}
 	for i=1, 9 do
 		table.insert(rand, math.random(1, i), i)
 	end
-	
+
 	local scale = 0.125
 	local x, y
 	for i = 1, 9 do
@@ -638,9 +650,9 @@ function Player:initPuzzle(display)
 			scale = scale
 		}
 	end
-	
+
 	self.puzzle = pz
-	
+
 	if display then
 		self:showPuzzle(true)
 	end
@@ -649,7 +661,7 @@ end
 function Player:deletePuzzle()
 	if self.puzzle then
 		self:showPuzzle(false)
-		
+
 		self.puzzle = false
 	end
 end
@@ -657,23 +669,23 @@ end
 function Player:showPuzzle(show)
 	local pz = self.puzzle
 	if not pz then return end
-	
+
 	if not show then
 		pz.imageId = tfm.exec.removeImage(pz.imageId, false)
 		for i = 1, 9 do
 			self:displayPuzzleTile(i, false)
 		end
 	end
-	
+
 	if show then
 		pz.imageId = tfm.exec.addImage(pz.sprite, ":1", 400, 210, self.name, pz.scale, pz.scale, 0, 1.0, 0.5, 0.5, false)
-		
+
 		local tl
 		for i=1, 9 do
 			self:displayPuzzleTile(i, true)
 		end
 	end
-	
+
 	self.showingPuzzle = not not show
 end
 
@@ -695,7 +707,7 @@ function Player:selectPuzzleTile(id)
 
 	if old ~= id then
 		pz.selected = id
-		
+
 		if pz[id].id == 9 then -- Empty tile (movement)
 			self:movePuzzleTile(old, id)
 		end
@@ -707,24 +719,24 @@ function Player:movePuzzleTile(from, to)
 		local pz = self.puzzle
 		local fr = pz[from]
 		local t = pz[to]
-		
+
 		local aux = {}
-		
+
 		aux.id = fr.id
 		aux.imageId = fr.imageId
 		aux.sprite = fr.sprite
-		
+
 		fr.id = t.id
 		fr.imageId = t.imageId
 		fr.sprite = t.sprite
-		
+
 		t.id = aux.id
 		t.imageId = aux.imageId
 		t.sprite = aux.sprite
-		
+
 		self:displayPuzzleTile(from, true)
 		self:displayPuzzleTile(to, true)
-		
+
 		if self:assertPuzzle() then
 			self:finishLevel(2)
 		end
@@ -741,19 +753,19 @@ function Player:assertPuzzle()
 				break
 			end
 		end
-		
+
 		print(assembled)
 		return assembled
 	end
 end
 
 function Player:setInstance(insId)
-	
+
 end
 
 function Player:finishLevel(levelId)
 	levelId = levelId or self:getData("lev")
-	
+
 	if levelId == 1 then -- Instruments delivering & tunning
 		self:setData("cond", 2)
 		self:setData("diva", 2)
@@ -765,15 +777,15 @@ function Player:finishLevel(levelId)
 		-- ...
 		-- Reward
 	end
-	
+
 	-- Always save to database when a level gets completed unless last one
 	self:setData("lev", levelId + 1, levelId < 3)
-	
+
 	if self:getData("lev") >= 4 then -- Event has been completed
 		local times = self:getData("times") + 1
-		
+
 		self:setData("times", times, false)
-		
+
 		self:resetAllData()
 		-- Rewards
 	end
@@ -782,6 +794,6 @@ end
 function Player:resetAllData()
 	local times = self:getData("times")
 	self.progress = {}
-	self:init(nil)
+	self:init(nil,true)
 	self:setData("times", times, true)
 end

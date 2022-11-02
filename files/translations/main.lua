@@ -2,7 +2,7 @@ local Text = {}
 local translate
 translate = function(resource, language, _format)
     language = Text[language] and language or "xx"
-    
+
     local obj = table.unreference(Text[language])
     for key in resource:gmatch("%S+") do
         if type(obj) == "table" then
@@ -14,7 +14,7 @@ translate = function(resource, language, _format)
             break
         end
     end
-    
+
     if obj then
 		if type(obj) == "table" then
 			return table.unreference(obj)
@@ -34,7 +34,7 @@ translate = function(resource, language, _format)
             obj = resource:gsub(" ", "%.")
         end
     end
-    
+
     return type(obj) == "table" and table.unreference(obj) or obj
 end
 

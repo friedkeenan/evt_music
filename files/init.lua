@@ -16,11 +16,11 @@ local admins = {
 do
 	local p = print
 	local tc = table.concat
-	print = function(...)
+	--[[print = function(...) -- This causes a crash when ... contains a table, fyi
 		if debugMode then
 			p(tc({...}, " "))
 		end
-	end
+	end]]
 
 	printfd = function(str, ...)
 		print(("[Debug] %s"):format(str:format(...)))

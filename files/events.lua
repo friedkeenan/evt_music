@@ -5,7 +5,7 @@ function eventNewGame()
         ui.setMapName("Music Orchestra !")
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
-		
+
 		tfm.exec.addNPC("Dulce", {
 			title = 126,
 			look = "235;10_A38980,36_39322F+E9D1BC,0,0,65_E9D1BC+E9D1BC+E9D1BC+E9D1BC+D5A397+D5A397+E9D1BC+E9D1BC,99_53433D+53433D+53433D+53433D+53433D+E9D1BC+53433D,20_B99D8E+53433D,34,0",
@@ -48,12 +48,12 @@ end
 
 function eventLoop(elapsed, remaining)
 	--eventFastLoop()
-	
+
 	for playerName, player in next, playerList do
 		local obj = tfm.get.room.playerList[playerName]
 		player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
 	end
-	
+
 	if remaining < 0 then
 		--tfm.exec.chatMessage("system.exit()")
 	end
@@ -64,21 +64,21 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 
 	if player then
 		player.keys[key] = down
-		
+
 		local facing, moving
 		if key < 4 then
 			if key % 2 == 0 then
 				moving = down
 				facing = (key == 2)
 			end
-			
+
 			if key == 1 then
 				moving = down
 			end
 		end
-		
+
 		player:updatePosition(x, y, vx, vy, facing, moving)
-		
+
 		if down then
 			if player.onDialog then
 				if key == 32 then
@@ -95,7 +95,7 @@ end
 
 function eventMouse(playerName, x, y)
 	local player = playerList[playerName]
-	
+
 	if player then
 		if player.viewingInstruments then
 			player:showInstrumets(false)
@@ -106,20 +106,34 @@ end
 function eventTextAreaCallback(textAreaId, playerName, eventName)
 	local Window = textAreaHandle[textAreaId]
 	local player = playerList[playerName]
-	
+
 	local args = {}
 	for arg in eventName:gmatch("[^%-]+") do
 		args[#args + 1] = tonumber(arg) or arg
 	end
 
 	local eventCommand = table.remove(args, 1)
-	
+
 	if not player then return end
 	if Window then
 		eventWindowCallback(Window, playerName, eventCommand)
 	else
 		if npcList[eventCommand] then
-			player:npcInteraction(eventCommand)			
+			player:npcInteraction(eventCommand)
+
+			print(1)
+			local npc=npcList[eventCommand]
+			local insName=npc.instrument.keyName
+			if npc.instrument then
+			    print(2)
+			    if not player.loopSounds[insName] then
+			        print(3)
+					player:addSoundLoop(insName)
+				else
+				    print(4)
+				    player:removeSoundLoop(insName)
+				end
+			end
 		elseif eventCommand == "instrumentWindow" then
 			if player:getData("lev") <= 1 then
 				player:showInstruments()
@@ -128,6 +142,8 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			tfm.exec.chatMessage("sheets", playerName)
 		elseif eventCommand == "ins" then
 			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
+		elseif eventCommand == "toggle_pause" then
+		    player:pauseMusic(not player.loopPaused)
 		end
 	end
 end
@@ -164,26 +180,26 @@ end
 function eventChatCommand(playerName, message)
 	if not admins[playerName] then return end
 	local player = playerList[playerName]
-	
+
 	local args = {}
 	local val
 	local command
-	
+
 	for arg in message:gmatch("%S+") do
 		if (arg == "true" or arg == "false") then
 			val = (arg == "true")
 		else
 			val = tonumber(arg) or arg
 		end
-		args[#args + 1] = val		
+		args[#args + 1] = val
 	end
-	
+
 	command = table.remove(args, 1)
-	
+
 	local answer = function(msg)
 		tfm.exec.chatMessage(msg, playerName)
 	end
-	
+
 	if command == "setIns" then
 		player:setInstrument(args[1], true, false)
 		answer(("Setting '%s' as your instrument"):format(args[1] or""))

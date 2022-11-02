@@ -9,6 +9,7 @@ local fileList = {
         "en", "es", "br", "fr" -- ...
     }},
     "player",
+    "sound",
     "character",
     "definitions",
     "events",
@@ -28,7 +29,7 @@ readPath = function(pathName, subPath)
         for fileIndex, fileName in next, pathName.files do
             ft[fileIndex] = readPath(fileName, subPath)
         end
-        
+
         return table.concat(ft, '\n')
     else
         local p = ("%s/%s.lua"):format(subPath, pathName)
@@ -53,9 +54,9 @@ File:close()
 
 do
     local ok, result
-    local Test 
+    local Test
     Test, result = loadstring(("%s%s\n%s%s"):format("-- evt_music", (' '):rep(20), 'require("tfmenv")\n', evt_music))
-    
+
     if Test then
         ok, result = pcall(Test)
         if ok then

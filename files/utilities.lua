@@ -1,3 +1,24 @@
+local stringutils = {}
+stringutils.split = function(s, delimiter)
+	result = {}
+	for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
+		table.insert(result, match)
+	end
+	return result
+end
+stringutils.isin = function(s,t)
+    local r=false
+    if type(t)=='table' then
+        for i,v in pairs(t) do
+            if v==s then
+                r=true
+                break
+            end
+        end
+    end
+    return r
+end
+
 math.distance = function(ax, ay, bx, by)
 	return math.sqrt((bx-ax)^2 + (by-ay)^2)
 end
@@ -7,7 +28,7 @@ dump = function(Val, depth)
 	if depth > 8 then return end
 	local tval = type(Val)
 	local retval = ""
-	
+
 	if tval == "string" then
 		retval = ('"%s"'):format(Val)
 	elseif tval == "table" then
@@ -25,14 +46,14 @@ dump = function(Val, depth)
 	else
 		retval = tostring(Val) or tval
 	end
-        
+
 	return retval or "nil"
 end
-    
+
 printt = function(...)
 	local str = {}
 	local args  = {...}
-	
+
 	for index, object in next, args do
 		str[#str + 1] = dump(object, 1)
 	end
@@ -41,11 +62,11 @@ end
 
 table.randomize = function(tbl)
     local newTable = {}
-    
+
     for index, element in ipairs(tbl) do
         table.insert(newTable, math.random(1, index), element)
     end
-    
+
     return newTable
 end
 
@@ -61,7 +82,7 @@ table.unreference = function(tbl)
 	else
 		retvl = tbl
 	end
-	
+
 	return retvl
 end
 
@@ -71,9 +92,9 @@ table.inherit = function(tbl, ex)
 	if type(tbl) ~= "table" then
 		obj = {}
 	else
-        obj = table.unreference(tbl) 
+        obj = table.unreference(tbl)
     end
-	
+
 	for k, v in next, ex do
 		if type(v) == "table" then
 			obj[k] = table.inherit(obj[k], v)
@@ -81,7 +102,7 @@ table.inherit = function(tbl, ex)
 			obj[k] = table.unreference(v)
 		end
 	end
-	
+
 	return obj
 end
 

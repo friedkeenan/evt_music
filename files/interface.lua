@@ -1,10 +1,11 @@
-ui.addClickableImage = function(imageId, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
+ui.addClickableImage = function(imageId, imgTarget, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
+	local imgTarget=imgtarget or "~1"
 	local tHeight = height * yScale
 	local tWidth = width * xScale
-	local id = tfm.exec.addImage(imageId, "~1", x, y, targetPlayer, xScale, yScale, 0.0, alpha, 0, 0, fadeIn)
-	
+	local id = tfm.exec.addImage(imageId, imgTarget, x, y, targetPlayer, xScale, yScale, 0.0, alpha, 0, 0, fadeIn)
+
 	ui.addClickable(10000 + id, x, y, tWidth, tHeight, targetPlayer, event, true)
-	
+
 	return id
 end
 
@@ -23,7 +24,7 @@ ui.addClickable = function(id, xPosition, yPosition, width, height, targetPlayer
 		0x8800FF, 0x8800ff,--0x0, 0x0,
 		0.15, fixedPos--0.0, fixedPos
 	)
-	
+
 	return id
 end
 
@@ -35,16 +36,16 @@ end
 
 local setElement = function(type, identifier, height, width, yoff, xoff, ex)
 	local obj = {}
-	
+
 	obj.type = type
 	obj.identifier = identifier
-	
+
 	obj.height = height
 	obj.width = width
-	
+
 	obj.xcent = 400 - (width / 2) + (xoff or 0)
 	obj.ycent = 205 - (height / 2) + (yoff or 0)
-	
+
 	if type == "image" then
 		obj.remove = tfm_exec_removeImage
 		obj.update = dummyFunc
@@ -55,15 +56,15 @@ local setElement = function(type, identifier, height, width, yoff, xoff, ex)
 		obj.remove = dummyFunc
 		obj.update = dummyFunc
 	end
-	
+
 	ex = ex or {}
-	 
+
 	for k, v in next, ex do
 		if not obj[k] then
 			obj[k] = v
 		end
 	end
-	
+
 	return obj
 end
 -- (type, identifier, height, width, yoff, xoff, ex)
@@ -169,7 +170,7 @@ uiCreateElement = function(id, order, target, element, text, xoff, yoff, alpha)
             local access = text[element.identifier]
             if element.multiplecont then
                 lhandle.texts = {}
-                    
+
                 if type(access) == "table" then
                     for i=1, #access  do
                         lhandle.texts[i] = access[i] or ""
@@ -180,20 +181,20 @@ uiCreateElement = function(id, order, target, element, text, xoff, yoff, alpha)
             else
                 lhandle.text = access or ""
             end
-            
+
             if element.format then
                 lhandle.text = element.format.start .. lhandle.text .. element.format.enclose
             end
         else
             if element.text then
-                lhandle.text = element.text:format(element.event) 
+                lhandle.text = element.text:format(element.event)
             end
         end
-        
+
         if lhandle.text:len() > 2000 then
             lhandle.text = lhandle.text:sub(1, 1995) .. " ..."
         end
-        
+
         textAreaNum = textAreaNum + 1
         lhandle.id = 5000 + textAreaNum
         ui_addTextArea(
@@ -205,10 +206,10 @@ uiCreateElement = function(id, order, target, element, text, xoff, yoff, alpha)
             0x000000, 0x000000,
             alpha, true
         )
-        
+
         textAreaHandle[lhandle.id] = id
     end
-    
+
     return lhandle
 end
 
@@ -217,48 +218,48 @@ uiCreateWindow = function(id, _type, target, text, xoff, yoff, alpha)
         print("Warning ! uiCreateWindow target is not optional.")
         return
     end
-    
+
     _type = _type or 0
     text = type(text) == "string" and {default=text} or (text or {})
-    
+
     xoff = xoff or 0
     yoff = yoff or 0
     alpha = alpha or 1.0
-    
+
     local resources = uiResources[_type] or uiResources[0]
 
     local texts = 0
     local height, width = 0, 0
     local handle = {}
-    local lhandle 
+    local lhandle
     for order, element in next, resources do
         lhandle = {}
-        
+
         lhandle = uiCreateElement(id, order, target, element, text, xoff, yoff, alpha)
         lhandle.remove = element.remove
         lhandle.update = element.update
-        
+
         if (element.height or 0) > height then
             height = element.height
         end
-        
+
         if (element.width or 0) > width then
             width = element.width
         end
-        
+
         handle[#handle + 1] = lhandle
         lhandle = nil
     end
-    
+
     handle.height = height
     handle.width = width
-    
+
     return handle
 end
 
 uiGivePlayerList = function(targetPlayer)
     local playerList = {}
-    
+
     local typeList = type(targetPlayer)
     if typeList == "string" then
         playerList = {targetPlayer}
@@ -271,7 +272,7 @@ uiGivePlayerList = function(targetPlayer)
             end
         end
     end
-    
+
     return playerList
 end
 
@@ -283,13 +284,13 @@ uiAddWindow = function(id, type, text, targetPlayer, xoffset, yoffset, alpha, re
             reload = reload or false
         }
     end
-    
+
     for _, playerName in next, playerList do
         if uiHandle[id][playerName] then
             uiRemoveWindow(id, playerName)
         end
         local success = uiCreateWindow(id, type, playerName, text, xoffset, yoffset, alpha)
-        if success then 
+        if success then
             uiHandle[id][playerName] = success
             eventWindowDisplay(id, playerName, success)
         end
@@ -298,7 +299,7 @@ end
 
 uiHideWindow = function(id, targetPlayer)
     local object = uiHandle[id][targetPlayer]
-    
+
     if object then
         eventWindowHide(id, targetPlayer, object)
         for key, element in next, object do
@@ -314,20 +315,20 @@ end
 uiRemoveWindow = function(id, targetPlayer)
     local localeWindow = uiHandle[id]
     local playerList = uiGivePlayerList(targetPlayer)
-    
+
     if localeWindow then
         for _, playerName in next, playerList do
             uiHideWindow(id, playerName)
-            
+
             if localeWindow[playerName] then
                 localeWindow[playerName] = nil
             end
         end
     end
-    
+
     if not targetPlayer then
         localeWindow = nil
     end
-    
+
     return true
 end

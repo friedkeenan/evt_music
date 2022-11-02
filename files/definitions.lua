@@ -9,16 +9,16 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw)
 	self.sprite = sprite or "1825ffbe04a.png"
 	self.height = height or 576
 	self.width = width or 553
-	
+
 	self.scale = scale or 1.0
 	self.tscale = 0.8
-	
+
 	self.txs = self.tscale * self.width
 	self.tys = self.tscale * self.height
-	
+
 	self.tdx = xw or 0
 	self.tdy = yw or 0
-	
+
 	return self
 end
 
@@ -40,7 +40,7 @@ instrumentList = {
     ["Clarinet"] = setInstrument("Clarinet", "1840591175d.png", 167, 30, 510, 133),
     ["Bassoon"] = setInstrument("Bassoon", "184058d86df.png", 94, 133, 426, 137),
     ["Saxophone"] = setInstrument("Saxophone", "1840591635b.png", 92, 116, 391, 59),
-	
+
     ["Violin"] = setInstrument("Violin", "184058f0358.png", 35, 90, 82, 269),
     ["Viola"] = setInstrument("Viola", "184058eb758.png", 49, 134, 296, 233),
     ["Cello"] = setInstrument("Cello", "184058e6b59.png", 55, 158, 133, 231),
