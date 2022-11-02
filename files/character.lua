@@ -1,19 +1,19 @@
 local characterId = 0
 Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
     local self = setmetatable({}, Character)
-    
+
     self.keyName = keyName or "m1"
     self.name = name or "Musician"
-    
+
     self.xPosition = x or -400
     self.yPosition = y or 1024
-    
+
     self.instrument = instrumentList[instrumentName]
     if not self.instrument then
         printfd("InstrumentName: %s, NpcName: %s", instrumentName or "nil", keyName or "nil")
     end
-    
-    
+
+
     self.dialog = {}
     characterId = characterId + 1
     self.uniqueId = characterId
@@ -24,11 +24,11 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
         self.instrument.Npc = self.keyName
         self.dialog[1] = {self.instrument.dialog}
     end
-    
+
     self.dialogSprite = dialogSprite or "18334202aeb.png" -- Should go musician
     tfm.exec.removeImage(tfm.exec.addImage(self.dialogSprite, ":4", 0, 500, nil, 0.1, 0.1, 0, 0, 0, 0, false), false)
     local xpos, ypos, xsize, ysize
-    
+
     if self.keyName:match("m%d+") then
         xpos = self.xPosition - 8
         ypos = self.yPosition - 50
@@ -39,9 +39,9 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite)
         ypos = self.yPosition - 20
         xsize, ysize = 40, 40
     end
-    
+
     ui.addClickable(self.uniqueId + 200, xpos, ypos, xsize, ysize, nil, self.keyName, false)
-    
+
     return self
 end
 
@@ -54,7 +54,7 @@ end
 function Character:getDialog(dialog)
     dialog = tostring(dialog)
     local object
-    
+
     local obj = table.unreference(self.dialog)
     for key in dialog:gmatch("%S+") do
         if type(obj) == "table" then
@@ -66,7 +66,7 @@ function Character:getDialog(dialog)
             break
         end
     end
-    
+
     if obj then
         if type(_format) == "table" then
             for key, value in next, _format do
@@ -78,7 +78,7 @@ function Character:getDialog(dialog)
     else
         obj = dialog:gsub(" ", "%.")
     end
-    
+
     return type(obj) == "table" and table.unreference(obj) or obj
 end
 

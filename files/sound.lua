@@ -5,7 +5,7 @@ end
 
 
 local loopLength=23275
-local overlap=100
+--local overlap=100
 
 function Player:addSoundLoop(soundName,volume) -- Add an instrument to the loop
     volume=volume or 100
@@ -18,13 +18,15 @@ function Player:removeSoundLoop(soundName) -- Remove an instrument from the loop
 end
 
 function Player:soundLoop() -- Loop of instrument sounds
+    self:updatePing()
+    local ping=self.currentPing
     local startTime = os.time()
 	local sound
 	for i,v in pairs(self.loopSounds) do
 	    system.newTimer(function()
 			self:playSound(i, v.volume or 100, nil, nil)
 			printfd('Playing sound %s', i)
-		end,1000+(os.time()-startTime))
+		end,1000-(os.time()-startTime))
 	end
 end
 function Player:playSoundLoop(play) -- Play or stop the loop of instrument sounds
@@ -43,8 +45,9 @@ function Player:playSoundLoop(play) -- Play or stop the loop of instrument sound
     end
 
     if play then
-        self.loopTimer=system.newTimer(function() self:soundLoop() end,(loopLength-overlap),true)
+        self:updatePing()
         self:soundLoop()
+        self.loopTimer=system.newTimer(function() self:soundLoop() end,(loopLength-self.currentPing),true)
     end
 
     print(self.name..': '..(play and 'play' or 'pause'))

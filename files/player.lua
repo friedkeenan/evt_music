@@ -45,6 +45,9 @@ function Player.new(name)
 	self.isFacingRight = true
 	self.isMoving = false
 
+	self.currentPing = 0 -- Player's latest ping
+	self.pingTime = 0 -- os.time of last ping
+
 
 	self.vignetteId = -1
 
@@ -814,4 +817,9 @@ function Player:resetAllData()
 	self.progress = {}
 	self:init(nil,true)
 	self:setData("times", times, true)
+end
+
+function Player:updatePing()
+    self.pingTime=os.time()
+    tfm.exec.addBonus(0,self.x,self.y,-1,0,false,self.name)
 end

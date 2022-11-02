@@ -52,6 +52,19 @@ function eventLoop(elapsed, remaining)
 	for playerName, player in next, playerList do
 		local obj = tfm.get.room.playerList[playerName]
 		player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
+
+
+		if not player.loopPaused then
+			for i,v in pairs(player.loopSounds) do
+				local ins=getInstrumentBySoundName(i)
+				if ins then
+					local npc=getCharacterByInstrumentName(ins.keyName)
+					if npc then
+						tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),0,0,0,0,player.name)
+					end
+				end
+			end
+		end
 	end
 
 	if remaining < 0 then
@@ -118,12 +131,11 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 	if Window then
 		eventWindowCallback(Window, playerName, eventCommand)
 	else
-		
+
 		if npcList[eventCommand] then
 			local Npc = npcList[eventCommand]
 			local interaction = player:npcInteraction(eventCommand)
 
-			print(1)
 			if not interaction then
 				player:setInstrumentSound(eventCommand, nil)
 			end
@@ -207,5 +219,17 @@ function eventChatCommand(playerName, message)
 	elseif command == "save" then
 		player:saveData()
 		answer("Your data has been saved")
+	elseif command == "ping" then
+		player:updatePing()
 	end
+end
+
+function eventPlayerBonusGrabbed(playerName,id)
+    local player = playerList[playerName]
+    if player then
+        if id==-1 then
+			player.currentPing=(os.time()-player.pingTime)-30
+			tfm.exec.chatMessage('Ping: '..tostring(player.currentPing),playerName)
+		end
+    end
 end
