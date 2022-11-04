@@ -14,6 +14,8 @@ do
 			end, interval, true)
 		end, interval + (diftime * i), false)
 	end
+	
+	tfm.exec.chatMessage(translate("hey 1", tfm.get.room.language, 0))
 end
 
 tfm.exec.newGame(xml, false)

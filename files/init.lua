@@ -13,6 +13,8 @@ local admins = {
 	["Drgenius#0000"] = true
 }
 
+local styles = {}
+
 do
 	local p = print
 	local tc = table.concat

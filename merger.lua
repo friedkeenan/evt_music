@@ -54,8 +54,10 @@ local evt_music = readPath({files=fileList})
 File = io.open("evt_music.lua", "w+")
 File:write(evt_music)
 File:close()
+print("\nFile written on evt_music.lua")
 
 do
+    print("\n[TEST] Asserting build...")
     local ok, result
     local Test
     Test, result = loadstring(("%s%s\n%s%s"):format("-- evt_music", (' '):rep(20), 'require("tfmenv")\n', evt_music))
@@ -63,9 +65,9 @@ do
     if Test then
         ok, result = pcall(Test)
         if ok then
-            print("Event cooked successfully.")
+            print("[TEST] Event executes correctly!")
         else
-            print(result)
+            print("[TEST]" .. result)
         end
     else
         print(result)

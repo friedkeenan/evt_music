@@ -1,3 +1,11 @@
+styles = {
+	dialogue = "<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>",
+	chat = "<font color='#F8C090'></font>",
+	href = "<a href='event:%s'>%s</a>"
+}
+
+styles.refdlg = styles.dialogue:format(styles.href)
+
 local setInstrument = function(instrumentName, sprite, width, height, xw, yw, sound)
 	local self = {}
 	self.keyName = instrumentName:lower()

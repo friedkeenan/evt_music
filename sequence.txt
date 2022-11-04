@@ -1,4 +1,4 @@
-[1] Module Start:
+[1] Module Start: -- Done
 Player joins module for the first time.
 	- Blocked:
 		- Musicians (0 / nil)

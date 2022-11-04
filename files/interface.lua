@@ -1,5 +1,5 @@
 ui.addClickableImage = function(imageId, imgTarget, targetPlayer, height, width, event, x, y, xScale, yScale, alpha, fadeIn)
-	local imgTarget=imgtarget or "~1"
+	imgTarget = imgtarget or "~1"
 	local tHeight = height * yScale
 	local tWidth = width * xScale
 	local id = tfm.exec.addImage(imageId, imgTarget, x, y, targetPlayer, xScale, yScale, 0.0, alpha, 0, 0, fadeIn)
@@ -102,6 +102,21 @@ uiResources[2] = {
 	),
 	[3] = setElement(
 		"textArea", "close", 25, 25, -160, 325,
+		{text = "<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>" .. ('\n'):rep(20), event="close"}
+	)
+}
+
+uiResources[3] = {
+	[1] = setElement(
+		"image", "baseWin", 356, 500, 0, 0,
+		{image = "1825fee4f3c.png"}
+	),
+	[2] = setElement(
+		"image", "closeBox", 20, 20, -150, 240,
+		{image = "1825fee8763.png"}
+	),
+	[3] = setElement(
+		"textArea", "close", 25, 25, -150, 240,
 		{text = "<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>" .. ('\n'):rep(20), event="close"}
 	)
 }

@@ -49,6 +49,8 @@ end
 function eventLoop(elapsed, remaining)
 	--eventFastLoop()
 
+	Timer.handle()
+
 	for playerName, player in next, playerList do
 		local obj = tfm.get.room.playerList[playerName]
 		player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
@@ -134,7 +136,7 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 
 		if npcList[eventCommand] then
 			local Npc = npcList[eventCommand]
-			local interaction = player:npcInteraction(eventCommand)
+			local interaction = player:npcInteraction(eventCommand, nil, nil, args)
 
 			if not interaction then
 				player:setInstrumentSound(eventCommand, nil)
@@ -145,7 +147,7 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			end
 		elseif eventCommand == "sheetsWindow" then
 			if player.seekingInstrument.holdingIt then
-				tfm.exec.chatMessage("sheets", playerName)
+				player:showSheets()
 			end
 		elseif eventCommand == "ins" then
 			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
@@ -160,6 +162,8 @@ function eventWindowCallback(windowId, playerName, eventName)
 	if eventName == "close" then
 		if windowId == 1 then
 			player:showInstruments(false)
+		elseif windowId == 11 then
+			player:showSheets(false)
 		end
 	end
 	-- ...
@@ -208,12 +212,15 @@ function eventChatCommand(playerName, message)
 	end
 
 	if command == "setIns" then
-		player:setInstrument(args[1], true, false)
+		player:releaseInstrument()
+		player:setInstrument(args[1], true, true)
 		answer(("Setting '%s' as your instrument"):format(args[1] or""))
+		answer(("%s exists? %s"):format(args[1] or "!", tostring(not not instrumentList[args[1]])))
 	elseif command == "allIns" then
 		for npcName, Npc in next, npcList do
 			if Npc.instrument then
 				player:setInstrument(Npc.instrument.keyName, false, false, true)
+				player:setSheet(Npc.instrument.keyName)
 				player:giveNpcInstrument(npcName, false)
 			end
 		end
@@ -229,6 +236,8 @@ function eventChatCommand(playerName, message)
 		answer("Instance set as " ..  (args[1] or "?"))
 	elseif command == "ping" then
 		player:updatePing()
+	elseif command == "sheets" then
+		player:showSheets()
 	end
 end
 

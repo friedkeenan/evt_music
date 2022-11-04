@@ -6,6 +6,9 @@
 -- Output (for neutral: "The person was playing with their friends at the station"
 
 Text["en"] = {
+	hey = {
+		[1] = "Welcome to the event!"
+	},
 	instruments = { -- In comments (text after two lines --) gender of the musician that plays the instrument
 		["timpani"] 	= {"Timpani", 		"I use a pedal to tune my instrument."}, -- Male
 		["cymbals"] 	= {"Cymbals", 		"My instrument doesn't really need tuning."}, -- Female
@@ -33,6 +36,7 @@ Text["en"] = {
 	},
 	npcDialogs = {
 		conductor = { -- Male
+			name = "Conductor",
 			[-1] = {"..."},
 			[1] = {
 				[1] = "Finally, you're here! I need this orchestra ready as soon as possible. I don't want to keep the Diva waiting and certainly not King Fromagnus either!",
@@ -57,6 +61,7 @@ Text["en"] = {
 			}
 		},
 		diva = { -- Female
+			name = "Diva",
 			[-1] = {"..."},
 			[1] = { -- Start of the event
 				[1] = "What are you staring at, do you want my autograph?",
@@ -85,6 +90,8 @@ Text["en"] = {
 			}
 		},
 		musician = {
+			name = "Musician",
+			[-2] = {"I can't tune my instrument with this score."},
 			[-1] = {"Err... This is not my instrument."}, -- When the player tries to give the instrument to the wrong musician
 			[0] = {"..."},
 			[2] = {"I am ready for the concert!"}, -- When the player gives the correct instrument to the musician
@@ -96,7 +103,16 @@ Text["en"] = {
 		microphone = "Untangle the microphone's cable by moving the blocks around.",
 		insboard = "Choose the right musical instrument, then fetch its matching music score.",
 		scorepile = "Choose the right music score and memorize the sequence of gestures, to tune the instrument.",
-		piano = "Repeat the tune the Diva has just sung"
+		piano = "Repeat the tune the Diva has just sung",
+		accept = "Accept",
+		reject = "Reject",
+		send = "Send",
+		cancel = "Cancel",
+		search = "Search",
+		discard = "Discard",
+		start = "Start", -- As verb 'to start'
+		finish = "Finish", -- As verb 'to finish'
+		riddle = "Riddle" -- Clue or guess
 	}
 }
 

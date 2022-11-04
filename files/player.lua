@@ -35,6 +35,7 @@ function Player.new(name)
 	}
     self.onDialog = false
 	self.viewingInstruments = nil
+	self.viewingSheets = nil
 
 	-- Sound
 	self.loopSounds={}
@@ -200,29 +201,36 @@ function Player:updatePosition(x, y, vx, vy, facingRight, isMoving)
 		end
 	end
 
-	self:setOverlay()
+	self:handleNear(self.x, self.y, self.vx, self.vy)
+end
 
+function Player:handleNear(x, y, vx, vy)
+	self:setOverlay()
+	
 	if self.onDialog then
 		local npc = self.onDialog.Npc
-		if math.distance(self.x, self.y, npc.x, npc.y) > 75 then
+		if math.distance(x, y, npc.x, npc.y) > 75 then
 			self:closeDialog()
 		end
 	end
 
-	local instance = self:getData("ins") == 3
+	
 	do
-		if (self.x > 0 and self.x < 275) and (self.y > 940) and instance then
+		local ins3rd = (self:getData("ins") == 3)
+		
+		if ins3rd and ((x > 0 and x < 275) and (y > 940)) then
 			ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
 		else
 			self:showInstruments(false)
 			ui.removeClickable(1, self.name)
 		end
 
-		local cond = self.seekingInstrument.holdingIt and instance
-		if (self.x > 700 and self.x < 975) and (self.y > 1050) and cond then
+		local cond = ins3rd and self.seekingInstrument.holdingIt
+		if cond and ((x > 700 and x < 975) and (y > 1050)) then
 			ui.addClickable(2, 730, 1030, 215, 80, self.name, "sheetsWindow", false)
 		else
 			ui.removeClickable(2, self.name)
+			self:showSheets(false)
 		end
 	end
 end
@@ -281,6 +289,20 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	end
 end
 
+function Player:setSheet(npcName)
+	local seeking = self.seekingInstrument
+	
+	if seeking.holdingIt then
+		if npcName == false then
+			seeking.sheet = nil
+		elseif npcName then
+			seeking.sheet = npcName
+		end
+		
+		return seeking.sheet == seeking.instrumentName
+	end
+end
+
 function Player:giveNpcInstrument(npcName, showDialog)
 	local Musician = npcList[npcName]
 	if not Musician.instrument then return end
@@ -303,15 +325,26 @@ function Player:giveNpcInstrument(npcName, showDialog)
 			local success = Musician:giveInstrument(seeking.instrumentName)
 
 			if success then
-				self:releaseInstrument()
+				if self:setSheet() then
+					self:releaseInstrument()
 
-				if showDialog then
-					printfd("Dialog 2")
-					self:newDialog(npcName, 2)
+					if showDialog then
+						printfd("Dialog 2")
+						self:newDialog(npcName, 2)
+					end
+
+					self:setData(npcName, 3, false)
+					
+					wrongAttempt = false
+				else
+					if showDialog then
+						printfd("Dialog -2")
+						self:newDialog(npcName, -2)
+					end
+					
+					wrongAttempt = true
 				end
-
-				self:setData(npcName, 3, false)
-				wrongAttempt = false
+				
 			else
 				if showDialog then
 					printfd("Dialog -1")
@@ -372,7 +405,6 @@ end
 
 function Player:setInstrumentHolding(display, isFacingRight, isMoving)
 	local seeking = self.seekingInstrument
-	local instrument = instrumentList[seeking.instrumentName]
 
 	if seeking.spriteId then
 		tfm.exec.removeImage(seeking.spriteId, false)
@@ -386,7 +418,7 @@ function Player:setInstrumentHolding(display, isFacingRight, isMoving)
 		local xpos = isMoving and 4 or 24
 		local ypos = isMoving and 20 or 10
 		seeking.spriteId = tfm.exec.addImage(
-			instrument.sprite,
+			seeking.sprite,
 			"$" .. self.name,
 			-xpos * xf, -ypos,
 			nil,
@@ -431,18 +463,70 @@ function Player:showInstruments(show)
 				print(Ins.Npc)
 			end
 		else
-			uiRemoveWindow(1, self.name)
-			for index, id in next, (self.viewingInstruments or {}) do
-				ui.removeClickable(id, self.name)
-			end
+			if self.viewingInstruments then
+				uiRemoveWindow(1, self.name)
+				for index, id in next, (self.viewingInstruments or {}) do
+					ui.removeClickable(id, self.name)
+				end
 
-			self.viewingInstruments = nil
+				self.viewingInstruments = nil
+			end
 		end
 	end
 
 	if show == nil then
 		if not self.viewingInstruments then
 			self:showInstruments(true)
+		end
+
+		-- update
+	end
+end
+
+function Player:showSheets(show)
+	if show ~= nil then
+		if show then
+			if self.viewingSheets then
+				self:showSheets(false)
+			end
+
+			self.viewingSheets = {}
+			uiAddWindow(11, 3, {title = "", default=""}, self.name, 0, 0, 1.0, false)
+
+			local counter = 0
+			for instrumentName, Ins in next, instrumentList do
+				counter = counter + 1
+				self.viewingSheets[counter] = counter
+				
+				ui.addTextArea(
+					750 + counter,
+					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='16'><p align='center'>%s</p></font>"):format(Ins.keyName == self.seekingInstrument.sheet and ("<u>%s</u>"):format(Ins.localeName) or Ins.localeName)),
+					self.name,
+					200 + (((counter - 1)%4) * 150) - 75,
+					80 + ((math.ceil(counter / 4) - 1) * 60),
+					150,
+					0,
+					0x0, 0x0,
+					1.0, true
+				)
+				--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
+				print(Ins.Npc)
+			end
+		else
+			if self.viewingSheets then
+				uiRemoveWindow(11, self.name)
+				for index, _ in next, (self.viewingSheets or {}) do
+					ui.removeTextArea(750 + index, self.name)
+				end
+
+				self.viewingSheets = nil
+			end
+		end
+	end
+
+	if show == nil then
+		if not self.viewingSheets then
+			self:showSheets(true)
 		end
 
 		-- update
@@ -504,20 +588,19 @@ function Player:setDialogDisplay(instruction)
 		if instruction == "new" then
 			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 394, self.name, 0.25, 0.25, 0, 1.0, 0, 1.0, true) or 0)
 			ui.addTextArea(Dialog.directAccess, "", self.name, 50, 335, 685, 38, 0x000000, 0x000000, 1.0, true)
+			
 			self:setDialogDisplay("next")
 		elseif instruction == "update" then
 			ui.updateTextArea(
 				Dialog.directAccess,
-				("<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>"):format(Dialog.displayText or Dialog.currentText),
+				styles.dialogue:format(Dialog.displayText or Dialog.currentText),
 				self.name
 			) -- Update text
 			
 			tfm.exec.playSound("transformice/son/fleche.mp3", 80, nil, nil, self.name) -- tfmadv/sel.mp3
 
 			if Dialog.finished then
-				Dialog.timerId = Timer.new(2000, false, function()
-					self:setDialogDisplay("next")
-				end)
+				self:onDialogFinished()
 			end
 		elseif instruction == "next" then
 			if Dialog.timerId then
@@ -557,6 +640,7 @@ function Player:updateDialog(increment)
 					Dialog.cursor = Dialog.currentText:len()
 					Dialog.displayText = Dialog.currentText
 
+					
 					Dialog.finished = true
 
 					return self:setDialogDisplay("update")
@@ -569,6 +653,8 @@ function Player:updateDialog(increment)
 				if Dialog.cursor >= Dialog.lenght then
 					Dialog.displayText = Dialog.currentText
 					Dialog.finished = true
+					
+					self:onDialogFinished()
 				else
 					Dialog.displayText = Dialog.currentText:sub(1, Dialog.cursor)
 				end
@@ -583,12 +669,54 @@ function Player:updateDialog(increment)
     end
 end
 
-function Player:closeDialog()
-    if self.onDialog then
-        ui.removeTextArea(self.onDialog.directAccess, self.name)
-		tfm.exec.removeImage(self.onDialog.directAccess - 2000, true)
+function Player:onDialogFinished()
+	local Dialog = self.onDialog
+	
+	if Dialog then
+		Dialog.finished = true
 		
-		self:onDialogClosed(self.onDialog.Npc.key, self.onDialog.pInf)
+		if Dialog.Npc.key:match("m%d+") and Dialog.pInf == 1 then
+			local x = 600
+			local y = 357
+			local ts = 0x000000
+			if not self.seekingInstrument.onIt then
+				ui.addTextArea(
+					Dialog.directAccess + 1,
+					styles.refdlg:format(Dialog.Npc.key .. "-search", translate("instruct search", self.language, self.gender)),
+					self.name,
+					x - 50, y,
+					100, 0,
+					ts, ts,
+					0.4, true
+				)
+			end
+			
+			ui.addTextArea(
+				Dialog.directAccess + 2,
+				styles.refdlg:format(Dialog.Npc.key .. "-discard", translate("instruct discard", self.language, self.gender)),
+				self.name,
+				x + 50, y,
+				100, 0,
+				ts, ts,
+				0.4, true
+			)
+		else
+			Dialog.timerId = Timer.new(2000, false, function()
+				self:setDialogDisplay("next")
+			end)
+		end
+	end
+end
+
+function Player:closeDialog()
+	local Dialog = self.onDialog
+    if Dialog then
+		for i=0, 2 do
+			ui.removeTextArea(Dialog.directAccess + i, self.name)
+        end
+		tfm.exec.removeImage(Dialog.directAccess - 2000, true)
+		
+		self:onDialogClosed(Dialog.Npc.key, Dialog.pInf)
     end
 
 	self.onDialog = false
@@ -625,23 +753,44 @@ function Player:onDialogClosed(npcName, pid)
 	end
 end
 
-function Player:npcInteraction(npcName, x, y)
+function Player:npcInteraction(npcName, x, y, args)
 	local Npc = npcList[npcName]
-	x = x or self.x
-	y = y or self.y
 
 	if Npc then
-		if math.distance(x, y, Npc.xPosition, Npc.yPosition) < npcTalkDist then
-			local success
-			if self.seekingInstrument.onIt and Npc.instrument then
-				success = self:giveNpcInstrument(npcName, true)
+		if args then
+			if args[1] == "search" then
+				self:setInstrument(Npc.instrument.keyName)
+				self:closeDialog()
+			elseif args[1] == "discard" then
+				self:releaseInstrument()
+				self:closeDialog()
+			elseif args[1] == "sheet" then
+				self:setSheet(npcName)
 			end
-
-			if success == nil then
-				self:newDialog(npcName)
+		else
+			x = x or self.x
+			y = y or self.y
+			if math.distance(x, y, Npc.xPosition, Npc.yPosition) < npcTalkDist then
+				local seeking = self.seekingInstrument
+				local success
+				if seeking.holdingIt and Npc.instrument then
+					success = self:giveNpcInstrument(npcName, true)
+				end
+					
+				if success == nil then
+					if seeking.onIt and Npc.instrument then
+						if seeking.instrumentName == Npc.instrument.keyName then
+							self:newDialog(npcName, 1)
+						else
+							self:newDialog(npcName, 0)
+						end
+					else
+						self:newDialog(npcName)
+					end
+				end
+				
+				return true
 			end
-
-			return true
 		end
 	end
 
