@@ -10,7 +10,8 @@ system.disableChatCommandDisplay(nil)
 local admins = {
 	["Indexinel#5948"] = true,
 	["Ricardinhotv#0000"] = true,
-	["Drgenius#0000"] = true
+	["Drgenius#0000"] = true,
+	["Undermath#2907"] = true
 }
 
 local styles = {}
