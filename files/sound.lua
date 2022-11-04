@@ -47,7 +47,8 @@ function Player:playSoundLoop(play) -- Play or stop the loop of instrument sound
     if play then
         self:updatePing()
         self:soundLoop()
-        self.loopTimer=system.newTimer(function() self:soundLoop() end,(loopLength-self.currentPing),true)
+        local loopTime=(loopLength-math.min(self.currentPing,5000))
+        self.loopTimer=system.newTimer(function() self:soundLoop() end,loopTime,true)
     end
 
     print(self.name..': '..(play and 'play' or 'pause'))

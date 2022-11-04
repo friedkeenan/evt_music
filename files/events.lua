@@ -246,7 +246,7 @@ function eventPlayerBonusGrabbed(playerName,id)
     if player then
         if id==-1 then
 			player.currentPing=(os.time()-player.pingTime)-30
-			tfm.exec.chatMessage('Ping: '..tostring(player.currentPing),playerName)
+			--print('Ping: '..tostring(player.currentPing))
 		end
     end
 end

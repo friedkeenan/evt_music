@@ -90,13 +90,9 @@ function Player:init(data, reset)
 		le2 = false,
 		le3 = false
 	}, self.progress)
-	
+
 	if self.progress.ins == -1 then
 		self:setInstance(1)
-	end
-	
-	if not reset then
-	    self:pauseMusic(self.loopPaused,true)
 	end
 end
 
@@ -169,7 +165,7 @@ function Player:setForeground(display, color, alpha, uiLayer)
 		else
 			x, y, w, h = -1200, -1200, 20000, 19800
 		end
-		
+
 		ui.addTextArea(9696, "", self.name, x, y, w, h, color, color, alpha, uiLayer)
 		--self:setMute(self.ambienceMuted,true)
 	else
@@ -206,7 +202,7 @@ end
 
 function Player:handleNear(x, y, vx, vy)
 	self:setOverlay()
-	
+
 	if self.onDialog then
 		local npc = self.onDialog.Npc
 		if math.distance(x, y, npc.x, npc.y) > 75 then
@@ -214,10 +210,10 @@ function Player:handleNear(x, y, vx, vy)
 		end
 	end
 
-	
+
 	do
 		local ins3rd = (self:getData("ins") == 3)
-		
+
 		if ins3rd and ((x > 0 and x < 275) and (y > 940)) then
 			ui.addClickable(1, 50, 937, 190, 98, self.name, "instrumentWindow", false)
 		else
@@ -265,7 +261,7 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	local seeking = self.seekingInstrument
 	local instrument = instrumentList[instrumentName]
 
-	
+
 	-- self:releaseInstrument()
 
 	if instrument then
@@ -291,14 +287,14 @@ end
 
 function Player:setSheet(npcName)
 	local seeking = self.seekingInstrument
-	
+
 	if seeking.holdingIt then
 		if npcName == false then
 			seeking.sheet = nil
 		elseif npcName then
 			seeking.sheet = npcName
 		end
-		
+
 		return seeking.sheet == seeking.instrumentName
 	end
 end
@@ -334,17 +330,19 @@ function Player:giveNpcInstrument(npcName, showDialog)
 					end
 
 					self:setData(npcName, 3, false)
-					
+
+					self:pauseMusic(self.loopPaused,true) -- Display play/pause button
+
 					wrongAttempt = false
 				else
 					if showDialog then
 						printfd("Dialog -2")
 						self:newDialog(npcName, -2)
 					end
-					
+
 					wrongAttempt = true
 				end
-				
+
 			else
 				if showDialog then
 					printfd("Dialog -1")
@@ -374,7 +372,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	if self.instrumentsLeft <= 0 then
 		self:setInstance(4)
 	end
-	
+
 	return retval
 end
 
@@ -497,7 +495,7 @@ function Player:showSheets(show)
 			for instrumentName, Ins in next, instrumentList do
 				counter = counter + 1
 				self.viewingSheets[counter] = counter
-				
+
 				ui.addTextArea(
 					750 + counter,
 					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='16'><p align='center'>%s</p></font>"):format(Ins.keyName == self.seekingInstrument.sheet and ("<u>%s</u>"):format(Ins.localeName) or Ins.localeName)),
@@ -588,7 +586,7 @@ function Player:setDialogDisplay(instruction)
 		if instruction == "new" then
 			Dialog.directAccess = 2000 + (tfm.exec.addImage(Dialog.sprite, ":1", 25, 394, self.name, 0.25, 0.25, 0, 1.0, 0, 1.0, true) or 0)
 			ui.addTextArea(Dialog.directAccess, "", self.name, 50, 335, 685, 38, 0x000000, 0x000000, 1.0, true)
-			
+
 			self:setDialogDisplay("next")
 		elseif instruction == "update" then
 			ui.updateTextArea(
@@ -596,7 +594,7 @@ function Player:setDialogDisplay(instruction)
 				styles.dialogue:format(Dialog.displayText or Dialog.currentText),
 				self.name
 			) -- Update text
-			
+
 			tfm.exec.playSound("transformice/son/fleche.mp3", 80, nil, nil, self.name) -- tfmadv/sel.mp3
 
 			if Dialog.finished then
@@ -640,7 +638,7 @@ function Player:updateDialog(increment)
 					Dialog.cursor = Dialog.currentText:len()
 					Dialog.displayText = Dialog.currentText
 
-					
+
 					Dialog.finished = true
 
 					return self:setDialogDisplay("update")
@@ -653,7 +651,7 @@ function Player:updateDialog(increment)
 				if Dialog.cursor >= Dialog.lenght then
 					Dialog.displayText = Dialog.currentText
 					Dialog.finished = true
-					
+
 					self:onDialogFinished()
 				else
 					Dialog.displayText = Dialog.currentText:sub(1, Dialog.cursor)
@@ -671,10 +669,10 @@ end
 
 function Player:onDialogFinished()
 	local Dialog = self.onDialog
-	
+
 	if Dialog then
 		Dialog.finished = true
-		
+
 		if Dialog.Npc.key:match("m%d+") and Dialog.pInf == 1 then
 			local x = 600
 			local y = 357
@@ -690,7 +688,7 @@ function Player:onDialogFinished()
 					0.4, true
 				)
 			end
-			
+
 			ui.addTextArea(
 				Dialog.directAccess + 2,
 				styles.refdlg:format(Dialog.Npc.key .. "-discard", translate("instruct discard", self.language, self.gender)),
@@ -715,7 +713,7 @@ function Player:closeDialog()
 			ui.removeTextArea(Dialog.directAccess + i, self.name)
         end
 		tfm.exec.removeImage(Dialog.directAccess - 2000, true)
-		
+
 		self:onDialogClosed(Dialog.Npc.key, Dialog.pInf)
     end
 
@@ -747,7 +745,7 @@ function Player:onDialogClosed(npcName, pid)
 			if self:getData("ins") < 3 then
 				self:setInstance(3)
 			end
-			
+
 			-- Search instrument
 		end
 	end
@@ -776,7 +774,7 @@ function Player:npcInteraction(npcName, x, y, args)
 				if seeking.holdingIt and Npc.instrument then
 					success = self:giveNpcInstrument(npcName, true)
 				end
-					
+
 				if success == nil then
 					if seeking.onIt and Npc.instrument then
 						if seeking.instrumentName == Npc.instrument.keyName then
@@ -788,7 +786,7 @@ function Player:npcInteraction(npcName, x, y, args)
 						self:newDialog(npcName)
 					end
 				end
-				
+
 				return true
 			end
 		end
@@ -975,14 +973,15 @@ function Player:setInstrumentSound(npcName, add)
 end
 
 function Player:setInstance(id)
-	
+
 	-- pls dont laugh at me im learning from yanderedev
-	
+	    -- LMAO absolutely unreadable
+
 	if id == 1 then -- Module Start
 		for i=1, 20 do
 			self:setData("m" .. i, 0) -- "..."
 		end
-		
+
 		self:setData("cond", 1)
 		self:setData("diva", 1)
 	elseif id == 2 then -- Instrument quest starts
@@ -1014,19 +1013,19 @@ function Player:setInstance(id)
 		end
 		self:setData("diva", 0)
 		self:setData("cond", 0)
-	elseif id == 10 then -- Orcestra finished
+	elseif id == 10 then -- Orchestra finished
 		self:finishLevel(4)
 	end
-	
+
 	self:setData("ins", id, true)
 end
 
 function Player:finishLevel(levelId)
 	levelId = levelId or self:getData("lev")
-	
+
 	local pl = "le" .. levelId
 	if not self:getData(pl) then
-		if levelId == 1 then -- Instruments delivering & tunning
+		if levelId == 1 then -- Instruments delivering & tuning
 			-- Rewards
 		elseif levelId == 2 then -- Diva's microphone fixing (puzzle)
 			-- ...
@@ -1035,9 +1034,9 @@ function Player:finishLevel(levelId)
 			-- ...
 			-- Reward
 		end
-		
+
 		self:setData(pl, true)
-		
+
 			-- Always save to database when a level gets completed unless last one
 		self:setData("lev", levelId + 1, levelId < 3)
 
