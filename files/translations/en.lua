@@ -77,8 +77,8 @@ Text["en"] = {
 			},
 			[4] = { -- Last phase (performing on piano)
                 [1] = "I swear, I am surrounded by amateurs... Anyway, good work. Let's make some art!",
-				--[2] = "Focus, now. I'll sing my part and you'll accompany me on the piano.",
-				--[3] = "Make no mistakes, do you understand? Well then, let's go!"
+				[2] = "Focus, now. I'll sing my part and you'll accompany me on the piano.",
+				[3] = "Make no mistakes, do you understand? Well then, let's go!"
 			},
 			[5] = {
 				[1] = "Focus, now. I'll sing my part and you'll accompany me on the piano.",
@@ -106,7 +106,7 @@ Text["en"] = {
 		piano = "Repeat the tune the Diva has just sung",
 		accept = "Accept",
 		reject = "Reject",
-		send = "Send",
+		continue = "Continue",
 		cancel = "Cancel",
 		search = "Search",
 		discard = "Discard",

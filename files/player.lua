@@ -672,15 +672,30 @@ function Player:onDialogFinished()
 
 	if Dialog then
 		Dialog.finished = true
-
-		if Dialog.Npc.key:match("m%d+") and Dialog.pInf == 1 then
-			local x = 600
-			local y = 357
-			local ts = 0x000000
+		local x, y, ts = 600, 357, 0x0
+		local o1, o2
+		local showOpts = false
+		if (Dialog.Npc.key:match("m%d+") and Dialog.pInf == 1) then
+			o1 = "search"
+			o2 = "discard"
+			
+			showOpts = true
+		elseif Dialog.Npc.key == "diva" then
+			if Dialog.pInf >= 2 and Dialog.pInf <= 5 then
+				o1 = "continue"
+				o2 = "cancel"
+				
+				if Dialog.pointer == #Dialog.Text then
+					showOpts = true
+				end
+			end
+		end
+			
+		if showOpts then
 			if not self.seekingInstrument.onIt then
 				ui.addTextArea(
 					Dialog.directAccess + 1,
-					styles.refdlg:format(Dialog.Npc.key .. "-search", translate("instruct search", self.language, self.gender)),
+					styles.refdlg:format(Dialog.Npc.key .. "-" .. o1, translate("instruct " .. o1, self.language, self.gender)),
 					self.name,
 					x - 50, y,
 					100, 0,
@@ -691,7 +706,7 @@ function Player:onDialogFinished()
 
 			ui.addTextArea(
 				Dialog.directAccess + 2,
-				styles.refdlg:format(Dialog.Npc.key .. "-discard", translate("instruct discard", self.language, self.gender)),
+				styles.refdlg:format(Dialog.Npc.key .. "-" .. o2, translate("instruct " .. o2, self.language, self.gender)),
 				self.name,
 				x + 50, y,
 				100, 0,
@@ -699,6 +714,9 @@ function Player:onDialogFinished()
 				0.4, true
 			)
 		else
+			if Dialog.timerId then
+				Timer.remove(Dialog.timerId)
+			end
 			Dialog.timerId = Timer.new(2000, false, function()
 				self:setDialogDisplay("next")
 			end)
@@ -737,8 +755,6 @@ function Player:onDialogClosed(npcName, pid)
 		elseif pid == 4 then
 			self:finishLevel(3)
 			self:setInstance(7)
-		elseif pid == 5 then
-			-- Activates Piano Quest (display board)
 		end
 	else
 		if pid == 1 then
@@ -756,14 +772,27 @@ function Player:npcInteraction(npcName, x, y, args)
 
 	if Npc then
 		if args then
-			if args[1] == "search" then
-				self:setInstrument(Npc.instrument.keyName)
+			if npcName == "diva" then
+				local pid = self.onDialog.pInf
+				if args[1] == "continue" then
+					if pid >= 2 and pid <= 3 then -- Microphone
+						tfm.exec.chatMessage("micro", self.name)
+					elseif pid >= 4 and pid <= 5 then -- Piano
+						tfm.exec.chatMessage("piano", self.name)
+					end
+				end
+				
 				self:closeDialog()
-			elseif args[1] == "discard" then
-				self:releaseInstrument()
-				self:closeDialog()
-			elseif args[1] == "sheet" then
-				self:setSheet(npcName)
+			else
+				if args[1] == "search" then
+					self:setInstrument(Npc.instrument.keyName)
+					self:closeDialog()
+				elseif args[1] == "discard" then
+					self:releaseInstrument()
+					self:closeDialog()
+				elseif args[1] == "sheet" then
+					self:setSheet(npcName)
+				end
 			end
 		else
 			x = x or self.x
@@ -988,19 +1017,30 @@ function Player:setInstance(id)
 		for i=1, 20 do
 			self:setData("m" .. i, 1) -- riddle
 		end
+		self:setData("diva", 1)
 		self:setData("cond", 2)
 	elseif id == 3 then -- Instrument quest active
+		for i=1, 20 do
+			self:setData("m" .. i, 1) -- riddle
+		end
+		
+		self:setData("diva", 1)
+		self:setData("cond", 2)
 	elseif id == 4 then -- Instrument quest finished
 		for i=1, 20 do
 			self:setData("m" .. i, 2) -- "ready"
 		end
+		self:setData("diva", 1)
 		self:setData("cond", 3) -- This dialogue activates Diva's one
 	elseif id == 5 then -- Microphone quest starts
 		self:setData("diva", 3)
+		self:setData("cond", 3)
 	elseif id == 6 then -- Microphone quest finished
 		self:setData("diva", 4)
+		self:setData("cond", 3)
 	elseif id == 7 then -- Piano quest starts
 		self:setData("diva", 5)
+		self:setData("cond", 3)
 	elseif id == 8 then -- Piano quest finished
 		for i=1, 20 do
 			self:setData("m" .. i, 4) -- "hero"
@@ -1009,15 +1049,18 @@ function Player:setInstance(id)
 		self:setData("cond", 4)
 	elseif id == 9 then -- Event finished (spectating orchestra)
 		for i=1, 20 do
-			self:setData("m" .. i, 0) -- "hero"
+			self:setData("m" .. i, 0) -- "..."
 		end
 		self:setData("diva", 0)
 		self:setData("cond", 0)
-	elseif id == 10 then -- Orchestra finished
+	end
+	
+	
+	if id ~= 10 then -- Orchestra finished
+		self:setData("ins", id, true)
+	else
 		self:finishLevel(4)
 	end
-
-	self:setData("ins", id, true)
 end
 
 function Player:finishLevel(levelId)
