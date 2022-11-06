@@ -2,7 +2,7 @@ function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
 
-        ui.setMapName("Music Orchestra !")
+        ui.setMapName(styles.chat:format(translate("title", room.language)))
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(150)
 

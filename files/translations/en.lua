@@ -1,18 +1,21 @@
--- Important note: You can define genders in a translation
--- Use syntax: (male|female|neutral) [one or two fields can be empty]
--- For example: "(King|Queen|Royalty) of Transformice", outputs: "King of Transformice" for male gender
+-- Remember: Text after two lines ( -- ) doesn't have to be translated, it just means it's a note or comment for extra context.
+
+--- You can define genders in a translation
+-- Use syntax: (male|female|neutral) or (male|female) [1st field is mandatory]
+-- For example: "(King|Queen|Royalty) of Transformice", outputs: "Queen of Transformice" for female gender
 -- It accepts long sentences and multiple options in a same sentence:
 --	"The (man|woman|person) was playing (Jazz|Videogames|with their friends) at the station"
--- Output (for neutral: "The person was playing with their friends at the station"
+-- Output (for neutral/none: "The person was playing with their friends at the station"
 
 Text["en"] = {
+	title = "Music Orchestra",
 	hey = {
 		[1] = "Welcome to the event!"
 	},
 	instruments = { -- In comments (text after two lines --) gender of the musician that plays the instrument
 		["timpani"] 	= {"Timpani", 		"I use a pedal to tune my instrument."}, -- Male
 		["cymbals"] 	= {"Cymbals", 		"My instrument doesn't really need tuning."}, -- Female
-		["gong"] 		= {"Gong", 			"My instrument originates in southeast Asia."}, -- Male
+		["tubular_bells"] 		= {"Tubular Bells", 			"My instrument is also used in grandfather clocks."}, -- Male
 		["vibraphone"] 	= {"Vibraphone", 	"My instrument is not even 100 years old."}, -- Female
 		["marimba"] 	= {"Marimba", 		"Rosewood is often used to make my instrument."}, -- Female
 		
@@ -35,6 +38,7 @@ Text["en"] = {
 		["harp"] 		= {"Harp", 			"Supposedly, angels also play my instrument."} -- Neutral
 	},
 	npcDialogs = {
+		-- YES. Some of the dialogues are duplicated. That's on purpose.
 		conductor = { -- Male
 			name = "Conductor",
 			[-1] = {"..."},
@@ -91,7 +95,7 @@ Text["en"] = {
 		},
 		musician = {
 			name = "Musician",
-			[-2] = {"I can't tune my instrument with this score."},
+			[-2] = {"I can't tune my instrument with this score."}, -- It's a musical sheet. Dialog said when the player gives the wrong sheet to the musician.
 			[-1] = {"Err... This is not my instrument."}, -- When the player tries to give the instrument to the wrong musician
 			[0] = {"..."},
 			[2] = {"I am ready for the concert!"}, -- When the player gives the correct instrument to the musician
@@ -103,7 +107,8 @@ Text["en"] = {
 		microphone = "Untangle the microphone's cable by moving the blocks around.",
 		insboard = "Choose the right musical instrument, then fetch its matching music score.",
 		scorepile = "Choose the right music score and memorize the sequence of gestures, to tune the instrument.",
-		piano = "Repeat the tune the Diva has just sung",
+		piano = "Repeat the tune the Diva has just sung.",
+		
 		accept = "Accept",
 		reject = "Reject",
 		continue = "Continue",
@@ -116,6 +121,6 @@ Text["en"] = {
 	}
 }
 
-
+-- Don't include the text after this line
 Text["xx"] = Text["en"]
 Text["int"] = Text["xx"]

@@ -21,7 +21,7 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite, gend
     self.dialog = translate("npcDialogs " .. name:lower(), room.language)
 
     if self.instrument then
-        local tpath = ("instruments %s %%d"):format(self.instrument.keyName)
+        local tpath = ("instruments %s %%d"):format(instrumentName)
         self.instrument.localeName = translate(tpath:format(1), room.language, gender)
         self.instrument.dialog = translate(tpath:format(2), room.language, gender)
         

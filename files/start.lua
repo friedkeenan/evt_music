@@ -1,4 +1,6 @@
 do
+	room.lanugage = tfm.get.room.language
+	
 	for playerName, playerData in next, tfm.get.room.playerList do
 		eventNewPlayer(playerName)
 	end
@@ -16,7 +18,7 @@ do
 		end, interval + (diftime * i), false)
 	end
 	
-	tfm.exec.chatMessage(translate("hey 1", tfm.get.room.language, 0))
+	tfm.exec.chatMessage(translate("hey 1", room.language, 0))
 end
 
 tfm.exec.newGame(xml, false)
