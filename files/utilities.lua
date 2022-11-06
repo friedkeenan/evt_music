@@ -19,6 +19,14 @@ stringutils.isin = function(s,t)
     return r
 end
 
+function stringutils.getGendered(str, gender)	
+	return str:gsub("%(.-%)", function(gcase)
+		local male, female, neutral = gcase:match("%((.-)|(.-)|(.-)%)") or gcase:match("%((.-)|(.-)%)")
+
+		return ({male, female, neutral})[3 - gender] or male or gcase
+	end)
+end
+
 math.distance = function(ax, ay, bx, by)
 	return math.sqrt((bx-ax)^2 + (by-ay)^2)
 end

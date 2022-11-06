@@ -5,32 +5,29 @@ Character.new = function(name, keyName, x, y, instrumentName, dialogSprite, gend
     self.keyName = keyName or "m1"
     self.name = name or "Musician"
 
+    self.gender = gender
+    
     self.xPosition = x or -400
     self.yPosition = y or 1024
 
     
     self.instrument = instrumentList[instrumentName]
-    if not self.instrument then
-        printfd("InstrumentName: %s, NpcName: %s", instrumentName or "nil", keyName or "nil")
-    end
 
-
-    self.dialog = {}
+    self.dialog = ("npcDialogs %s %%d"):format(name:lower())
+    
+    
     characterId = characterId + 1
     self.uniqueId = characterId
-    self.dialog = translate("npcDialogs " .. name:lower(), room.language)
-
+    
     if self.instrument then
         local tpath = ("instruments %s %%d"):format(instrumentName)
-        self.instrument.localeName = translate(tpath:format(1), room.language, gender)
-        self.instrument.dialog = translate(tpath:format(2), room.language, gender)
+        self.instrument.localeName = tpath:format(1)
+        self.instrument.dialog = tpath:format(2)
         
         instrumentList[instrumentName].Npc = self.keyName
         self.instrument.Npc = self.keyName
-        
-        self.dialog[1] = {self.instrument.dialog}
     end
-
+    
     self.dialogSprite = dialogSprite or "18334202aeb.png" -- Should go musician
     tfm.exec.removeImage(tfm.exec.addImage(self.dialogSprite, ":4", 0, 500, nil, 0.1, 0.1, 0, 0, 0, 0, false), false)
     local xpos, ypos, xsize, ysize
@@ -53,39 +50,24 @@ end
 
 function Character:interact(Player, action)
     if distance(self.xPosition, self.yPosition, Player.x, Player.y) < npcTalkDist then
-        return self:getDialog(action)
+        return self:getDialog(action, Player.language, Player.gender)
     end
 end
 
-function Character:getDialog(dialog)
-    dialog = tostring(dialog)
+function Character:getDialog(dialogId, language, gender)
+    dialogId = dialogId or 0
     local object
-
-    local obj = table.unreference(self.dialog)
-    for key in dialog:gmatch("%S+") do
-        if type(obj) == "table" then
-            obj = obj[tonumber(key)] or obj[key]
-            if not obj then
-                break
-            end
-        else
-            break
-        end
-    end
-
-    if obj then
-        if type(_format) == "table" then
-            for key, value in next, _format do
-                obj = obj:gsub("%$"..key.."%$", tostring(value))
-            end
-        else
-            return type(obj) == "table" and obj or tostring(obj)
-        end
+    printfd("Dialog ID: %s\tLanguage: %s\tKeyName: %s", dialogId, language, self.keyName)
+    
+    local dialog = {}
+    
+    if self.keyName:find("m%d+") and dialogId == 1 then
+        dialog = { translate(self.instrument.dialog, language, gender) or "NULL" }
     else
-        obj = dialog:gsub(" ", "%.")
+        dialog = translate(self.dialog:format(dialogId), language, gender)
     end
 
-    return type(obj) == "table" and table.unreference(obj) or obj
+    return dialog
 end
 
 function Character:giveInstrument(instrumentName)

@@ -1,6 +1,7 @@
 local Text = {}
 local translate
 translate = function(resource, language, gender, _format)
+	gender = gender or 2
     language = Text[language] and language or "xx"
 
     local obj = table.unreference(Text[language])
@@ -17,31 +18,16 @@ translate = function(resource, language, gender, _format)
 
     if obj then
 		if type(obj) == "table" then
-			return table.unreference(obj)
+			local t = {}
+			
+			for index, val in next, obj do
+				t[index] = (type(val) == "string" and stringutils.getGendered(val, gender) or val)
+			end
+			
+			return t
 		else
 			if obj:find("%(.-%)") then
-				gender = gender or 2
-				obj = obj:gsub("%b()", function(gcase)				
-					local gopts = {}
-					local count = 0
-					
-					if gcase:match("%(|") then
-						if gcase:match("%(||") then
-							gopts[1] = ""
-						else
-							count = -1
-						end
-					end
-					
-					for gopt in gcase:gmatch("[^|()]*") do
-						count = count + 1
-						if count%2 == 0 then
-							gopts[#gopts + 1] = gopt
-						end
-					end
-					
-					return gopts[3 - gender] or gopts[1] or gcase
-				end)
+				obj = stringutils.getGendered(obj, gender)
 			end
 			
 			if type(_format) == "table" then
@@ -60,7 +46,7 @@ translate = function(resource, language, gender, _format)
         end
     end
 
-    return type(obj) == "table" and table.unreference(obj) or obj
+    return obj
 end
 
 

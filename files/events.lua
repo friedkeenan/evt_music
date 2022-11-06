@@ -238,6 +238,13 @@ function eventChatCommand(playerName, message)
 		player:updatePing()
 	elseif command == "sheets" then
 		player:showSheets()
+	elseif command == "lang" then
+		player.language = args[1] or "en"
+		answer("Language changed to " .. player.language:upper())
+	elseif command == "dialog" then
+		if #args >= 2 then
+			player:newDialog(args[1], args[2])
+		end
 	end
 end
 

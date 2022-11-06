@@ -2,12 +2,10 @@ function Player.new(name)
     local self = setmetatable({}, Player)
     self.name = name
     self.progress = {}
-	do
-		for npcName in next, npcList do
-			self.progress[npcName] = 1
-		end
-	end
 
+	local tfmd = tfm.get.room.playerList[name]
+
+	self.language = tfmd.language or tfmd.community
 
 	self.onWindow = {}
 	self.windowHandle = {
@@ -322,15 +320,11 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 			if success then
 				if self:setSheet() then
-					self:releaseInstrument()
-
-					if showDialog then
-						printfd("Dialog 2")
-						self:newDialog(npcName, 2)
-					end
-
-					self:setData(npcName, 3, false)
-
+					
+					tfm.exec.chatMessage("tune here", self.name)
+					-- TUNE HERE (^ that's a placeholder)
+					-- Call onCorrectTuning() if the player tunes correctly
+					
 					self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 
 					wrongAttempt = false
@@ -366,14 +360,20 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 		retval = not wrongAttempt
 	end
-
-	self.instrumentsLeft = self:getInstrumentsLeft()
-
-	if self.instrumentsLeft <= 0 then
-		self:setInstance(4)
-	end
+	
+	self:getInstrumentsLeft()
 
 	return retval
+end
+
+function Player:onCorrectTuning()
+	local npcName = self.seekingInstrument.npcName
+	self:newDialog(npcName)
+	self:releaseInstrument()
+	
+	self:setData(npcName, 3, false)
+	
+	self:getInstrumentsLeft()
 end
 
 function Player:getInstrumentsLeft()
@@ -384,6 +384,12 @@ function Player:getInstrumentsLeft()
 		if self.progress[pat:format(i)] >= 2 then
 			count = count - 1
 		end
+	end
+
+	self.instrumentsLeft = count
+
+	if self.instrumentsLeft <= 0 then
+		self:setInstance(4)
 	end
 
 	return count
@@ -555,9 +561,10 @@ function Player:newDialog(npcName, dialogId)
 	end
 
     local Npc = npcList[npcName]
-    local dialog = dialogId or self.progress[npcName] or 1
-	print(dialog)
-	local textInfo = Npc:getDialog(dialog)
+    local dialog = dialogId or self:getData(npcName) or 1
+	
+	printfd("Dialog ID: %d\tLanguage: %s", dialog, self.language:upper())
+	local textInfo = Npc:getDialog(dialog, self.language, self.gender)
 
     self.onDialog = {
 		oldCursor = 1,
@@ -773,16 +780,18 @@ function Player:npcInteraction(npcName, x, y, args)
 	if Npc then
 		if args then
 			if npcName == "diva" then
-				local pid = self.onDialog.pInf
-				if args[1] == "continue" then
-					if pid >= 2 and pid <= 3 then -- Microphone
-						tfm.exec.chatMessage("micro", self.name)
-					elseif pid >= 4 and pid <= 5 then -- Piano
-						tfm.exec.chatMessage("piano", self.name)
+				if self.onDialog then
+					local pid = self.onDialog.pInf
+					if args[1] == "continue" then
+						if pid >= 2 and pid <= 3 then -- Microphone
+							tfm.exec.chatMessage("micro", self.name)
+						elseif pid >= 4 and pid <= 5 then -- Piano
+							tfm.exec.chatMessage("piano", self.name)
+						end
 					end
+					
+					self:closeDialog()
 				end
-				
-				self:closeDialog()
 			else
 				if args[1] == "search" then
 					self:setInstrument(Npc.instrument.keyName)

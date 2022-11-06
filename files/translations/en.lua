@@ -8,7 +8,7 @@
 -- Output (for neutral/none: "The person was playing with their friends at the station"
 
 Text["en"] = {
-	title = "Music Orchestra",
+	title = "The Orchestra",
 	hey = {
 		[1] = "Welcome to the event!"
 	},

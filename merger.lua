@@ -8,7 +8,9 @@ local fileList = {
         path = "translations",
         files = {
             "main",
-            "en", "es", "br", "fr" -- ...
+            "en", "es", "br", "fr", "pl",
+            "he", "it", "ro", "ru", "ar",
+            "cn", "nl", "tr", "lt", "hu"
         }
     },
     [7] = "player",
@@ -29,8 +31,8 @@ readPath = function(pathName, subPath)
     local ft = {}
     if type(pathName) == "table" then
         subPath = pathName.path and ("./files/%s"):format(pathName.path) or "./files"
-        for fileIndex, fileName in next, pathName.files do
-            ft[fileIndex] = readPath(fileName, subPath)
+        for fileIndex, fileName in ipairs(pathName.files) do
+            ft[#ft + 1] = readPath(fileName, subPath)
         end
 
         return table.concat(ft, '\n')
