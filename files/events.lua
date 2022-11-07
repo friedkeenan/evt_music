@@ -217,6 +217,10 @@ function eventChatCommand(playerName, message)
 		tfm.exec.chatMessage(tostring(msg), playerName)
 	end
 
+	if commmand == "admin" then
+		for i=1, #args do
+			admin[args[i]] = true
+		end
 	if command == "setIns" then
 		player:releaseInstrument()
 		player:setInstrument(args[1], true, true)
@@ -254,6 +258,11 @@ function eventChatCommand(playerName, message)
 	elseif command == "dialog" then
 		if #args >= 2 then
 			player:newDialog(args[1], args[2])
+		end
+	elseif command == "goto" then
+		local Npc = npcList[args[1]]
+		if Npc then
+			tfm.exec.movePlayer(playerName, Npc.xPosition, Npc.yPosition, false)
 		end
 	end
 end

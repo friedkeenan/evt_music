@@ -876,7 +876,7 @@ function Player:initPuzzle(display)
 	repeat
 		rand = {}
 		for i=1, 9 do
-			table.insert(rand, math.random(1, i), i)
+			table.insert(rand, math.random(i), i)
 		end
 		
 		do
@@ -884,12 +884,17 @@ function Player:initPuzzle(display)
 			local a, b
 			for i=1, 9 do
 				for j = i + 1, 9 do
-					if rand[i] > rand[j] then
+					a = rand[i]
+					b = rand[j]
+					if (a ~= 9 and b ~= 9) and a > b then
 						inversions = inversions + 1
 					end
 				end
 			end
+			
 			isValidPuzzle = ((inversions % 2) == 0)
+			
+			printfd("Inversions: %d, valid?: %s", inversions, tostring(isValidPuzzle))
 		end
 		
 		
@@ -1005,6 +1010,7 @@ function Player:selectPuzzleTile(id)
 			if okMove then
 				if self:movePuzzleTile(old, id) then
 					tfm.exec.playSound("cite18/bouton1.mp3", 80, nil, nil, self.name)
+					self.puzzle.selected = nil
 				else
 					tfm.exec.playSound("cite18/bouton2.mp3", 80, nil, nil, self.name)
 				end

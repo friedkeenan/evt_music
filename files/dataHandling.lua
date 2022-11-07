@@ -19,12 +19,13 @@ do
 		local oldModuleData = str:match(pattern)
 		local newData
 		
+		local newstr = ("%s %s%s"):format(MODULE, data, xCHAR)
+		
 		if oldModuleData then
-			newData = str:gsub(pattern, data)
-			--newData = str:gsub(oldModuleData, data)
+			newData = str:gsub(pattern, newstr)
 		else
 			if MODULE then
-				newData = ("%s%s %s%s"):format(str, MODULE, data, xCHAR)
+				newData = ("%s%s"):format(str, newstr)
 			end
 		end
 		
