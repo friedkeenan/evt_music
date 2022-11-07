@@ -64,7 +64,7 @@ function Character:getDialog(dialogId, language, gender)
     if self.keyName:find("m%d+") and dialogId == 1 then
         dialog = { translate(self.instrument.dialog, language, gender) or "NULL" }
     else
-        dialog = translate(self.dialog:format(dialogId), language, gender)
+        dialog = translate(self.dialog:format(dialogId), language, gender) or "..."
     end
 
     return dialog

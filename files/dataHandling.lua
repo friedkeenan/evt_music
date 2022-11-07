@@ -15,16 +15,20 @@ do
 	end
 
 	dataHan.setModuleData = function(str, MODULE, data)
-		local oldModuleData = str:match(("%s (.-)%s"):format(MODULE or "", xCHAR))
+		local pattern = ("%s (.-)%s"):format(MODULE or "", xCHAR)
+		local oldModuleData = str:match(pattern)
 		local newData
 		
 		if oldModuleData then
-			newData = str:gsub(oldModuleData, data)
+			newData = str:gsub(pattern, data)
+			--newData = str:gsub(oldModuleData, data)
 		else
 			if MODULE then
 				newData = ("%s%s %s%s"):format(str, MODULE, data, xCHAR)
 			end
 		end
+		
+		print(table.concat({newData, data, str, oldModuleData}, "\n"))
 		
 		return newData, data, str, oldModuleData
 	end

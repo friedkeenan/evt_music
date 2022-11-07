@@ -67,6 +67,7 @@ function Player:init(data, reset)
 	if data then
 		local moduleData = dataHan.getModuleData(data, "MUS")
 		self.progress = dataHan.decodeData(moduleData)
+		printt(self.progress)
 		self.dataFile = data
 	end
 
@@ -78,7 +79,7 @@ function Player:init(data, reset)
 		end
 	end
 
-	self.progress = table.inherit({
+	local def = {
 		diva = 1,
 		cond = 1,
 		lev = 1,
@@ -87,16 +88,23 @@ function Player:init(data, reset)
 		le1 = false,
 		le2 = false,
 		le3 = false
-	}, self.progress)
-
-	if self.progress.ins == -1 then
-		self:setInstance(1)
+	}
+	
+	for key, value in next, def do
+		if not self.progress[key] then
+			self.progress[key] = value
+		end
 	end
+
+	self:setInstance(math.abs(self.progress.ins))
 end
 
 function Player:saveData()
 	local data = dataHan.encodeData(self.progress)
 	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
+	
+	print(self.dataFile)
+	printt(self.progress)
 
 	system.savePlayerData(self.name, self.dataFile)
 end
@@ -354,7 +362,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 			if seeking.tries <= 0 then
 				self:releaseInstrument()
-				tfm.exec.chatMessage("Oops you dropped it", self.name)
+				tfm.exec.chatMessage(styles.chat:format("(╯°□°)╯︵ ┻━┻"), self.name)
 			end
 		end
 
@@ -784,7 +792,7 @@ function Player:npcInteraction(npcName, x, y, args)
 					local pid = self.onDialog.pInf
 					if args[1] == "continue" then
 						if pid >= 2 and pid <= 3 then -- Microphone
-							tfm.exec.chatMessage("micro", self.name)
+							self:initPuzzle(true)
 						elseif pid >= 4 and pid <= 5 then -- Piano
 							tfm.exec.chatMessage("piano", self.name)
 						end
@@ -852,7 +860,7 @@ function Player:initPuzzle(display)
 		imageId = -1,
 		sprite = "",
 		dx = 273, -- (273 - 15)
-		dy = 63, -- "",
+		dy = 95, -- "",
 		scale = 1.0,
 		selected = nil -- Index Id
 	}
@@ -863,11 +871,30 @@ function Player:initPuzzle(display)
 		"18428fd5736.png",	"18428fe522f.png",	"18428ff2a9d.png"
 	}
 
-	local rand = {}
-	for i=1, 9 do
-		table.insert(rand, math.random(1, i), i)
-	end
-
+	local rand
+	local isValidPuzzle = false
+	repeat
+		rand = {}
+		for i=1, 9 do
+			table.insert(rand, math.random(1, i), i)
+		end
+		
+		do
+			local inversions = 0
+			local a, b
+			for i=1, 9 do
+				for j = i + 1, 9 do
+					if rand[i] > rand[j] then
+						inversions = inversions + 1
+					end
+				end
+			end
+			isValidPuzzle = ((inversions % 2) == 0)
+		end
+		
+		
+	until isValidPuzzle
+	
 	local scale = 0.125
 	local x, y
 	for i = 1, 9 do
@@ -878,7 +905,7 @@ function Player:initPuzzle(display)
 			imageId = -1,
 			sprite = images[rand[i]],
 			dx = 288 + ((x - 1) * (597 * scale)),
-			dy = 78 + ((y - 1) * (594 * scale)),
+			dy = 120 + ((y - 1) * (594 * scale)),
 			size = 595.5 * scale,
 			scale = scale
 		}
@@ -904,14 +931,26 @@ function Player:showPuzzle(show)
 	if not pz then return end
 
 	if not show then
-		pz.imageId = tfm.exec.removeImage(pz.imageId, false)
+		uiRemoveWindow(12, self.name)
+		ui.removeTextArea(82, self.name)
+		--pz.imageId = tfm.exec.removeImage(pz.imageId, false)
 		for i = 1, 9 do
 			self:displayPuzzleTile(i, false)
 		end
 	end
 
 	if show then
-		pz.imageId = tfm.exec.addImage(pz.sprite, ":1", 400, 210, self.name, pz.scale, pz.scale, 0, 1.0, 0.5, 0.5, false)
+		uiAddWindow(12, 3, {title = "", default=""}, self.name, 0, 0, 1.0, false)
+		ui.addTextArea(
+			82,
+			styles.dialogue:format(("<p align='center'>%s</p>"):format(translate("instruct microphone", self.language, self.gender))),
+			self.name,
+			220, 55,
+			360, 50,
+			0x0, 0x0,
+			1.0, true
+		)
+		--pz.imageId = tfm.exec.addImage(pz.sprite, ":1", 400, 210, self.name, pz.scale, pz.scale, 0, 1.0, 0.5, 0.5, false)
 
 		local tl
 		for i=1, 9 do
@@ -924,56 +963,100 @@ end
 
 function Player:displayPuzzleTile(id, display)
 	local tl = self.puzzle[id]
-	if display and tl.id ~= 9 then
-		tl.imageId = tfm.exec.addImage(tl.sprite, ":2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, 1.0, 0, 0, false)
+	
+	do
+		if tl.imageId then
+			tl.imageId = tfm.exec.removeImage(tl.imageId, not self.puzzle.completed)
+		end
+		ui.removeClickable(500 + id, self.name)
+	end
+	
+	if display then
+		if tl.id ~= 9 or self.puzzle.completed then
+			tl.imageId = tfm.exec.addImage(tl.sprite, ":2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, 1.0, 0, 0, false)
+		end
 		ui.addClickable(500 + id, tl.dx, tl.dy, tl.size, tl.size, self.name, "puzzle-" .. id, true)
-	else
-		tfm.exec.removeImage(tl.imageId, false)
-		tl.imageId = nil
-		ui.removeClickable(500 + id)
 	end
 end
 
 function Player:selectPuzzleTile(id)
 	local pz = self.puzzle
 	local old = pz.selected
+	local okMove = false
+	
+	
 
-	if old ~= id then
-		pz.selected = id
+	if old ~= id and (old and id) then
+		printfd("old: %d, id: %d", old, id)
 
 		if pz[id].id == 9 then -- Empty tile (movement)
-			self:movePuzzleTile(old, id)
+			local dif = id - old
+			
+			if (math.abs(dif) == 1) then -- X
+				if math.ceil((old + dif) / 3) == math.ceil(old / 3) then
+					okMove = true
+				end
+			elseif math.abs(dif) == 3 then
+				okMove = true
+			end
+			
+			printfd("dif: %d, okMove: %s", dif, tostring(okMove))
+			
+			if okMove then
+				if self:movePuzzleTile(old, id) then
+					tfm.exec.playSound("cite18/bouton1.mp3", 80, nil, nil, self.name)
+				else
+					tfm.exec.playSound("cite18/bouton2.mp3", 80, nil, nil, self.name)
+				end
+			end
 		end
 	end
+	
+	pz.selected = id
 end
 
 function Player:movePuzzleTile(from, to)
-	if to == 9 and from ~= 9 then
+	do
 		local pz = self.puzzle
 		local fr = pz[from]
 		local t = pz[to]
 
 		local aux = {}
+		
+		if t.id == 9 and fr.id ~= 9 then
 
-		aux.id = fr.id
-		aux.imageId = fr.imageId
-		aux.sprite = fr.sprite
+			aux.id = fr.id
+			aux.imageId = fr.imageId
+			aux.sprite = fr.sprite
 
-		fr.id = t.id
-		fr.imageId = t.imageId
-		fr.sprite = t.sprite
+			fr.id = t.id
+			fr.imageId = t.imageId
+			fr.sprite = t.sprite
 
-		t.id = aux.id
-		t.imageId = aux.imageId
-		t.sprite = aux.sprite
+			t.id = aux.id
+			t.imageId = aux.imageId
+			t.sprite = aux.sprite
 
-		self:displayPuzzleTile(from, true)
-		self:displayPuzzleTile(to, true)
+			self:displayPuzzleTile(from, true)
+			self:displayPuzzleTile(to, true)
 
-		if self:assertPuzzle() then
-			self:finishLevel(2)
+			if self:assertPuzzle() then
+				pz.completed = true
+				
+				self:displayPuzzleTile(9, true)
+				self:setInstance(6)
+				Timer.new(2000, false, function()
+					self:deletePuzzle()
+				end)
+			
+				tfm.exec.playSound("deadmaze/niveau/gain_niveau.mp3", 80, nil, nil, self.name)
+			end
+			
+			return true
 		end
 	end
+	
+	return false
 end
 
 function Player:assertPuzzle()
@@ -1045,6 +1128,7 @@ function Player:setInstance(id)
 		self:setData("diva", 3)
 		self:setData("cond", 3)
 	elseif id == 6 then -- Microphone quest finished
+		self:finishLevel(2)
 		self:setData("diva", 4)
 		self:setData("cond", 3)
 	elseif id == 7 then -- Piano quest starts

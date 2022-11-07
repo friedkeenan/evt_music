@@ -30,7 +30,7 @@ end
 instrumentList = {
     ["timpani"] = setInstrument("timpani", "184058f9b56.png", 225, 77, 516, 203, "timpani"),
     ["cymbals"] = setInstrument("cymbals", "184058f4f5b.png", 81, 88, 233, 99, "cymbals"),
-    ["tubular_bells"] = setInstrument("tubular_bells", "18405907f5a.png", 100, 108, 353, 259, "tubular_bells"),
+    ["tubular_bells"] = setInstrument("tubular_bells", "1844edc325a.png", 100, 108, 353, 259, "tubular_bells"),
     ["vibraphone"] = setInstrument("vibraphone", "1840592df5f.png", 147, 90, 602, 279, "vibraphone"),
     ["marimba"] = setInstrument("marimba", "18405932b5c.png", 171, 76, 446, 284, "marimba"),
 

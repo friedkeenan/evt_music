@@ -112,11 +112,11 @@ uiResources[3] = {
 		{image = "1825fee4f3c.png"}
 	),
 	[2] = setElement(
-		"image", "closeBox", 20, 20, -150, 240,
+		"image", "closeBox", 20, 20, -145, 210,
 		{image = "1825fee8763.png"}
 	),
 	[3] = setElement(
-		"textArea", "close", 25, 25, -150, 240,
+		"textArea", "close", 25, 25, -145, 210,
 		{text = "<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>" .. ('\n'):rep(20), event="close"}
 	)
 }

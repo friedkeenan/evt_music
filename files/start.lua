@@ -18,7 +18,7 @@ do
 		end, interval + (diftime * i), false)
 	end
 	
-	tfm.exec.chatMessage(translate("hey 1", room.language, 0))
+	tfm.exec.chatMessage(styles.chat:format(translate("hey 1", room.language, 0)))
 end
 
 tfm.exec.newGame(xml, false)

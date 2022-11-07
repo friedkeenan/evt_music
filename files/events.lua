@@ -153,6 +153,10 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			player:setInstrument(npcList[args[1]].instrument.keyName, true, true)
 		elseif eventCommand == "toggle_pause" then
 		    player:pauseMusic(not player.loopPaused)
+		elseif eventCommand == "puzzle" then
+			if tonumber(args[1]) then
+				player:selectPuzzleTile(args[1])
+			end
 		end
 	end
 end
@@ -164,6 +168,8 @@ function eventWindowCallback(windowId, playerName, eventName)
 			player:showInstruments(false)
 		elseif windowId == 11 then
 			player:showSheets(false)
+		elseif windowId == 12 then
+			player:deletePuzzle()
 		end
 	end
 	-- ...
@@ -208,7 +214,7 @@ function eventChatCommand(playerName, message)
 	command = table.remove(args, 1)
 
 	local answer = function(msg)
-		tfm.exec.chatMessage(msg, playerName)
+		tfm.exec.chatMessage(tostring(msg), playerName)
 	end
 
 	if command == "setIns" then
@@ -228,6 +234,10 @@ function eventChatCommand(playerName, message)
 	elseif command == "save" then
 		player:saveData()
 		answer("Your data has been saved")
+	elseif command == "get" then
+		answer(player:getData(args[1]))
+	elseif command == "set" then
+		player:setData(args[1], args[2])
 	elseif command == "removealldata" then
 		player:resetAllData()
 		answer("Data restored")

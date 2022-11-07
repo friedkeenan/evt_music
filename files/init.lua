@@ -11,13 +11,14 @@ local admins = {
 	["Indexinel#5948"] = true,
 	["Ricardinhotv#0000"] = true,
 	["Drgenius#0000"] = true,
-	["Undermath#2907"] = true
+	["Undermath#2907"] = true,
+	["Zetdey#3845"] = true
 }
 
 local styles = {}
 
 do
-	local p = print
+	local p = print--function(a) tfm.exec.chatMessage(a, nil) end
 	local tc = table.concat
 	local ts = tostring
 	print = function(...) -- Fixed :+1:
@@ -26,7 +27,7 @@ do
 			for i=1, #args do
 				args[i] = ts(args[i])
 			end
-			p(tc({...}, " "))
+			p(tc(args, " "))
 		end
 	end
 
