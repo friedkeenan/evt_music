@@ -34,6 +34,7 @@ function Player.new(name)
     self.onDialog = false
 	self.viewingInstruments = nil
 	self.viewingSheets = nil
+	self.tuning = false
 
 	-- Sound
 	self.loopSounds={}
@@ -89,7 +90,7 @@ function Player:init(data, reset)
 		le2 = false,
 		le3 = false
 	}
-	
+
 	for key, value in next, def do
 		if not self.progress[key] then
 			self.progress[key] = value
@@ -102,7 +103,7 @@ end
 function Player:saveData()
 	local data = dataHan.encodeData(self.progress)
 	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
-	
+
 	print(self.dataFile)
 	printt(self.progress)
 
@@ -328,11 +329,12 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 			if success then
 				if self:setSheet() then
-					
+
 					tfm.exec.chatMessage("tune here", self.name)
+					self:showTuning(true,Musician.instrument.keyName)
 					-- TUNE HERE (^ that's a placeholder)
 					-- Call onCorrectTuning() if the player tunes correctly
-					
+
 					self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 
 					wrongAttempt = false
@@ -368,19 +370,58 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 		retval = not wrongAttempt
 	end
-	
+
 	self:getInstrumentsLeft()
 
 	return retval
+end
+
+function Player:showTuning(show,ins)
+    show=not not show
+    if show then
+		self.tuningImg=tfm.exec.addImage('1844e488749.png','~100',400,210,self.name,0.5,0.5,0,1,0.5,0.5)
+
+		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(ins.keyName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
+
+		local tuning=ins.tuning
+
+		if tuning then
+			local colors={
+				{0xE4FAFE,0xFEE8E4}, -- E
+				{0xFEFF00,0x0100FF}, -- D
+				{0xFF0100,0x00FEFF}, -- C
+				{0x1600FE,0xE8FE00}, -- B
+				{0x2FCD2E,0xCC2ECD}, -- A
+				{0xFF6500,0x009AFF}, -- G
+				{0xAE1601,0x0199AE}  -- F
+			}
+			local x=320
+			local topY=112
+			local xDistance=24
+			local yDistance=12
+			for i,note in ipairs(tuning) do
+			    if note>0 then
+					local c=colors[note]
+					local y=topY+(yDistance*(note-1))
+					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],c[2],1,true)
+				end
+				x=x+xDistance
+			end
+		else
+		    print(('Error: Add tuning for instrument %s'):format(ins.keyName))
+		    return
+		end
+	end
+	self.tuning=show
 end
 
 function Player:onCorrectTuning()
 	local npcName = self.seekingInstrument.npcName
 	self:newDialog(npcName)
 	self:releaseInstrument()
-	
+
 	self:setData(npcName, 3, false)
-	
+
 	self:getInstrumentsLeft()
 end
 
@@ -570,7 +611,7 @@ function Player:newDialog(npcName, dialogId)
 
     local Npc = npcList[npcName]
     local dialog = dialogId or self:getData(npcName) or 1
-	
+
 	printfd("Dialog ID: %d\tLanguage: %s", dialog, self.language:upper())
 	local textInfo = Npc:getDialog(dialog, self.language, self.gender)
 
@@ -693,19 +734,19 @@ function Player:onDialogFinished()
 		if (Dialog.Npc.key:match("m%d+") and Dialog.pInf == 1) then
 			o1 = "search"
 			o2 = "discard"
-			
+
 			showOpts = true
 		elseif Dialog.Npc.key == "diva" then
 			if Dialog.pInf >= 2 and Dialog.pInf <= 5 then
 				o1 = "continue"
 				o2 = "cancel"
-				
+
 				if Dialog.pointer == #Dialog.Text then
 					showOpts = true
 				end
 			end
 		end
-			
+
 		if showOpts then
 			if not self.seekingInstrument.onIt then
 				ui.addTextArea(
@@ -797,7 +838,7 @@ function Player:npcInteraction(npcName, x, y, args)
 							tfm.exec.chatMessage("piano", self.name)
 						end
 					end
-					
+
 					self:closeDialog()
 				end
 			else
@@ -878,7 +919,7 @@ function Player:initPuzzle(display)
 		for i=1, 9 do
 			table.insert(rand, math.random(i), i)
 		end
-		
+
 		do
 			local inversions = 0
 			local a, b
@@ -891,15 +932,15 @@ function Player:initPuzzle(display)
 					end
 				end
 			end
-			
+
 			isValidPuzzle = ((inversions % 2) == 0)
-			
+
 			printfd("Inversions: %d, valid?: %s", inversions, tostring(isValidPuzzle))
 		end
-		
-		
+
+
 	until isValidPuzzle
-	
+
 	local scale = 0.125
 	local x, y
 	for i = 1, 9 do
@@ -968,14 +1009,14 @@ end
 
 function Player:displayPuzzleTile(id, display)
 	local tl = self.puzzle[id]
-	
+
 	do
 		if tl.imageId then
 			tl.imageId = tfm.exec.removeImage(tl.imageId, not self.puzzle.completed)
 		end
 		ui.removeClickable(500 + id, self.name)
 	end
-	
+
 	if display then
 		if tl.id ~= 9 or self.puzzle.completed then
 			tl.imageId = tfm.exec.addImage(tl.sprite, ":2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, 1.0, 0, 0, false)
@@ -988,15 +1029,15 @@ function Player:selectPuzzleTile(id)
 	local pz = self.puzzle
 	local old = pz.selected
 	local okMove = false
-	
-	
+
+
 
 	if old ~= id and (old and id) then
 		printfd("old: %d, id: %d", old, id)
 
 		if pz[id].id == 9 then -- Empty tile (movement)
 			local dif = id - old
-			
+
 			if (math.abs(dif) == 1) then -- X
 				if math.ceil((old + dif) / 3) == math.ceil(old / 3) then
 					okMove = true
@@ -1004,9 +1045,9 @@ function Player:selectPuzzleTile(id)
 			elseif math.abs(dif) == 3 then
 				okMove = true
 			end
-			
+
 			printfd("dif: %d, okMove: %s", dif, tostring(okMove))
-			
+
 			if okMove then
 				if self:movePuzzleTile(old, id) then
 					tfm.exec.playSound("cite18/bouton1.mp3", 80, nil, nil, self.name)
@@ -1017,7 +1058,7 @@ function Player:selectPuzzleTile(id)
 			end
 		end
 	end
-	
+
 	pz.selected = id
 end
 
@@ -1028,7 +1069,7 @@ function Player:movePuzzleTile(from, to)
 		local t = pz[to]
 
 		local aux = {}
-		
+
 		if t.id == 9 and fr.id ~= 9 then
 
 			aux.id = fr.id
@@ -1048,20 +1089,20 @@ function Player:movePuzzleTile(from, to)
 
 			if self:assertPuzzle() then
 				pz.completed = true
-				
+
 				self:displayPuzzleTile(9, true)
 				self:setInstance(6)
 				Timer.new(2000, false, function()
 					self:deletePuzzle()
 				end)
-			
+
 				tfm.exec.playSound("deadmaze/niveau/gain_niveau.mp3", 80, nil, nil, self.name)
 			end
-			
+
 			return true
 		end
 	end
-	
+
 	return false
 end
 
@@ -1121,7 +1162,7 @@ function Player:setInstance(id)
 		for i=1, 20 do
 			self:setData("m" .. i, 1) -- riddle
 		end
-		
+
 		self:setData("diva", 1)
 		self:setData("cond", 2)
 	elseif id == 4 then -- Instrument quest finished
@@ -1153,8 +1194,8 @@ function Player:setInstance(id)
 		self:setData("diva", 0)
 		self:setData("cond", 0)
 	end
-	
-	
+
+
 	if id ~= 10 then -- Orchestra finished
 		self:setData("ins", id, true)
 	else

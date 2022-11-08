@@ -221,7 +221,7 @@ function eventChatCommand(playerName, message)
 		for i=1, #args do
 			admin[args[i]] = true
 		end
-	if command == "setIns" then
+	elseif command == "setIns" then
 		player:releaseInstrument()
 		player:setInstrument(args[1], true, true)
 		answer(("Setting '%s' as your instrument"):format(args[1] or""))
