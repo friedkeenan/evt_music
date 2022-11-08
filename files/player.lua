@@ -331,7 +331,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 				if self:setSheet() then
 
 					tfm.exec.chatMessage("tune here", self.name)
-					self:showTuning(true,Musician.instrument.keyName)
+					self:showTuning(Musician.instrument.keyName)
 					-- TUNE HERE (^ that's a placeholder)
 					-- Call onCorrectTuning() if the player tunes correctly
 
@@ -376,12 +376,12 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	return retval
 end
 
-function Player:showTuning(show,ins)
-    show=not not show
+function Player:showTuning(ins) -- If not ins then hide
+    local show=(not not ins)
     if show then
-		self.tuningImg=tfm.exec.addImage('1844e488749.png','~100',400,210,self.name,0.5,0.5,0,1,0.5,0.5)
-
-		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(ins.keyName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
+		self.tuningImg=tfm.exec.addImage('18457d461ce.png','~100',400,210,self.name,0.88,0.88,0,1,0.5,0.5)
+		local insName=getFormattedKey(ins.keyName)
+		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(insName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
 
 		local tuning=ins.tuning
 
@@ -397,13 +397,17 @@ function Player:showTuning(show,ins)
 			}
 			local x=320
 			local topY=112
-			local xDistance=24
-			local yDistance=12
+			local xDistance=14
+			local yDistance=7
 			for i,note in ipairs(tuning) do
 			    if note>0 then
 					local c=colors[note]
 					local y=topY+(yDistance*(note-1))
 					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],c[2],1,true)
+				else
+				    -- Rest?
+				    local y=topY+(yDistance*3)
+				    ui.addTextArea(102+i,'',self.name,x,y,0,0,0x000001,0x000001,1,true)
 				end
 				x=x+xDistance
 			end

@@ -19,7 +19,19 @@ stringutils.isin = function(s,t)
     return r
 end
 
-function stringutils.getGendered(str, gender)	
+function stringutils.capitalize(str)
+    return (str:gsub("^%l", string.upper))
+end
+function stringutils.titleCase(str)
+    local result = string.gsub(str, "(%a)([%w_']*)",
+        function(first, rest)
+            return first:upper() .. rest:lower()
+        end
+    )
+    return result
+end
+
+function stringutils.getGendered(str, gender)
 	return str:gsub("%(.-%)", function(gcase)
 		local male, female, neutral = gcase:match("%((.-)|(.-)|(.-)%)") or gcase:match("%((.-)|(.-)%)")
 
@@ -196,4 +208,12 @@ end
 
 function Timer:kill()
     Timer.list[self.uniqueId] = nil
+end
+
+
+
+function getFormattedKey(s)
+    s=s:gsub('_',' ')
+    s=stringutils.titleCase(s)
+    return s
 end

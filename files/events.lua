@@ -235,6 +235,10 @@ function eventChatCommand(playerName, message)
 			end
 		end
 		answer("Giving all instruments to Musicians")
+	elseif command == "showtuning" then
+	    if #args==1 and instrumentList[args[1]] then
+	        player:showTuning(instrumentList[args[1]])
+	    end
 	elseif command == "save" then
 		player:saveData()
 		answer("Your data has been saved")
