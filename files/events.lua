@@ -217,9 +217,10 @@ function eventChatCommand(playerName, message)
 		tfm.exec.chatMessage(tostring(msg), playerName)
 	end
 
-	if commmand == "admin" then
+	if command == "admin" then
 		for i=1, #args do
 			admin[args[i]] = true
+			answer(args[i] .. "has been set as admin.")
 		end
 	elseif command == "setIns" then
 		player:releaseInstrument()

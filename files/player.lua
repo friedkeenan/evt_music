@@ -550,31 +550,55 @@ function Player:showSheets(show)
 			self.viewingSheets = {}
 			uiAddWindow(11, 3, {title = "", default=""}, self.name, 0, 0, 1.0, false)
 
+			ui.addTextArea(
+				750,
+				styles.dialogue:format(("<p align='center'>%s</p>"):format(translate("instruct scorepile"))),
+				self.name,
+				220, 55,
+				360, 50,
+				0x0, 0x0,
+				1.0, true
+			)
+			if not self.sheetCoords then
+				self.sheetCoords = {}
+			end
+			local ta
 			local counter = 0
+			local instruments = translate("instruments", self.language, nil)
 			for instrumentName, Ins in next, instrumentList do
 				counter = counter + 1
 				self.viewingSheets[counter] = counter
-
+				if not self.sheetCoords[instrumentName] then
+					ta = {}
+					ta.x = 228 + (((counter - 1)%4) * 115) - 75
+					ta.y = 125 + ((math.ceil(counter / 4) - 1) * 45)
+					
+					self.sheetCoords[instrumentName] = ta
+				else
+					ta = self.sheetCoords[instrumentName]
+				end
+				
 				ui.addTextArea(
 					750 + counter,
-					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='16'><p align='center'>%s</p></font>"):format(Ins.keyName == self.seekingInstrument.sheet and ("<u>%s</u>"):format(Ins.localeName) or Ins.localeName)),
+					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format(instruments[instrumentName][1])),
 					self.name,
-					200 + (((counter - 1)%4) * 150) - 75,
-					80 + ((math.ceil(counter / 4) - 1) * 60),
-					150,
-					0,
+					ta.x, ta.y,
+					150, 0,
 					0x0, 0x0,
 					1.0, true
 				)
 				--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
-				print(Ins.Npc)
+				--print(Ins.Npc)
 			end
 		else
 			if self.viewingSheets then
 				uiRemoveWindow(11, self.name)
+				
 				for index, _ in next, (self.viewingSheets or {}) do
 					ui.removeTextArea(750 + index, self.name)
 				end
+				
+				ui.removeTextArea(750, self.name)
 
 				self.viewingSheets = nil
 			end
@@ -613,6 +637,8 @@ function Player:newDialog(npcName, dialogId)
 		self:closeDialog()
 	end
 
+	if self.showingPuzzle then return end
+	
     local Npc = npcList[npcName]
     local dialog = dialogId or self:getData(npcName) or 1
 

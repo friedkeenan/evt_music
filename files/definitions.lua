@@ -1,5 +1,5 @@
 styles = {
-	dialogue = "<font face='Century Schoolbook' size='13.5' color='#1A0E00'><b>%s</b></font>",
+	dialogue = "<font face='Century Schoolbook,Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif' size='13.5' color='#1A0E00'><b>%s</b></font>",
 	chat = "<font color='#F8C090'>%s</font>",
 	href = "<a href='event:%s'>%s</a>"
 }
