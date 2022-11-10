@@ -35,6 +35,8 @@ function Player.new(name)
 	self.viewingInstruments = nil
 	self.viewingSheets = nil
 
+	self.colorBlindMode=false
+
 	-- Tuning
 	self.isTuning=false
 	self.tuningIns=nil
@@ -428,7 +430,7 @@ function Player:showTuning(ins)
 		local bWidth=800/(bCount)-bMargin
 		local bHeight=(bWidth/4)
 		for i,v in ipairs(noteColors) do
-		    ui.addTextArea(200+i,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#000000" size="20"><B>%s</B></font></p>'):format(tostring(i)),self.name,bx,(400-bHeight),bWidth,bHeight,v[1],v[2],1,true)
+		    ui.addTextArea(200+i,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#000000" size="20"><B>%s</B></font></p>'):format(tostring(i)),self.name,bx,(400-bHeight),bWidth,bHeight,v[1],(self.colorBlindMode and v[2] or 0x000001),1,true)
 		    bx=bx+(bWidth+bMargin)
 		end
 
@@ -449,7 +451,7 @@ function Player:showTuning(ins)
 			    if note>0 then
 			        local y=topY+(yDistance*(note-1))
 					local c=noteColors[note]
-					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],c[2],1,true)
+					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],(self.colorBlindMode and v[2] or 0x000001),1,true)
 					--self.notesList[i]={id=102+i,x=x,y=y,color=c}
 					table.insert(self.notesList,{id=note,pos=i,tid=102+i,x=x,y=y,color=c})
 					self.finalNote=i
@@ -509,7 +511,7 @@ function Player:selectNote(noteID,hideOthers)
     if noteID then
 		local note=self.notesList[noteID]
 		if note then
-			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,0x000001,0x000001,1,true)
+			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,0xFFFFFF,0x000001,1,true)
 			self.selectedNote=noteID
 
 			if hideOthers then

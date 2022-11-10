@@ -226,7 +226,6 @@ function eventWindowHide(windowId, playerName, Window)
 end
 
 function eventChatCommand(playerName, message)
-	if not admins[playerName] then return end
 	local player = playerList[playerName]
 
 	local args = {}
@@ -248,67 +247,74 @@ function eventChatCommand(playerName, message)
 		tfm.exec.chatMessage(tostring(msg), playerName)
 	end
 
-	if command == "admin" then
-		for i=1, #args do
-			admin[args[i]] = true
-			answer(args[i] .. "has been set as admin.")
-		end
-	elseif command == "setIns" then
-		player:releaseInstrument()
-		player:setInstrument(args[1], true, true)
-		answer(("Setting '%s' as your instrument"):format(args[1] or""))
-		answer(("%s exists? %s"):format(args[1] or "!", tostring(not not instrumentList[args[1]])))
-	elseif command == "allIns" then
-		for npcName, Npc in next, npcList do
-			if Npc.instrument then
-				player:setInstrument(Npc.instrument.keyName, false, false, true)
-				player:setSheet(Npc.instrument.keyName)
-				player:giveNpcInstrument(npcName, false)
+	if admins[playerName] then
+		if command == "admin" then
+			for i=1, #args do
+				admin[args[i]] = true
+				answer(args[i] .. "has been set as admin.")
+			end
+		elseif command == "setIns" then
+			player:releaseInstrument()
+			player:setInstrument(args[1], true, true)
+			answer(("Setting '%s' as your instrument"):format(args[1] or""))
+			answer(("%s exists? %s"):format(args[1] or "!", tostring(not not instrumentList[args[1]])))
+		elseif command == "allIns" then
+			for npcName, Npc in next, npcList do
+				if Npc.instrument then
+					player:setInstrument(Npc.instrument.keyName, false, false, true)
+					player:setSheet(Npc.instrument.keyName)
+					player:giveNpcInstrument(npcName, false)
+				end
+			end
+			answer("Giving all instruments to Musicians")
+		elseif command == "showtuning" then
+			if #args==1 and instrumentList[args[1]] then
+				local ins=instrumentList[args[1]]
+				player:setInstrument(ins.keyName)
+				player:showTuning(ins)
+			end
+		elseif command == "hidetuning" then
+			player:hideTuning()
+		elseif command == "selectnote" then
+			if #args==1 and tonumber(args[1]) then
+				player:selectNote(args[1])
+			else
+				player:selectNote()
+			end
+		elseif command == "save" then
+			player:saveData()
+			answer("Your data has been saved")
+		elseif command == "get" then
+			answer(player:getData(args[1]))
+		elseif command == "set" then
+			player:setData(args[1], args[2])
+		elseif command == "removealldata" then
+			player:resetAllData()
+			answer("Data removed")
+		elseif command == "instance" then
+			player:setInstance(args[1])
+			answer("Instance set as " ..  (args[1] or "?"))
+		elseif command == "ping" then
+			player:updatePing()
+		elseif command == "sheets" then
+			player:showSheets()
+		elseif command == "lang" then
+			player.language = args[1] or "en"
+			answer("Language changed to " .. player.language:upper())
+		elseif command == "dialog" then
+			if #args >= 2 then
+				player:newDialog(args[1], args[2])
+			end
+		elseif command == "goto" then
+			local Npc = npcList[args[1]]
+			if Npc then
+				tfm.exec.movePlayer(playerName, Npc.xPosition, Npc.yPosition, false)
 			end
 		end
-		answer("Giving all instruments to Musicians")
-	elseif command == "showtuning" then
-	    if #args==1 and instrumentList[args[1]] then
-	        local ins=instrumentList[args[1]]
-	        player:setInstrument(ins.keyName)
-	        player:showTuning(ins)
-	    end
-	elseif command == "hidetuning" then
-	    player:hideTuning()
-	elseif command == "selectnote" then
-	    if #args==1 and tonumber(args[1]) then
-	        player:selectNote(args[1])
-	    else
-	        player:selectNote()
-	    end
-	elseif command == "save" then
-		player:saveData()
-		answer("Your data has been saved")
-	elseif command == "get" then
-		answer(player:getData(args[1]))
-	elseif command == "set" then
-		player:setData(args[1], args[2])
-	elseif command == "removealldata" then
-		player:resetAllData()
-		answer("Data removed")
-	elseif command == "instance" then
-		player:setInstance(args[1])
-		answer("Instance set as " ..  (args[1] or "?"))
-	elseif command == "ping" then
-		player:updatePing()
-	elseif command == "sheets" then
-		player:showSheets()
-	elseif command == "lang" then
-		player.language = args[1] or "en"
-		answer("Language changed to " .. player.language:upper())
-	elseif command == "dialog" then
-		if #args >= 2 then
-			player:newDialog(args[1], args[2])
-		end
-	elseif command == "goto" then
-		local Npc = npcList[args[1]]
-		if Npc then
-			tfm.exec.movePlayer(playerName, Npc.xPosition, Npc.yPosition, false)
+	else
+	    if command == "colorblind" or "cb" then
+			player.colorBlindMode=(not player.colorBlindMode)
+			answer('Colorblind mode '..(player.colorBlindMode and 'on' or 'off'))
 		end
 	end
 end
