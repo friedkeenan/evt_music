@@ -6,6 +6,44 @@ styles = {
 
 styles.refdlg = styles.dialogue:format(styles.href)
 
+iconList = { -- Size: 120 x 120 px
+	["def"] = {
+		image = "184622eecbf.png",
+		callback = false
+	},
+	["instrument"] = {
+		image = "184622eecbf.png",
+		callback = function(player)
+			local seeking = player.seekingInstrument
+
+			if seeking.onIt then
+				tfm.exec.chatMessage(('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2")), player.name)
+			end
+		end
+	},
+	["sheet"] = {
+		image = "1846236bbc6.png",
+		callback = false
+	},
+	["tune"] = {
+		image = "184622f6a5d.png", -- piano
+		callback = false
+	},
+	["puzzle"] = {
+		image = "1846236bbc6.png", -- sheet
+		callback = false
+	},
+	["piano"] = {
+		image = "184622f6a5d.png",
+		callback = false
+	},
+	["end"] = {
+		image = "184622f6a5d.png", -- piano
+		callback = false
+	}
+}
+
+
 beatLength=484 -- in MS
 noteColors = {
 	{0xE4FAFE,0x4C4544}, -- E
@@ -68,7 +106,7 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw, so
 
 	self.tuning = tuningList[self.keyName]
 
-	self.scale = scale or 1.0
+	self.scale = 1.0
 	self.tscale = 0.8
 
 	self.txs = self.tscale * self.width

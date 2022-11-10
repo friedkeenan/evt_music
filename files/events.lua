@@ -190,6 +190,8 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			if tonumber(args[1]) then
 				player:selectPuzzleTile(args[1])
 			end
+		elseif eventCommand == "icon" then
+			iconList[args[1]].callback(player)
 		end
 	end
 end
@@ -325,7 +327,7 @@ function eventChatCommand(playerName, message)
 		end
 	end
 	
-	if command == "colorblind" or "cb" then
+	if command == "colorblind" or command == "cb" then
 		player.colorBlindMode=(not player.colorBlindMode)
 		answer('Colorblind mode '..(player.colorBlindMode and 'on' or 'off'))
 	end

@@ -292,6 +292,21 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 			seeking.tries = 3
 			seeking.spriteId = -1
 		end
+		
+		self:setIconDisplay({
+			[1] = {
+				type = "instrument",
+				active = not not hold
+			},
+			[2] = {
+				type = "sheet",
+				active = false
+			},
+			[3] = {
+				type = "tune",
+				active = false
+			}
+		})
 
 		if hold then
 			self:holdInstrument()
@@ -310,8 +325,23 @@ function Player:setSheet(npcName)
 		if npcName == false then
 			seeking.sheet = nil
 		elseif npcName then
-			seeking.sheet = npcName
+			seeking.sheet = npcList[npcName].instrument.keyName
 		end
+		
+		self:setIconDisplay({
+			[1] = {
+				type = "instrument",
+				active = true
+			},
+			[2] = {
+				type = "sheet",
+				active = not not npcName
+			},
+			[3] = {
+				type = "tune",
+				active = false
+			}
+		})
 
 		return seeking.sheet == seeking.instrumentName
 	end
@@ -342,8 +372,8 @@ function Player:giveNpcInstrument(npcName, showDialog)
 				if self:setSheet() then
 
 					tfm.exec.chatMessage("tune here", self.name)
-					self:showTuning(Musician.instrument.keyName)
-					-- TUNE HERE (^ that's a placeholder)
+					-- This was causing a crash so I changed it to pass the table
+					self:showTuning(Musician.instrument)
 					-- Call onCorrectTuning() if the player tunes correctly
 
 					self:pauseMusic(self.loopPaused,true) -- Display play/pause button
@@ -623,10 +653,12 @@ function Player:showInstruments(show)
 
 			local counter = 100
 			for instrumentName, Ins in next, instrumentList do
-				counter = counter + 1
-				self.viewingInstruments[counter] = counter
-				ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
-				print(Ins.Npc)
+				if instrumentName ~= "voice" then
+					counter = counter + 1
+					self.viewingInstruments[counter] = counter
+					ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
+					print(Ins.Npc)
+				end
 			end
 		else
 			if self.viewingInstruments then
@@ -675,29 +707,31 @@ function Player:showSheets(show)
 			local counter = 0
 			local instruments = translate("instruments", self.language, nil)
 			for instrumentName, Ins in next, instrumentList do
-				counter = counter + 1
-				self.viewingSheets[counter] = counter
-				if not self.sheetCoords[instrumentName] then
-					ta = {}
-					ta.x = 228 + (((counter - 1)%4) * 115) - 75
-					ta.y = 125 + ((math.ceil(counter / 4) - 1) * 45)
+				if instrumentName ~= "voice" then
+					counter = counter + 1
+					self.viewingSheets[counter] = counter
+					if not self.sheetCoords[instrumentName] then
+						ta = {}
+						ta.x = 228 + (((counter - 1)%4) * 115) - 75
+						ta.y = 125 + ((math.ceil(counter / 4) - 1) * 45)
 
-					self.sheetCoords[instrumentName] = ta
-				else
-					ta = self.sheetCoords[instrumentName]
-				end
+						self.sheetCoords[instrumentName] = ta
+					else
+						ta = self.sheetCoords[instrumentName]
+					end
 
-				ui.addTextArea(
-					750 + counter,
-					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format(instruments[instrumentName][1])),
-					self.name,
-					ta.x, ta.y,
-					150, 0,
-					0x0, 0x0,
-					1.0, true
-				)
-				--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
-				--print(Ins.Npc)
+					ui.addTextArea(
+						750 + counter,
+						styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format(instruments[instrumentName][1])),
+						self.name,
+						ta.x, ta.y,
+						150, 0,
+						0x0, 0x0,
+						1.0, true
+					)
+					--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
+					--print(Ins.Npc)
+				end					
 			end
 		else
 			if self.viewingSheets then
@@ -945,26 +979,30 @@ function Player:onDialogClosed(npcName, pid)
 		if pid == 1 then
 			self:setInstance(2)
 		elseif pid == 3 then
-			self:finishLevel(1)
-			self:setData("diva", 2)
+			if self:getData("ins") == 3 then
+				self:finishLevel(1)
+				self:setData("diva", 2)
+			end
 		elseif pid == 4 then
-			self:finishLevel(3)
-			self:setInstance(9)
+			if self:getData("ins") == 8 then
+				self:finishLevel(3)
+				self:setInstance(9)
+			end
 		end
 	elseif npcName == "diva" then
 		if pid == 2 then
 			self:setInstance(5)
 		elseif pid == 4 then
-			self:finishLevel(3)
-			self:setInstance(7)
+			if self:getData("ins") == 6 then
+				self:finishLevel(3)
+				self:setInstance(7)
+			end
 		end
 	else
 		if pid == 1 then
 			if self:getData("ins") < 3 then
 				self:setInstance(3)
 			end
-
-			-- Search instrument
 		end
 	end
 end
@@ -981,8 +1019,8 @@ function Player:npcInteraction(npcName, x, y, args)
 						if pid >= 2 and pid <= 3 then -- Microphone
 							self:initPuzzle(true)
 						elseif pid >= 4 and pid <= 5 then -- Piano
-							tfm.exec.chatMessage("piano", self.name)
 							-- Is this the right place to start the puzzle?
+							-- To start the performing, yes
 							self:showTuning(instrumentList["voice"])
 						end
 					end
@@ -1201,7 +1239,7 @@ function Player:selectPuzzleTile(id)
 					tfm.exec.playSound("cite18/bouton1.mp3", 80, nil, nil, self.name)
 					self.puzzle.selected = nil
 				else
-					tfm.exec.playSound("cite18/bouton2.mp3", 80, nil, nil, self.name)
+					tfm.exec.playSound("transformice/son/dash.mp3", 80, nil, nil, self.name)
 				end
 			end
 		end
@@ -1288,6 +1326,41 @@ function Player:setInstrumentSound(npcName, add)
 	end
 end
 
+function Player:setIconDisplay(icons)
+	-- remove
+	if self.icons then
+		for index, iconId in ipairs(self.icons) do
+			tfm.exec.removeImage(iconId, false)
+			ui.removeClickable(250 + index)
+		end
+	end
+	
+	self.icons = {}
+	
+	if icons then
+		local scale = 0.25
+		local x = 765
+		local y
+		local Icon
+		for index, iconInfo in ipairs(icons) do
+			y = 25 + ((index - 1) * 35)
+			Icon = iconList[iconInfo.type]
+			self.icons[index] = tfm.exec.addImage(
+				Icon.image, ":6", 
+				x, y,
+				self.name,
+				scale, scale, 
+				0, iconInfo.active and 1.0 or 0.67,
+				0.0, 0.0,
+				false
+			)
+			if Icon.callback then
+				ui.addClickable(250 + index, x, y, 30, 30, self.name, "icon-" .. iconInfo.type, true)
+			end
+		end
+	end
+end
+
 function Player:setInstance(id)
 
 	-- pls dont laugh at me im learning from yanderedev
@@ -1300,12 +1373,21 @@ function Player:setInstance(id)
 
 		self:setData("cond", 1)
 		self:setData("diva", 1)
+		self:setIconDisplay({{type = "def", active = false}})
 	elseif id == 2 then -- Instrument quest starts
 		for i=1, 20 do
 			self:setData("m" .. i, 1) -- riddle
 		end
 		self:setData("diva", 1)
 		self:setData("cond", 2)
+		
+		self:setIconDisplay({
+			[1] = {
+				type = "instrument",
+				active = false
+			}
+		})
+		self:setIconDisplay({{type = "def", active = false}})
 	elseif id == 3 then -- Instrument quest active
 		for i=1, 20 do
 			self:setData("m" .. i, 1) -- riddle
@@ -1313,18 +1395,21 @@ function Player:setInstance(id)
 
 		self:setData("diva", 1)
 		self:setData("cond", 2)
+		self:setIconDisplay({{type = "def", active = false}})
 	elseif id == 4 then -- Instrument quest finished
 		for i=1, 20 do
 			self:setData("m" .. i, 2) -- "ready"
 		end
 		self:setData("diva", 1)
 		self:setData("cond", 3) -- This dialogue activates Diva's one
+		self:setIconDisplay({{type = "puzzle", active = false}})
 	elseif id == 5 then -- Microphone quest starts
 		for i=1, 20 do
 			self:setData("m" .. i, 2) -- "ready"
 		end
 		self:setData("diva", 3)
 		self:setData("cond", 3)
+		self:setIconDisplay({{type = "puzzle", active = true}})
 	elseif id == 6 then -- Microphone quest finished
 		self:finishLevel(2)
 		for i=1, 20 do
@@ -1332,24 +1417,28 @@ function Player:setInstance(id)
 		end
 		self:setData("diva", 4)
 		self:setData("cond", 3)
+		self:setIconDisplay({{type = "piano", active = false}})
 	elseif id == 7 then -- Piano quest starts
 		for i=1, 20 do
 			self:setData("m" .. i, 2) -- "ready"
 		end
 		self:setData("diva", 5)
 		self:setData("cond", 3)
+		self:setIconDisplay({{type = "piano", active = true}})
 	elseif id == 8 then -- Piano quest finished
 		for i=1, 20 do
 			self:setData("m" .. i, 4) -- "hero"
 		end
 		self:setData("diva", 6)
 		self:setData("cond", 4)
+		self:setIconDisplay(false)
 	elseif id == 9 then -- Event finished (spectating orchestra)
 		for i=1, 20 do
 			self:setData("m" .. i, 0) -- "..."
 		end
 		self:setData("diva", 0)
 		self:setData("cond", 0)
+		self:setIconDisplay({{type = "end", active = true}})
 	end
 
 
