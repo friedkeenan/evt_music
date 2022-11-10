@@ -1,5 +1,27 @@
+tfm.exec.stopSound=function() end -- Dummy until it's implemented
+
 function Player:playSound(sound,volume,soundPosX,soundPosY)
     tfm.exec.playSound(sound,volume,soundPosX,soundPosY,self.name)
+end
+function Player:playSoundDelay(delay,sound,volume,soundPosX,soundPosY)
+    system.newTimer(function()
+        self:playSound(sound,volume,soundPosX,soundPosY)
+    end,delay)
+end
+
+function Player:stopSound(sound)
+    tfm.exec.stopSound(sound,self.name)
+    tfm.exec.chatMessage('Stopped sound '..tostring(sound),self.name)
+end
+function Player:stopSoundDelay(delay,sound)
+    system.newTimer(function()
+        self:stopSound(sound)
+    end,delay)
+end
+
+function Player:playSoundLength(length,sound,volume,soundPosX,soundPosY)
+    self:playSound(sound,volume,soundPosX,soundPosY)
+    self:stopSoundDelay(length,sound)
 end
 
 
