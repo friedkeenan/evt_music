@@ -102,8 +102,39 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 			else
 				if key == 3 or key == 32 then
 					player:interactWithNpc(x, y)
+
+				elseif key>=49 and key<=55 and player.isTuning then -- Tuning
+					local noteID=key-48
+					if player.selectedNote<=#player.notesList then
+						local newNote=player.notesList[player.selectedNote+1]
+						--if newNote then print(('%s==%s: %s'):format(tostring(newNote.id),tostring(noteID),tostring(newNote.id==noteID))) end
+
+						if newNote and newNote.id==noteID then -- Correct note
+						    local isFirstNote=(player.selectedNote==0)
+							player:selectNote(player.selectedNote+1,isFirstNote) -- Select next note
+
+							player:playSound('deadmaze/journal_ouverture.mp3')
+
+							if newNote.pos==player.finalNote then -- Finished tuning stage
+								tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
+								player:playSoundLength(beatLength*(6*player.tuningStage),player.tuningIns.sound,100)
+
+								if player.tuningStage<4 then
+									player.tuningStage=player.tuningStage+1
+									player:showTuning(player.tuningIns)
+								else -- Finished tuning
+								    player:hideTuning()
+									player:onCorrectTuning()
+								end
+							end
+						else -- Wrong note
+							player:playSound('cite18/boule-acier.mp3')
+							player:playSound('x_impact_joueur_2.mp3',50)
+							player:selectNote()
+						end
+					end
 				end
-			end
+		    end
 		end
 	end
 end
@@ -238,10 +269,12 @@ function eventChatCommand(playerName, message)
 		answer("Giving all instruments to Musicians")
 	elseif command == "showtuning" then
 	    if #args==1 and instrumentList[args[1]] then
-	        player:showTuning(instrumentList[args[1]])
-	    else
-	        player:showTuning()
+	        local ins=instrumentList[args[1]]
+	        player:setInstrument(ins.keyName)
+	        player:showTuning(ins)
 	    end
+	elseif command == "hidetuning" then
+	    player:hideTuning()
 	elseif command == "selectnote" then
 	    if #args==1 and tonumber(args[1]) then
 	        player:selectNote(args[1])

@@ -6,6 +6,7 @@ styles = {
 
 styles.refdlg = styles.dialogue:format(styles.href)
 
+beatLength=484 -- in MS
 noteColors = {
 	{0xE4FAFE,0x4C4544}, -- E
 	{0xFEFF00,0x0100FF}, -- D

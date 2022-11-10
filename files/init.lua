@@ -78,5 +78,13 @@ local playerKeys = {
 	[1] = true,
 	[2] = true,
 	[3] = true, -- Down
-	[32] = true -- Space
+	[32] = true, -- Space
+
+	[49] = true, -- 1
+	[50] = true, -- 2
+	[51] = true, -- 3
+	[52] = true, -- 4
+	[53] = true, -- 5
+	[54] = true, -- 6
+	[55] = true  -- 7
 }

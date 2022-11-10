@@ -36,10 +36,14 @@ function Player.new(name)
 	self.viewingSheets = nil
 
 	-- Tuning
-	self.isTuning = false
+	self.isTuning=false
+	self.tuningIns=nil
+	self.tuningStage=1
+	self.finalNote=0
 	self.currentTuning=nil
-	self.selectedNote=nil
+	self.selectedNote=0
 	self.notesList={}
+	self.restImgs={}
 
 	-- Sound
 	self.loopSounds={}
@@ -381,26 +385,41 @@ function Player:giveNpcInstrument(npcName, showDialog)
 	return retval
 end
 
-function Player:showTuning(ins) -- If not ins then hide
-    local show=(not not ins)
-
+function Player:hideTuning()
     ui.removeTextArea(101,self.name)
     for i=1,#noteColors do
 		ui.removeTextArea(200+i,self.name)
 	end
-	for i,v in pairs(self.notesList) do
-	    ui.removeTextArea(v.id,self.name)
+	for i,v in ipairs(self.notesList) do
+	    ui.removeTextArea(v.tid,self.name)
 	end
 	self.notesList={}
 	if self.tuningImg then
 	    tfm.exec.removeImage(self.tuningImg)
 	    self.tuningImg=nil
 	end
+	for i,v in ipairs(self.restImgs) do
+	    tfm.exec.removeImage(v)
+	end
+	self.restImgs={}
+	self.currentTuning=nil
+	self.tuningIns=nil
+	self.selectedNote=0
+	self.isTuning=false
+	self.finalNote=0
+end
+function Player:showTuning(ins)
+    if ins then
+        self:hideTuning()
 
-    if show then
+        if not self.loopPaused then
+            self:pauseMusic(true)
+        end
+
 		self.tuningImg=tfm.exec.addImage('1845bf63716.png','~100',400,225,self.name,1,1,0,1,0.5,0.5)
 		local insName=getFormattedKey(ins.keyName)
 		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(insName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
+		self.tuningIns=ins
 
 		-- Bottom bar
 		local bMargin=10
@@ -416,49 +435,90 @@ function Player:showTuning(ins) -- If not ins then hide
 		local tuning=ins.tuning
 
 		if tuning then
+		    local skip=0
+
 			local x=252
 			local topY=130
 			local xDistance=14
 			local yDistance=7.5
 			for i,note in ipairs(tuning) do
+			    if i>(6*self.tuningStage) then
+			        break
+			    end
+
 			    if note>0 then
 			        local y=topY+(yDistance*(note-1))
 					local c=noteColors[note]
 					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],c[2],1,true)
-					self.notesList[i]={id=102+i,x=x,y=y,color=c}
+					--self.notesList[i]={id=102+i,x=x,y=y,color=c}
+					table.insert(self.notesList,{id=note,pos=i,tid=102+i,x=x,y=y,color=c})
+					self.finalNote=i
 				else
 				    -- Rest
 				    local y=topY+(yDistance*3)
-				    --ui.addTextArea(102+i,'',self.name,x,y,0,0,0x000001,0x000001,1,true)
-				    --notesList[i]=false
+				    local rx=x
+					if skip==0 then
+						local img
+						if tuning[i+1] and tuning[i+1]==0 then -- If there's one rest after this one
+						    if tuning[i+2] and tuning[i+2]==0 then -- If there's two rests after this one
+						        img='1845f719acd.png' -- Dotted half rest (3 beats)
+								skip=2
+								rx=rx+xDistance
+						    else
+								img='1845f4fe106.png' -- Half rest (2 beats)
+								skip=1
+								rx=rx+(xDistance/2)
+							end
+						else -- If there's 0 rests after this one
+						    img='1845f3cf78c.png' -- Quarter rest (1 beat)
+							rx=rx+3
+						end
+						if img then
+							local imgid=tfm.exec.addImage(img,'~101',rx,y,self.name,0.9,0.9,0,1,0.5,0.5)
+							table.insert(self.restImgs,imgid)
+						end
+					else
+						skip=skip-1
+					end
 				end
 				x=x+xDistance
 			end
+
+			self.currentTuning=tuning
+			self.isTuning=true
 		else
 		    print(('Error: Add tuning for instrument %s'):format(ins.keyName))
 		    return
 		end
 	end
-	self.isTuning=show
 end
 
-function Player:selectNote(noteID)
-    if self.selectedNote then -- Deselect current note
+function Player:selectNote(noteID,hideOthers)
+    hideOthers=(not not hideOthers)
+    if self.selectedNote>0 then -- Deselect current note
         local note=self.notesList[self.selectedNote]
         if note then
-			ui.addTextArea(note.id,'',self.name,note.x,note.y,0,0,note.color[1],note.color[2],1,true)
-			self.selectedNote=nil
+			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,note.color[1],note.color[2],1,true)
+			self.selectedNote=0
 
 		else
-		    print(('Error: Invalid note passed to selectNote (%s)'):format(tostring(noteID)))
+		    print(('Error: self.selectedNote is invalid (%s)'):format(tostring(noteID)))
 		end
     end
 
     if noteID then
 		local note=self.notesList[noteID]
 		if note then
-			ui.addTextArea(note.id,'',self.name,note.x,note.y,0,0,0x000001,0x000001,1,true)
+			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,0x000001,0x000001,1,true)
 			self.selectedNote=noteID
+
+			if hideOthers then
+			    for i,v in ipairs(self.notesList) do
+			        if i~=noteID then
+						ui.removeTextArea(v.tid,self.name)
+					end
+				end
+			end
 
 		else
 		    print(('Error: Invalid note passed to selectNote (%s)'):format(tostring(noteID)))
