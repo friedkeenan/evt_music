@@ -94,7 +94,7 @@ uiResources[0] = {
 uiResources[2] = {
 	[1] = setElement(
 		"image", "baseWin", 354, 689, 0, 0,
-		{image = "1833e5c95c7.png"}
+		{image = "1845ebc67b7.png"}
 	),
 	[2] = setElement(
 		"image", "closeBox", 20, 20, -160, 325,

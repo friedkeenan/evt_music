@@ -34,7 +34,12 @@ function Player.new(name)
     self.onDialog = false
 	self.viewingInstruments = nil
 	self.viewingSheets = nil
-	self.tuning = false
+
+	-- Tuning
+	self.isTuning = false
+	self.currentTuning=nil
+	self.selectedNote=nil
+	self.notesList={}
 
 	-- Sound
 	self.loopSounds={}
@@ -378,36 +383,54 @@ end
 
 function Player:showTuning(ins) -- If not ins then hide
     local show=(not not ins)
+
+    ui.removeTextArea(101,self.name)
+    for i=1,#noteColors do
+		ui.removeTextArea(200+i,self.name)
+	end
+	for i,v in pairs(self.notesList) do
+	    ui.removeTextArea(v.id,self.name)
+	end
+	self.notesList={}
+	if self.tuningImg then
+	    tfm.exec.removeImage(self.tuningImg)
+	    self.tuningImg=nil
+	end
+
     if show then
-		self.tuningImg=tfm.exec.addImage('18457d461ce.png','~100',400,210,self.name,0.88,0.88,0,1,0.5,0.5)
+		self.tuningImg=tfm.exec.addImage('1845bf63716.png','~100',400,225,self.name,1,1,0,1,0.5,0.5)
 		local insName=getFormattedKey(ins.keyName)
 		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(insName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
+
+		-- Bottom bar
+		local bMargin=10
+		local bx=bMargin/2
+		local bCount=#noteColors
+		local bWidth=800/(bCount)-bMargin
+		local bHeight=(bWidth/4)
+		for i,v in ipairs(noteColors) do
+		    ui.addTextArea(200+i,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#000000" size="20"><B>%s</B></font></p>'):format(tostring(i)),self.name,bx,(400-bHeight),bWidth,bHeight,v[1],v[2],1,true)
+		    bx=bx+(bWidth+bMargin)
+		end
 
 		local tuning=ins.tuning
 
 		if tuning then
-			local colors={
-				{0xE4FAFE,0xFEE8E4}, -- E
-				{0xFEFF00,0x0100FF}, -- D
-				{0xFF0100,0x00FEFF}, -- C
-				{0x1600FE,0xE8FE00}, -- B
-				{0x2FCD2E,0xCC2ECD}, -- A
-				{0xFF6500,0x009AFF}, -- G
-				{0xAE1601,0x0199AE}  -- F
-			}
-			local x=320
-			local topY=112
+			local x=252
+			local topY=130
 			local xDistance=14
-			local yDistance=7
+			local yDistance=7.5
 			for i,note in ipairs(tuning) do
 			    if note>0 then
-					local c=colors[note]
-					local y=topY+(yDistance*(note-1))
+			        local y=topY+(yDistance*(note-1))
+					local c=noteColors[note]
 					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],c[2],1,true)
+					self.notesList[i]={id=102+i,x=x,y=y,color=c}
 				else
-				    -- Rest?
+				    -- Rest
 				    local y=topY+(yDistance*3)
-				    ui.addTextArea(102+i,'',self.name,x,y,0,0,0x000001,0x000001,1,true)
+				    --ui.addTextArea(102+i,'',self.name,x,y,0,0,0x000001,0x000001,1,true)
+				    --notesList[i]=false
 				end
 				x=x+xDistance
 			end
@@ -416,7 +439,31 @@ function Player:showTuning(ins) -- If not ins then hide
 		    return
 		end
 	end
-	self.tuning=show
+	self.isTuning=show
+end
+
+function Player:selectNote(noteID)
+    if self.selectedNote then -- Deselect current note
+        local note=self.notesList[self.selectedNote]
+        if note then
+			ui.addTextArea(note.id,'',self.name,note.x,note.y,0,0,note.color[1],note.color[2],1,true)
+			self.selectedNote=nil
+
+		else
+		    print(('Error: Invalid note passed to selectNote (%s)'):format(tostring(noteID)))
+		end
+    end
+
+    if noteID then
+		local note=self.notesList[noteID]
+		if note then
+			ui.addTextArea(note.id,'',self.name,note.x,note.y,0,0,0x000001,0x000001,1,true)
+			self.selectedNote=noteID
+
+		else
+		    print(('Error: Invalid note passed to selectNote (%s)'):format(tostring(noteID)))
+		end
+	end
 end
 
 function Player:onCorrectTuning()
@@ -572,12 +619,12 @@ function Player:showSheets(show)
 					ta = {}
 					ta.x = 228 + (((counter - 1)%4) * 115) - 75
 					ta.y = 125 + ((math.ceil(counter / 4) - 1) * 45)
-					
+
 					self.sheetCoords[instrumentName] = ta
 				else
 					ta = self.sheetCoords[instrumentName]
 				end
-				
+
 				ui.addTextArea(
 					750 + counter,
 					styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format(instruments[instrumentName][1])),
@@ -593,11 +640,11 @@ function Player:showSheets(show)
 		else
 			if self.viewingSheets then
 				uiRemoveWindow(11, self.name)
-				
+
 				for index, _ in next, (self.viewingSheets or {}) do
 					ui.removeTextArea(750 + index, self.name)
 				end
-				
+
 				ui.removeTextArea(750, self.name)
 
 				self.viewingSheets = nil
@@ -638,7 +685,7 @@ function Player:newDialog(npcName, dialogId)
 	end
 
 	if self.showingPuzzle then return end
-	
+
     local Npc = npcList[npcName]
     local dialog = dialogId or self:getData(npcName) or 1
 

@@ -6,6 +6,15 @@ styles = {
 
 styles.refdlg = styles.dialogue:format(styles.href)
 
+noteColors = {
+	{0xE4FAFE,0x4C4544}, -- E
+	{0xFEFF00,0x0100FF}, -- D
+	{0xFF0100,0x00FEFF}, -- C
+	{0x1600FE,0xE8FE00}, -- B
+	{0x2FCD2E,0xCC2ECD}, -- A
+	{0xFF6500,0x009AFF}, -- G
+	{0xAE1601,0x0199AE}  -- F
+}
 --[[ Notes:
 
 0 - Rest

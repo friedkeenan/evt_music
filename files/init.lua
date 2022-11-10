@@ -12,7 +12,9 @@ local admins = {
 	["Ricardinhotv#0000"] = true,
 	["Drgenius#0000"] = true,
 	["Undermath#2907"] = true,
-	["Zetdey#3845"] = true
+	["Zetdey#3845"] = true,
+	["Magikmail#0000"] = true,
+	["Nnaaaz#0000"] = true
 }
 
 local styles = {}

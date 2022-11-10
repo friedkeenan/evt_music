@@ -239,6 +239,14 @@ function eventChatCommand(playerName, message)
 	elseif command == "showtuning" then
 	    if #args==1 and instrumentList[args[1]] then
 	        player:showTuning(instrumentList[args[1]])
+	    else
+	        player:showTuning()
+	    end
+	elseif command == "selectnote" then
+	    if #args==1 and tonumber(args[1]) then
+	        player:selectNote(args[1])
+	    else
+	        player:selectNote()
 	    end
 	elseif command == "save" then
 		player:saveData()
@@ -249,7 +257,7 @@ function eventChatCommand(playerName, message)
 		player:setData(args[1], args[2])
 	elseif command == "removealldata" then
 		player:resetAllData()
-		answer("Data restored")
+		answer("Data removed")
 	elseif command == "instance" then
 		player:setInstance(args[1])
 		answer("Instance set as " ..  (args[1] or "?"))
