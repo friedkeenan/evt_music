@@ -975,6 +975,8 @@ function Player:npcInteraction(npcName, x, y, args)
 							self:initPuzzle(true)
 						elseif pid >= 4 and pid <= 5 then -- Piano
 							tfm.exec.chatMessage("piano", self.name)
+							-- Is this the right place to start the puzzle?
+							self:showTuning(instrumentList["voice"])
 						end
 					end
 
