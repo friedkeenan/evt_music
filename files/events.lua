@@ -173,11 +173,11 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 				player:setInstrumentSound(eventCommand, nil)
 			end
 		elseif eventCommand == "instrumentWindow" then
-			if player:getData("lev") <= 1 then
+			if player:getData("ins") == 3 then
 				player:showInstruments()
 			end
 		elseif eventCommand == "sheetsWindow" then
-			if player.seekingInstrument.holdingIt then
+			if player.seekingInstrument.holdingIt and player:getData("ins") == 3 then
 				player:showSheets()
 			end
 		elseif eventCommand == "ins" then

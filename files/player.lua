@@ -1309,13 +1309,22 @@ function Player:setInstance(id)
 		self:setData("diva", 1)
 		self:setData("cond", 3) -- This dialogue activates Diva's one
 	elseif id == 5 then -- Microphone quest starts
+		for i=1, 20 do
+			self:setData("m" .. i, 2) -- "ready"
+		end
 		self:setData("diva", 3)
 		self:setData("cond", 3)
 	elseif id == 6 then -- Microphone quest finished
 		self:finishLevel(2)
+		for i=1, 20 do
+			self:setData("m" .. i, 2) -- "ready"
+		end
 		self:setData("diva", 4)
 		self:setData("cond", 3)
 	elseif id == 7 then -- Piano quest starts
+		for i=1, 20 do
+			self:setData("m" .. i, 2) -- "ready"
+		end
 		self:setData("diva", 5)
 		self:setData("cond", 3)
 	elseif id == 8 then -- Piano quest finished
@@ -1358,11 +1367,11 @@ function Player:finishLevel(levelId)
 		self:setData(pl, true)
 
 			-- Always save to database when a level gets completed unless last one
-		self:setData("lev", levelId + 1, levelId < 3)
+		self:setData("lev", levelId + 1, levelId <= 3)
 
 	end
 
-	if self:getData("lev") > 4 then -- Event has been completed
+	if self:getData("lev") >= 4 then -- Event has been completed
 		local times = self:getData("times") + 1
 
 		self:setData("times", times, false)
