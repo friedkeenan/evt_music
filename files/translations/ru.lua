@@ -1,12 +1,3 @@
--- Remember: Text after two lines ( -- ) doesn't have to be translated, it just means it's a note or comment for extra context.
-
---- You can define genders in a translation
--- Use syntax: (male|female|neutral) or (male|female) [1st field is mandatory]
--- For example: "(King|Queen|Royalty) of Transformice", outputs: "Queen of Transformice" for female gender
--- It accepts long sentences and multiple options in a same sentence:
---	"The (man|woman|person) was playing (Jazz|Videogames|with their friends) at the station"
--- Output (for neutral/none: "The person was playing with their friends at the station"
-
 Text["ru"] = {
 	title = "Музыкальный Оркестр",
 	hey = {

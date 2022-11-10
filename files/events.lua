@@ -15,6 +15,8 @@ function eventNewGame()
 			lookAtPlayer = true,
 			interactive = true
 		})
+	
+		tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
 	else
 		return system.exit()
 	end
@@ -252,8 +254,20 @@ function eventChatCommand(playerName, message)
 		player:saveData()
 		answer("Your data has been saved")
 	elseif command == "get" then
-		answer(player:getData(args[1]))
+		local p
+		if #args == 2 then
+			p = playerList[args[2]] or player
+		else
+			p = player
+		end
+		answer(p:getData(args[1]))
 	elseif command == "set" then
+		local p
+		if #args == 3 then
+			p = playerList[args[3]] or player
+		else
+			p = player
+		end
 		player:setData(args[1], args[2])
 	elseif command == "removealldata" then
 		player:resetAllData()

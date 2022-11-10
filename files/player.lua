@@ -722,9 +722,16 @@ function Player:setDialogDisplay(instruction)
 
 			self:setDialogDisplay("next")
 		elseif instruction == "update" then
+			local text
+			if self.language == "ar" or self.language == "he" then
+				text = styles.dialogue:format(("<p align='right'>%s"):format(Dialog.displayText or Dialog.currentText))
+			else
+				text = styles.dialogue:format(Dialog.displayText or Dialog.currentText)
+			end
+			
 			ui.updateTextArea(
 				Dialog.directAccess,
-				styles.dialogue:format(Dialog.displayText or Dialog.currentText),
+				text,
 				self.name
 			) -- Update text
 
