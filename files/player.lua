@@ -56,8 +56,8 @@ function Player.new(name)
 	self.isFacingRight = true
 	self.isMoving = false
 
-	self.currentPing = 0 -- Player's latest ping
-	self.pingTime = 0 -- os.time of last ping
+	--self.currentPing = 0 -- Player's latest ping
+	--self.pingTime = 0 -- os.time of last ping
 
 
 	self.vignetteId = -1
@@ -292,7 +292,7 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 			seeking.tries = 3
 			seeking.spriteId = -1
 		end
-		
+
 		self:setIconDisplay({
 			[1] = {
 				type = "instrument",
@@ -328,7 +328,7 @@ function Player:setSheet(npcName)
 			seeking.sheet = npcList[npcName].instrument.keyName
 			self:showSheets(false)
 		end
-		
+
 		self:setIconDisplay({
 			[1] = {
 				type = "instrument",
@@ -376,8 +376,6 @@ function Player:giveNpcInstrument(npcName, showDialog)
 					-- This was causing a crash so I changed it to pass the table
 					self:showTuning(Musician.instrument)
 					-- Call onCorrectTuning() if the player tunes correctly
-
-					self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 
 					wrongAttempt = false
 				else
@@ -440,7 +438,7 @@ function Player:hideTuning()
 	self.selectedNote=0
 	self.isTuning=false
 	self.finalNote=0
-	
+
 	tfm.exec.freezePlayer(self.name, false, false)
 	tfm.exec.setPlayerGravityScale(self.name, 1.0, 0)
 end
@@ -523,7 +521,7 @@ function Player:showTuning(ins)
 
 			self.currentTuning=tuning
 			self.isTuning=true
-			
+
 			tfm.exec.freezePlayer(self.name, true, false)
 			tfm.exec.setPlayerGravityScale(self.name, 0, 0)
 			local npcName = ins.keyName == "voice" and "diva" or ins.Npc
@@ -572,6 +570,8 @@ function Player:onCorrectTuning()
 	local npcName = self.seekingInstrument.npcName
 	self:newDialog(npcName)
 	self:releaseInstrument()
+
+	self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 
 	self:setData(npcName, 3, false)
 
@@ -741,7 +741,7 @@ function Player:showSheets(show)
 					)
 					--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
 					--print(Ins.Npc)
-				end					
+				end
 			end
 		else
 			if self.viewingSheets then
@@ -835,7 +835,7 @@ function Player:setDialogDisplay(instruction)
 			else
 				text = styles.dialogue:format(Dialog.displayText or Dialog.currentText)
 			end
-			
+
 			ui.updateTextArea(
 				Dialog.directAccess,
 				text,
@@ -1159,7 +1159,7 @@ function Player:initPuzzle(display)
 	if display then
 		self:showPuzzle(true)
 	end
-	
+
 	tfm.exec.freezePlayer(self.name, true, false)
 	tfm.exec.movePlayer(self.name, npcList.diva.xPosition + 20, self.y, false, 0, 0, true)
 end
@@ -1170,7 +1170,7 @@ function Player:deletePuzzle()
 
 		self.puzzle = false
 	end
-	
+
 	tfm.exec.freezePlayer(self.name, false, false)
 end
 
@@ -1333,7 +1333,7 @@ function Player:setInstrumentSound(npcName, add)
 	if not soundName then return end
 
 	if add == nil then
-		self:setInstrumentSound(npcName, not self.loopSounds[soundName])
+		self:setInstrumentSound(npcName, not self:isPlayingSound(soundName))
 	else
 		if add then
 			self:addSoundLoop(soundName)
@@ -1351,9 +1351,9 @@ function Player:setIconDisplay(icons)
 			ui.removeClickable(250 + index)
 		end
 	end
-	
+
 	self.icons = {}
-	
+
 	if icons then
 		local scale = 0.25
 		local x = 765
@@ -1363,10 +1363,10 @@ function Player:setIconDisplay(icons)
 			y = 25 + ((index - 1) * 35)
 			Icon = iconList[iconInfo.type]
 			self.icons[index] = tfm.exec.addImage(
-				Icon.image, ":6", 
+				Icon.image, ":6",
 				x, y,
 				self.name,
-				scale, scale, 
+				scale, scale,
 				0, iconInfo.active and 1.0 or 0.67,
 				0.0, 0.0,
 				false
@@ -1397,7 +1397,7 @@ function Player:setInstance(id)
 		end
 		self:setData("diva", 1)
 		self:setData("cond", 2)
-		
+
 		self:setIconDisplay({
 			[1] = {
 				type = "instrument",
@@ -1504,7 +1504,9 @@ function Player:resetAllData()
 	self:setData("times", times, true)
 end
 
+--[[
 function Player:updatePing()
     self.pingTime = os.time()
     tfm.exec.addBonus(0, self.x, self.y, -1, 0, false, self.name)
 end
+]]

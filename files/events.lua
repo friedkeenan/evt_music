@@ -17,8 +17,11 @@ function eventNewGame()
 			lookAtPlayer = true,
 			interactive = true
 		})
-	
-		tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
+
+		--tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
+		system.newTimer(function()
+		    tfm.exec.playMusic('',0)
+		end,8000)
 	else
 		return system.exit()
 	end
@@ -82,7 +85,7 @@ function eventLoop(elapsed, remaining)
 				end
 			end
 			leftStop = true
-			
+
 			if remaining <= 0 then
 				-- Kill event
 			end
@@ -97,7 +100,7 @@ end
 function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	if leftStop then return end
 	local player = playerList[playerName]
-	
+
 	if player then
 		player.keys[key] = down
 
@@ -138,7 +141,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
 								tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
-								player:playSoundLength(beatLength*(6*player.tuningStage),player.tuningIns.sound,100)
+								player:playMusicLength(beatLength*(6*player.tuningStage),player.tuningIns.sound,100,100,false,false)
 
 								if player.tuningStage<4 then
 									player.tuningStage=player.tuningStage+1
@@ -336,7 +339,7 @@ function eventChatCommand(playerName, message)
 			player:setInstance(args[1])
 			answer("Instance set as " ..  (args[1] or "?"))
 		elseif command == "ping" then
-			player:updatePing()
+			answer(tostring(tfm.get.room.playerList[player.name].averageLatency))
 		elseif command == "sheets" then
 			player:showSheets()
 		elseif command == "lang" then
@@ -355,13 +358,14 @@ function eventChatCommand(playerName, message)
 			tfm.exec.setGameTime(args[1])
 		end
 	end
-	
+
 	if command == "colorblind" or command == "cb" then
 		player.colorBlindMode=(not player.colorBlindMode)
 		answer('Colorblind mode '..(player.colorBlindMode and 'on' or 'off'))
 	end
 end
 
+--[[
 function eventPlayerBonusGrabbed(playerName,id)
     local player = playerList[playerName]
     if player then
@@ -371,3 +375,4 @@ function eventPlayerBonusGrabbed(playerName,id)
 		end
     end
 end
+]]
