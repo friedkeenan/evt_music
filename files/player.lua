@@ -50,6 +50,7 @@ function Player.new(name)
 
 	-- Sound
 	self.loopSounds={}
+	self.loopSoundsChanged=false
 	self.loopPaused=true
 	self.pauseImg=nil
 
@@ -71,8 +72,6 @@ function Player.new(name)
 		system.bindKeyboard(self.name, keyId, false, true)
 		self.keys[keyId] = false
 	end
-
-	uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
 
 	return self
 end
@@ -112,6 +111,14 @@ function Player:init(data, reset)
 	end
 
 	self:setInstance(math.abs(self.progress.ins))
+
+	-- Init UI
+	if not reset then
+	    if #self:getCompletedMusicians()>0 then -- If player has completed any musicians
+			self:pauseMusic(self.loopPaused,true) -- Display play/pause button
+		end
+		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
+	end
 end
 
 function Player:saveData()
@@ -292,7 +299,7 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 			seeking.searchingName = instrumentName
 			seeking.holdingIt = holdOv or false
 			seeking.npcName = instrument.Npc
-			
+
 			seeking.tries = 3
 			seeking.spriteId = -1
 		else
@@ -581,8 +588,33 @@ function Player:onCorrectTuning()
 		self:newDialog(npcName, 2)
 		self:releaseInstrument()
 		self:getInstrumentsLeft()
+		self:setInstrumentSound(npcName,true) -- Add new sound to loop
 		self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 	end
+end
+
+function Player:isMusicianCompleted(npc)
+    if npc and self.progress[npc.keyName] then
+        if self.progress[npc.keyName]>1 then
+            return true
+        end
+    end
+    return false
+end
+function Player:isInstrumentCompleted(insName)
+    local npc=getCharacterByInstrumentName(insName)
+    return self:isMusicianCompleted(npc)
+end
+function Player:getCompletedMusicians()
+    print('getCompletedMusicians')
+    local t={}
+    for i,v in pairs(npcList) do
+        if self:isMusicianCompleted(i) then
+            table.insert(t,i)
+        end
+    end
+    print(t)
+    return t
 end
 
 function Player:getInstrumentsLeft()
@@ -610,10 +642,10 @@ function Player:holdInstrument(instrumentName)
 	if seeking.holdingIt then
 		self:releaseInstrument(true)
 	end
-	
+
 	local Ins = instrumentList[instrumentName]
-	
-	seeking.sprite = Ins.sprite 
+
+	seeking.sprite = Ins.sprite
 	seeking.instrumentName = instrumentName
 
 	self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
@@ -651,14 +683,14 @@ end
 function Player:releaseInstrument(onlyHold)
 	local seeking = self.seekingInstrument
 	onlyHold = not not onlyHold
-	
+
 	self:setInstrumentHolding(false)
 
 	seeking.holdingIt = false
 	seeking.instrumentName = nil
 	seeking.sprite = nil
 	seeking.spriteId = -1
-	
+
 	if not onlyHold then
 		seeking.onIt = false
 		seeking.searchingName = nil
@@ -1344,7 +1376,7 @@ function Player:assertPuzzle()
 	end
 end
 
-function Player:setInstrumentSound(npcName, add)
+function Player:setInstrumentSound(npcName, add) -- Add: true=add,false=remove,nil=toggle
 	local Npc = npcList[npcName]
 	if not Npc then return end
 

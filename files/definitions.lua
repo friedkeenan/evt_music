@@ -25,7 +25,7 @@ iconList = { -- Size: 120 x 120 px
 		image = "1846236bbc6.png",
 		callback = function(player)
 			local seeking = player.seekingInstrument
-			
+
 			if seeking.sheet then
 				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=("<font size='14'><i>\"%s\"</i></font>"):format(translate("instruments " .. seeking.sheet .. " 1", player.language))}, player.name, 0, 0, 1.0, false)
 			end
@@ -153,7 +153,7 @@ instrumentList = {
     ["bass"] = setInstrument("bass", "184058e1f5c.png", 79, 199, 203, 196, "basses"),
     ["harp"] = setInstrument("harp", "1840590cb58.png", 91, 136, 647, 60, "harp"),
 
-    ["voice"] = setInstrument("voice", nil, nil, nil, nil, nil, "harp"),
+    ["voice"] = setInstrument("voice", nil, nil, nil, nil, nil, "voice"),
 }
 
 

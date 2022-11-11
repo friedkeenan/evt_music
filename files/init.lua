@@ -2,7 +2,7 @@ if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not 
 	return system.exit()
 end
 
-local debugMode = false
+local debugMode = true
 local isEventLoaded = false
 
 system.disableChatCommandDisplay(nil)
@@ -38,7 +38,7 @@ do
 	printfd = function(str, ...)
 		print(".")--("[Debug] %s"):format(str:format(...)))
 	end
-	
+
 	if debugMode then
 		system.giveEventGift = function(playerName, giftCode)
 			tfm.exec.chatMessage(("%s has received '%s'"):format(playerName, giftCode))
@@ -95,7 +95,7 @@ local playerKeys = {
 	[53] = true, -- 5
 	[54] = true, -- 6
 	[55] = true, -- 7
-	
+
 	[97] = true, -- N1
 	[98] = true, -- N2
 	[99] = true, -- N3

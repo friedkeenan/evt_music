@@ -67,7 +67,7 @@ function eventLoop(elapsed, remaining)
 
 			if not player.loopPaused then
 				for i,v in pairs(player.loopSounds) do
-					local ins=getInstrumentBySoundName(i)
+					local ins=getInstrumentBySoundName(v.sound)
 					if ins then
 						local npc=getCharacterByInstrumentName(ins.keyName)
 						if npc then
@@ -84,7 +84,7 @@ function eventLoop(elapsed, remaining)
 			if not leftStop then
 				for playerName, player in next, playerList do
 					tfm.exec.freezePlayer(playerName, true, true)
-					
+
 					if player:getData("ins") == 9 then
 						player:setInstance(10)
 					end
@@ -212,7 +212,7 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			local Npc = npcList[eventCommand]
 			local interaction = player:npcInteraction(eventCommand, nil, nil, args)
 
-			if not interaction then
+			if not interaction and not player.loopPaused and player:isMusicianCompleted(eventCommand) then
 				player:setInstrumentSound(eventCommand, nil)
 			end
 		elseif eventCommand == "instrumentWindow" then
@@ -367,6 +367,8 @@ function eventChatCommand(playerName, message)
 			if #args >= 2 then
 				player:newDialog(args[1], args[2])
 			end
+		elseif command == "playbutton" then
+		    player:pauseMusic(player.loopPaused,true) -- Display play/pause button
 		elseif command == "goto" then
 			local Npc = npcList[args[1]]
 			if Npc then

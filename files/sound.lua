@@ -23,9 +23,14 @@ function Player:playMusicDelay(delay,music,channel,volume,loop,fade)
 	end,delay)
 end
 
-function Player:stopMusic(channel)
-    tfm.exec.stopMusic(channel,self.name)
-    --tfm.exec.chatMessage('Stopped sound '..tostring(sound),self.name)
+function Player:stopMusic(channel,fadeOut)
+    fadeOut=(not not fadeOut)
+    if fadeOut then
+        tfm.exec.stopMusic(channel,self.name)
+    else
+        self:playMusic('',channel,0,false,false)
+    end
+    print('Stopped sound '..tostring(channel),self.name)
 end
 function Player:stopMusicDelay(delay,channel)
     system.newTimer(function()
@@ -35,7 +40,7 @@ end
 
 function Player:playMusicLength(length,music,channel,volume,loop,fade)
     self:playMusic(music,channel,volume,loop,fade)
-    self:stopMusicDelay(length,music)
+    self:stopMusicDelay(length,channel)
 end
 
 
@@ -62,6 +67,7 @@ function Player:addSoundLoop(soundName,volume) -- Add an instrument to the loop
     volume=volume or 100
 	printfd("Adding sound %s (volume: %d)", soundName, volume)
     table.insert(self.loopSounds,{sound=soundName,volume=volume})
+    self.loopSoundsChanged=true
 end
 function Player:removeSoundLoop(soundName,stop) -- Remove an instrument from the loop
     printfd("Removing sound %s", soundName)
@@ -78,20 +84,24 @@ function Player:removeSoundLoop(soundName,stop) -- Remove an instrument from the
         --table.remove(self.loopSounds,v)
         self.loopSounds[v]=nil
     end
+    self.loopSoundsChanged=true
 end
 
 function Player:soundLoop() -- Loop of instrument sounds
     --self:updatePing()
     --local ping=self.currentPing
-    local ping=tfm.get.room.playerList[self.name].averageLatency
+    --local ping=tfm.get.room.playerList[self.name].averageLatency
     local startTime = os.time()
 	local sound
-	for i,v in pairs(self.loopSounds) do
-	    system.newTimer(function()
-			--self:playSound(i, v.volume or 100, nil, nil)
-			self:playMusic(v.sound,i,(v.volume or 100),true,false)
-			printfd('Playing sound %s', i)
-		end,1000-(os.time()-startTime)-ping)
+	if self.loopSoundsChanged then
+		for i,v in pairs(self.loopSounds) do
+			system.newTimer(function()
+				self:stopMusic(i)
+				self:playMusic(v.sound,i,(v.volume or 100),true,false)
+				printfd('Playing sound %s', i)
+			end,1000-(os.time()-startTime))
+		end
+		self.loopSoundsChanged=false
 	end
 end
 function Player:playSoundLoop(play) -- Play or stop the loop of instrument sounds
@@ -111,7 +121,7 @@ function Player:playSoundLoop(play) -- Play or stop the loop of instrument sound
         --self:updatePing()
         self:soundLoop()
         local ping=tfm.get.room.playerList[self.name].averageLatency
-        local loopTime=(loopLength-math.min(ping,5000))
+        local loopTime=(loopLength-math.min(ping,5000)) -- Only use ping if it's less than 5s
         self.loopTimer=system.newTimer(function() self:soundLoop() end,loopTime,true)
     end
 
@@ -134,6 +144,9 @@ function Player:pauseMusic(paused,displayOnly)
 
 
     if not displayOnly then
+		if paused then
+		    self.loopSoundsChanged=true
+		end
 		self.loopPaused=paused
 		self:playSoundLoop(not paused)
 		self:playSound('tfmadv/click.mp3',20)
