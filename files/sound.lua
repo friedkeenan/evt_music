@@ -30,7 +30,7 @@ function Player:stopMusic(channel,fadeOut)
     else
         self:playMusic('',channel,0,false,false)
     end
-    print('Stopped sound '..tostring(channel),self.name)
+    --print('Stopped sound '..tostring(channel),self.name)
 end
 function Player:stopMusicDelay(delay,channel)
     system.newTimer(function()

@@ -19,9 +19,9 @@ function eventNewGame()
 		})
 
 		--tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
-		system.newTimer(function()
-		    tfm.exec.playMusic('',0)
-		end,8000)
+		system.newTimer(function() -- Stop existing background music
+		    tfm.exec.stopMusic('musique')
+		end,1000)
 	else
 		return system.exit()
 	end

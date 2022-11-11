@@ -114,7 +114,18 @@ function Player:init(data, reset)
 
 	-- Init UI
 	if not reset then
-	    if #self:getCompletedMusicians()>0 then -- If player has completed any musicians
+	    local cm=self:getCompletedMusicians()
+	    if #cm>0 then -- If player has completed any musician
+			for i,v in pairs(cm) do
+			    --print(v)
+			    --print(npcList[v])
+			    --print(npcList[v].instrument)
+			    --print(npcList[v].instrument.sound)
+
+			    local soundName=npcList[v].instrument.sound
+			    self:setInstrumentSound(v,true) -- Add unlocked sounds to loop
+			end
+
 			self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 		end
 		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
@@ -595,9 +606,11 @@ end
 
 function Player:isMusicianCompleted(npcName)
     if npcName and self.progress[npcName] then
-        if self.progress[npcName]>1 then
-            return true
-        end
+        if npcList[npcName] and npcList[npcName].instrument then
+			if self.progress[npcName]>1 then
+				return true
+			end
+		end
     end
     return false
 end
