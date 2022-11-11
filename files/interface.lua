@@ -21,8 +21,8 @@ ui.addClickable = function(id, xPosition, yPosition, width, height, targetPlayer
 		targetPlayer,
 		xPosition, yPosition,
 		width, height,
-		0x8800FF, 0x8800ff,--0x0, 0x0,
-		0.15, fixedPos--0.0, fixedPos
+		0x0, 0x0,
+		0.0, fixedPos
 	)
 
 	return id
@@ -94,7 +94,7 @@ uiResources[0] = {
 uiResources[2] = {
 	[1] = setElement(
 		"image", "baseWin", 354, 689, 0, 0,
-		{image = "1845ebc67b7.png"}
+		{image = "18463fb570f.png"}
 	),
 	[2] = setElement(
 		"image", "closeBox", 20, 20, -160, 325,
@@ -117,6 +117,37 @@ uiResources[3] = {
 	),
 	[3] = setElement(
 		"textArea", "close", 25, 25, -145, 210,
+		{text = "<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>" .. ('\n'):rep(20), event="close"}
+	)
+}
+
+uiResources[4] = {
+	[1] = setElement(
+		"image", "baseWin", 135, 291, 0, 0,
+		{image = "184641eb74c.png"}
+	),
+	[2] = setElement(
+		"textArea", "title", 125, 281, 0, 0,
+		{container = true,
+		format = {
+			start = "<font face='Century Schoolbook,Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif' size='13.5' color='#f5e1ba' size='14'><b><p align='center'>",
+			enclose = "</p></b></font>"
+		}}
+	),
+	[3] = setElement(
+		"textArea", "default", 105, 275, 35, 0,
+		{container = true,
+		format = {
+			start = "<font face='Century Schoolbook,Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif' size='13.5' color='#f5e1ba' size='12'><p align='center'>",
+			enclose = "</p></font>"
+		}}
+	),
+	[4] = setElement(
+		"image", "closeBox", 20, 20, -60, 130,
+		{image = "1825fee8763.png"}
+	),
+	[5] = setElement(
+		"textArea", "close", 25, 25, -60, 130,
 		{text = "<textformat leftmargin='1' rightmargin='1'><a href='event:%s'>" .. ('\n'):rep(20), event="close"}
 	)
 }
@@ -171,7 +202,7 @@ uiCreateElement = function(id, order, target, element, text, xoff, yoff, alpha)
     local lhandle = {}
     lhandle.type = element.type
     if element.type == "image" then
-        local imgTarget = (element.foreground and '&' or ':') .. (5000 + id)
+        local imgTarget = (element.foreground and '&' or '~') .. (5000 + id)
         lhandle.id = tfm_exec_addImage(
             element.image, imgTarget,
             element.xcent + xoff, element.ycent + yoff,

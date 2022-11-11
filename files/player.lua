@@ -223,7 +223,7 @@ function Player:handleNear(x, y, vx, vy)
 
 	if self.onDialog then
 		local npc = self.onDialog.Npc
-		if math.distance(x, y, npc.x, npc.y) > 75 then
+		if self.onDialog.distHide and math.distance(x, y, npc.x, npc.y) > 75 then
 			self:closeDialog()
 		end
 	end
@@ -326,6 +326,7 @@ function Player:setSheet(npcName)
 			seeking.sheet = nil
 		elseif npcName then
 			seeking.sheet = npcList[npcName].instrument.keyName
+			self:showSheets(false)
 		end
 		
 		self:setIconDisplay({
@@ -439,6 +440,9 @@ function Player:hideTuning()
 	self.selectedNote=0
 	self.isTuning=false
 	self.finalNote=0
+	
+	tfm.exec.freezePlayer(self.name, false, false)
+	tfm.exec.setPlayerGravityScale(self.name, 1.0, 0)
 end
 function Player:showTuning(ins)
     if ins then
@@ -482,6 +486,7 @@ function Player:showTuning(ins)
 			        local y=topY+(yDistance*(note-1))
 					local c=noteColors[note]
 					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],(self.colorBlindMode and v[2] or 0x000001),1,true)
+					-- This line ^ crashes the module if the colorblind mode is enabled
 					--self.notesList[i]={id=102+i,x=x,y=y,color=c}
 					table.insert(self.notesList,{id=note,pos=i,tid=102+i,x=x,y=y,color=c})
 					self.finalNote=i
@@ -518,6 +523,11 @@ function Player:showTuning(ins)
 
 			self.currentTuning=tuning
 			self.isTuning=true
+			
+			tfm.exec.freezePlayer(self.name, true, false)
+			tfm.exec.setPlayerGravityScale(self.name, 0, 0)
+			local npcName = ins.keyName == "voice" and "diva" or ins.Npc
+			tfm.exec.movePlayer(self.name, npcList[npcName].xPosition, self.y, false, 0, 0, false)
 		else
 		    print(('Error: Add tuning for instrument %s'):format(ins.keyName))
 		    return
@@ -775,12 +785,12 @@ function Player:closeAllWindows()
 end
 
 
-function Player:newDialog(npcName, dialogId)
+function Player:newDialog(npcName, dialogId, noDist)
 	if self.onDialog then
 		self:closeDialog()
 	end
 
-	if self.showingPuzzle then return end
+	if self.showingPuzzle or self.isTuning then return end
 
     local Npc = npcList[npcName]
     local dialog = dialogId or self:getData(npcName) or 1
@@ -802,7 +812,8 @@ function Player:newDialog(npcName, dialogId)
 		finished = false,
 		completed = false,
 		pointer = 0,
-		sprite = Npc.dialogSprite
+		sprite = Npc.dialogSprite,
+		distHide = not noDist
     }
 
 	self:setDialogDisplay("new")
@@ -1148,6 +1159,9 @@ function Player:initPuzzle(display)
 	if display then
 		self:showPuzzle(true)
 	end
+	
+	tfm.exec.freezePlayer(self.name, true, false)
+	tfm.exec.movePlayer(self.name, npcList.diva.xPosition + 20, self.y, false, 0, 0, true)
 end
 
 function Player:deletePuzzle()
@@ -1156,6 +1170,8 @@ function Player:deletePuzzle()
 
 		self.puzzle = false
 	end
+	
+	tfm.exec.freezePlayer(self.name, false, false)
 end
 
 function Player:showPuzzle(show)
@@ -1204,8 +1220,8 @@ function Player:displayPuzzleTile(id, display)
 	end
 
 	if display then
-		if tl.id ~= 9 or self.puzzle.completed then
-			tl.imageId = tfm.exec.addImage(tl.sprite, ":2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, 1.0, 0, 0, false)
+		do--if tl.id ~= 9 or self.puzzle.completed then
+			tl.imageId = tfm.exec.addImage(tl.sprite, "~2", tl.dx, tl.dy, self.name, tl.scale, tl.scale, 0, tl.id == 9 and 0.33 or 1.0, 0, 0, false)
 		end
 		ui.addClickable(500 + id, tl.dx, tl.dy, tl.size, tl.size, self.name, "puzzle-" .. id, true)
 	end
@@ -1280,6 +1296,7 @@ function Player:movePuzzleTile(from, to)
 				self:setInstance(6)
 				Timer.new(2000, false, function()
 					self:deletePuzzle()
+					self:newDialog("diva", 4, true)
 				end)
 
 				tfm.exec.playSound("deadmaze/niveau/gain_niveau.mp3", 80, nil, nil, self.name)

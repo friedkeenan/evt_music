@@ -17,13 +17,19 @@ iconList = { -- Size: 120 x 120 px
 			local seeking = player.seekingInstrument
 
 			if seeking.onIt then
-				tfm.exec.chatMessage(('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2")), player.name)
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2"))}, player.name, 0, 0, 1.0, false)--tfm.exec.chatMessage(('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2")), player.name)
 			end
 		end
 	},
 	["sheet"] = {
 		image = "1846236bbc6.png",
-		callback = false
+		callback = function(player)
+			local seeking = player.seekingInstrument
+			
+			if seeking.sheet then
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=("<font size='14'><i>\"%s\"</i></font>"):format(translate("instruments " .. seeking.sheet .. " 1"))}, player.name, 0, 0, 1.0, false)
+			end
+		end
 	},
 	["tune"] = {
 		image = "184622f6a5d.png", -- piano
@@ -35,7 +41,11 @@ iconList = { -- Size: 120 x 120 px
 	},
 	["piano"] = {
 		image = "184622f6a5d.png",
-		callback = false
+		callback = function(player)
+			if player.isTuning then
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default = translate("instruct piano")}, player.name, 0, 0, 1.0, false)
+			end
+		end
 	},
 	["end"] = {
 		image = "184622f6a5d.png", -- piano

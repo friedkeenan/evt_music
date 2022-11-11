@@ -1,3 +1,5 @@
+local leftStop = false
+
 function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
@@ -23,6 +25,7 @@ function eventNewGame()
 end
 
 function eventTalkToNPC(playerName, npcName)
+	if leftStop then return end
 	system.openEventShop("evt_music", playerName)
 end
 
@@ -71,14 +74,30 @@ function eventLoop(elapsed, remaining)
 		end
 	end
 
-	if remaining < 0 then
-		--tfm.exec.chatMessage("system.exit()")
+	if remaining < 10000 then
+		if not debugMode then
+			if not leftStop then
+				for playerName, player in next, playerList do
+					tfm.exec.freezePlayer(playerName, true, true)
+				end
+			end
+			leftStop = true
+			
+			if remaining <= 0 then
+				-- Kill event
+			end
+		else
+			if remaining > 9000 then
+				tfm.exec.chatMessage("<R>WARNING !</R> <J>The event is on <r><b>debugMode</b></R>!!</J>")
+			end
+		end
 	end
 end
 
 function eventKeyboard(playerName, key, down, x, y, vx, vy)
+	if leftStop then return end
 	local player = playerList[playerName]
-
+	
 	if player then
 		player.keys[key] = down
 
@@ -143,15 +162,19 @@ end
 
 function eventMouse(playerName, x, y)
 	local player = playerList[playerName]
+	if leftStop then return end
 
 	if player then
 		if player.viewingInstruments then
 			player:showInstrumets(false)
+		elseif player.isTuning then
+			player:hideTuning()
 		end
 	end
 end
 
 function eventTextAreaCallback(textAreaId, playerName, eventName)
+	if leftStop then return end
 	local Window = textAreaHandle[textAreaId]
 	local player = playerList[playerName]
 
@@ -197,6 +220,7 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 end
 
 function eventWindowCallback(windowId, playerName, eventName)
+	if leftStop then return end
 	local player = playerList[playerName]
 	if eventName == "close" then
 		if windowId == 1 then
@@ -205,6 +229,8 @@ function eventWindowCallback(windowId, playerName, eventName)
 			player:showSheets(false)
 		elseif windowId == 12 then
 			player:deletePuzzle()
+		else
+			uiRemoveWindow(windowId, playerName)
 		end
 	end
 	-- ...
@@ -230,6 +256,7 @@ function eventWindowHide(windowId, playerName, Window)
 end
 
 function eventChatCommand(playerName, message)
+	if leftStop then return end
 	local player = playerList[playerName]
 
 	local args = {}
@@ -324,6 +351,8 @@ function eventChatCommand(playerName, message)
 			if Npc then
 				tfm.exec.movePlayer(playerName, Npc.xPosition, Npc.yPosition, false)
 			end
+		elseif command == "time" then
+			tfm.exec.setGameTime(args[1])
 		end
 	end
 	
