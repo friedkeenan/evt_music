@@ -22,7 +22,7 @@ local admins = {
 local styles = {}
 
 do
-	local p = print--function(a) tfm.exec.chatMessage(a, nil) end
+	local p = function(a) tfm.exec.chatMessage(a, nil) end
 	local tc = table.concat
 	local ts = tostring
 	print = function(...) -- Fixed :+1:
