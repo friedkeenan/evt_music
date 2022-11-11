@@ -1073,7 +1073,7 @@ function Player:npcInteraction(npcName, x, y, args)
 	local Npc = npcList[npcName]
 
 	if Npc then
-		if args then
+		if args and #args > 0 then
 			if npcName == "diva" then
 				if self.onDialog then
 					local pid = self.onDialog.pInf
