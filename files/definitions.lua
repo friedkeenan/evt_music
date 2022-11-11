@@ -17,7 +17,7 @@ iconList = { -- Size: 120 x 120 px
 			local seeking = player.seekingInstrument
 
 			if seeking.onIt then
-				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2"))}, player.name, 0, 0, 1.0, false)--tfm.exec.chatMessage(('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2")), player.name)
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=('<i>"%s"</i>'):format(translate("instruments " .. seeking.searchingName .. " 2", player.language))}, player.name, 0, 0, 1.0, false)--tfm.exec.chatMessage(('<i>"%s"</i>'):format(translate("instruments " .. seeking.instrumentName .. " 2")), player.name)
 			end
 		end
 	},
@@ -27,7 +27,7 @@ iconList = { -- Size: 120 x 120 px
 			local seeking = player.seekingInstrument
 			
 			if seeking.sheet then
-				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=("<font size='14'><i>\"%s\"</i></font>"):format(translate("instruments " .. seeking.sheet .. " 1"))}, player.name, 0, 0, 1.0, false)
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default=("<font size='14'><i>\"%s\"</i></font>"):format(translate("instruments " .. seeking.sheet .. " 1", player.language))}, player.name, 0, 0, 1.0, false)
 			end
 		end
 	},
@@ -62,7 +62,7 @@ noteColors = {
 	{0x1600FE,0xE8FE00}, -- B
 	{0x2FCD2E,0xCC2ECD}, -- A
 	{0xFF6500,0x009AFF}, -- G
-	{0xAE1601,0x0199AE}  -- F
+	{0xBE01BE,0x0199AE}  -- F -- Changed first color (original: 0xAE1601) because it's too similar to the 3rd one
 }
 --[[ Notes:
 
@@ -88,7 +88,7 @@ tuningList = {
     ["trumpet"] = {6,0,0,0,0,0,5,0,0,0,0,0,4,0,0,0,0,0,5,0,0,6,0,0},
     ["trombone"] = {0,6,6,0,5,5,0,4,4,0,4,4,0,4,4,0,4,4,0,5,5,0,6,6},
     ["tuba"] = {3,0,0,3,0,0,4,0,0,4,0,0,5,0,0,5,0,0,7,0,0,7,0,0},
-    ["euphonium"] = {0,0,0,0,0,0,0,0,0,1,0,2,3,0,0,0,0,2,3,0,0,2,0,0},
+    ["euphonium"] = {0,1,0,0,0,0,0,0,0,1,0,2,3,0,0,0,0,2,3,0,0,2,0,0},
 
     ["flute"] = {0,6,0,0,0,0,0,5,0,0,0,0,0,5,0,0,0,0,0,6,0,0,7,0},
     ["oboe"] = {2,0,0,3,0,6,2,0,0,1,0,5,7,0,1,2,0,1,3,0,0,0,0,0},
@@ -142,8 +142,8 @@ instrumentList = {
     ["euphonium"] = setInstrument("euphonium", "1840592475b.png", 59, 108, 148, 76, "euphonium"),
 
     ["flute"] = setInstrument("flute", "184058fe758.png", 163, 23, 80, 195, "flute"),
-    ["oboe"] = setInstrument("oboe", "184058dd358.png", 180, 33, 268, 185, "oboe"),
-    ["clarinet"] = setInstrument("clarinet", "1840591175d.png", 167, 30, 510, 133, "clarinet"),
+    ["oboe"] = setInstrument("oboe", "1840591175d.png", 180, 33, 268, 185, "oboe"), -- Barb reported that oboe and clarinet sprites
+    ["clarinet"] = setInstrument("clarinet", "184058dd358.png", 167, 30, 510, 133, "clarinet"), -- were swapped?
     ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "basoon"),
     ["saxophone"] = setInstrument("saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone"),
 

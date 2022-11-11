@@ -33,7 +33,10 @@ end
 
 function stringutils.getGendered(str, gender)
 	return str:gsub("%(.-%)", function(gcase)
-		local male, female, neutral = gcase:match("%((.-)|(.-)|(.-)%)") or gcase:match("%((.-)|(.-)%)")
+		local male, female, neutral = gcase:match("%((.-)|(.-)|(.-)%)")
+		if not male or female then
+			male, female = gcase:match("%((.-)|(.-)%)")
+		end
 
 		return ({male, female, neutral})[3 - gender] or male or gcase
 	end)

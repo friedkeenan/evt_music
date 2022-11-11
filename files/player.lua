@@ -6,6 +6,7 @@ function Player.new(name)
 	local tfmd = tfm.get.room.playerList[name]
 
 	self.language = tfmd.language or tfmd.community
+	self.gender = tfmd.gender
 
 	self.onWindow = {}
 	self.windowHandle = {
@@ -285,12 +286,16 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 	if instrument then
 		if not seeking.onIt then
 			seeking.onIt = true
-			seeking.instrumentName = instrumentName
+			seeking.instrumentName = nil
+			seeking.searchingName = instrumentName
 			seeking.holdingIt = holdOv or false
 			seeking.npcName = instrument.Npc
-			seeking.sprite = instrument.sprite
+			
 			seeking.tries = 3
 			seeking.spriteId = -1
+		else
+			seeking.sprite = instrument.sprite
+			seeking.instrumentName = instrumentName
 		end
 
 		self:setIconDisplay({
@@ -309,7 +314,7 @@ function Player:setInstrument(instrumentName, hold, hideShow, holdOv)
 		})
 
 		if hold then
-			self:holdInstrument()
+			self:holdInstrument(instrumentName)
 		end
 
 		if hideShow then
@@ -344,7 +349,7 @@ function Player:setSheet(npcName)
 			}
 		})
 
-		return seeking.sheet == seeking.instrumentName
+		return seeking.sheet == seeking.searchingName
 	end
 end
 
@@ -568,14 +573,16 @@ end
 
 function Player:onCorrectTuning()
 	local npcName = self.seekingInstrument.npcName
-	self:newDialog(npcName)
-	self:releaseInstrument()
-
-	self:pauseMusic(self.loopPaused,true) -- Display play/pause button
-
-	self:setData(npcName, 3, false)
-
-	self:getInstrumentsLeft()
+	local instrumentName = self.seekingInstrument.instrumentName
+	if self:getData("ins") == 7 then
+		self:setInstance(8)
+	else
+		self:setData(npcName, 3, true)
+		self:newDialog(npcName, 2)
+		self:releaseInstrument()
+		self:getInstrumentsLeft()
+		self:pauseMusic(self.loopPaused,true) -- Display play/pause button
+	end
 end
 
 function Player:getInstrumentsLeft()
@@ -597,12 +604,17 @@ function Player:getInstrumentsLeft()
 	return count
 end
 
-function Player:holdInstrument()
+function Player:holdInstrument(instrumentName)
 	local seeking = self.seekingInstrument
 
 	if seeking.holdingIt then
-		self:releaseInstrument()
+		self:releaseInstrument(true)
 	end
+	
+	local Ins = instrumentList[instrumentName]
+	
+	seeking.sprite = Ins.sprite 
+	seeking.instrumentName = instrumentName
 
 	self:setInstrumentHolding(true, self.isFacingRight, self.isMoving)
 
@@ -636,17 +648,23 @@ function Player:setInstrumentHolding(display, isFacingRight, isMoving)
 	end
 end
 
-function Player:releaseInstrument()
+function Player:releaseInstrument(onlyHold)
 	local seeking = self.seekingInstrument
+	onlyHold = not not onlyHold
+	
 	self:setInstrumentHolding(false)
 
 	seeking.holdingIt = false
-	seeking.onIt = false
 	seeking.instrumentName = nil
-	seeking.holdingIt = false
-	seeking.npcName = nil
 	seeking.sprite = nil
 	seeking.spriteId = -1
+	
+	if not onlyHold then
+		seeking.onIt = false
+		seeking.searchingName = nil
+		seeking.npcName = nil
+	end
+
 	seeking.tries = 0
 end
 
@@ -793,6 +811,7 @@ function Player:newDialog(npcName, dialogId, noDist)
 	if self.showingPuzzle or self.isTuning then return end
 
     local Npc = npcList[npcName]
+	if not Npc then return end
     local dialog = dialogId or self:getData(npcName) or 1
 
 	printfd("Dialog ID: %d\tLanguage: %s", dialog, self.language:upper())
@@ -964,7 +983,7 @@ function Player:onDialogFinished()
 			if Dialog.timerId then
 				Timer.remove(Dialog.timerId)
 			end
-			Dialog.timerId = Timer.new(2000, false, function()
+			Dialog.timerId = Timer.new(5000, false, function()
 				self:setDialogDisplay("next")
 			end)
 		end
@@ -990,7 +1009,7 @@ function Player:onDialogClosed(npcName, pid)
 		if pid == 1 then
 			self:setInstance(2)
 		elseif pid == 3 then
-			if self:getData("ins") == 3 then
+			if self:getData("ins") == 4 then
 				self:finishLevel(1)
 				self:setData("diva", 2)
 			end
@@ -1005,7 +1024,7 @@ function Player:onDialogClosed(npcName, pid)
 			self:setInstance(5)
 		elseif pid == 4 then
 			if self:getData("ins") == 6 then
-				self:finishLevel(3)
+				self:finishLevel(2)
 				self:setInstance(7)
 			end
 		end
@@ -1406,8 +1425,12 @@ function Player:setInstance(id)
 		})
 		self:setIconDisplay({{type = "def", active = false}})
 	elseif id == 3 then -- Instrument quest active
+		local mn
 		for i=1, 20 do
-			self:setData("m" .. i, 1) -- riddle
+			mn = "m" .. i
+			if self:getData(mn) ~= 3 then
+				self:setData(mn, 1) -- riddle
+			end
 		end
 
 		self:setData("diva", 1)
@@ -1456,6 +1479,13 @@ function Player:setInstance(id)
 		self:setData("diva", 0)
 		self:setData("cond", 0)
 		self:setIconDisplay({{type = "end", active = true}})
+		tfm.exec.playMusic("lua/music_event/final_track.mp3", "main", 80, false, true, self.name)
+		Timer.new(134000, false, function() -- For some reason this isn't working and it's not throwing any error
+			local player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
+			if player then
+				player:setInstance(10)
+			end
+		end)
 	end
 
 
@@ -1468,17 +1498,27 @@ end
 
 function Player:finishLevel(levelId)
 	levelId = levelId or self:getData("lev")
-
+	--[[
+	evt_music_orb
+evt_music_item
+evt_music_title_553
+evt_music_golden_ticket_5 x5
+evt_music_golden_ticket_25 x1
+evt_music_golden_ticket_50 x1
+shop: evt_music
+	]]
 	local pl = "le" .. levelId
 	if not self:getData(pl) then
 		if levelId == 1 then -- Instruments delivering & tuning
-			-- Rewards
+			system.giveEventGift(self.name, "evt_music_orb")
+			system.giveEventGift(self.name, "evt_music_golden_ticket_50")
 		elseif levelId == 2 then -- Diva's microphone fixing (puzzle)
-			-- ...
-			-- Reward
+			system.giveEventGift(self.name, "evt_music_item")
+			system.giveEventGift(self.name, "evt_music_golden_ticket_5")
+			system.giveEventGift(self.name, "evt_music_golden_ticket_5")
 		elseif levelId == 3 then -- Diva's performance (piano)
-			-- ...
-			-- Reward
+			system.giveEventGift(self.name, "evt_music_title")
+			system.giveEventGift(self.name, "evt_music_golden_ticket_25")
 		end
 
 		self:setData(pl, true)
@@ -1489,9 +1529,13 @@ function Player:finishLevel(levelId)
 	end
 
 	if self:getData("lev") >= 4 then -- Event has been completed
-		local times = self:getData("times") + 1
-
-		self:setData("times", times, false)
+		local times = self:getData("times")
+		if times >= 1 then
+			for i=1, 3 do
+				system.giveEventGift(self.name, "evt_music_golden_ticket_5")
+			end
+		end
+		self:setData("times", times + 1, false)
 
 		self:resetAllData()
 	end

@@ -1,8 +1,9 @@
 do
-	room.lanugage = tfm.get.room.language
+	local welcome = styles.chat:format(translate("hey 1", room.language))
 	
 	for playerName, playerData in next, tfm.get.room.playerList do
 		eventNewPlayer(playerName)
+		tfm.exec.chatMessage(stringutils.getGendered(welcome, playerData.gender), playerName)
 	end
 	
 	-- Fast loop
@@ -17,8 +18,6 @@ do
 			end, interval, true)
 		end, interval + (diftime * i), false)
 	end
-	
-	tfm.exec.chatMessage(styles.chat:format(translate("hey 1", room.language, 0)))
 end
 
 tfm.exec.newGame(xml, false)

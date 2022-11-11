@@ -2,10 +2,12 @@ if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not 
 	return system.exit()
 end
 
-local debugMode = true
+local debugMode = false
 local isEventLoaded = false
 
 system.disableChatCommandDisplay(nil)
+
+system.luaEventLaunchInterval(50, 10)
 
 local admins = {
 	["Indexinel#5948"] = true,
@@ -34,7 +36,13 @@ do
 	end
 
 	printfd = function(str, ...)
-		print(("[Debug] %s"):format(str:format(...)))
+		print(".")--("[Debug] %s"):format(str:format(...)))
+	end
+	
+	if debugMode then
+		system.giveEventGift = function(playerName, giftCode)
+			tfm.exec.chatMessage(("%s has received '%s'"):format(playerName, giftCode))
+		end
 	end
 end
 
@@ -86,5 +94,13 @@ local playerKeys = {
 	[52] = true, -- 4
 	[53] = true, -- 5
 	[54] = true, -- 6
-	[55] = true  -- 7
+	[55] = true, -- 7
+	
+	[97] = true, -- N1
+	[98] = true, -- N2
+	[99] = true, -- N3
+	[100] = true, -- N4
+	[101] = true, -- N5
+	[102] = true, -- N6
+	[103] = true, -- N7
 }

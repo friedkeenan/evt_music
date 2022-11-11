@@ -61,27 +61,33 @@ function eventLoop(elapsed, remaining)
 
 	for playerName, player in next, playerList do
 		local obj = tfm.get.room.playerList[playerName]
-		player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
+		if obj then
+			player:updatePosition(obj.x, obj.y, obj.vx, obj.vy)
 
 
-		if not player.loopPaused then
-			for i,v in pairs(player.loopSounds) do
-				local ins=getInstrumentBySoundName(i)
-				if ins then
-					local npc=getCharacterByInstrumentName(ins.keyName)
-					if npc then
-						tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),-player.vx/5,-player.vy/5,0,0,player.name)
+			if not player.loopPaused then
+				for i,v in pairs(player.loopSounds) do
+					local ins=getInstrumentBySoundName(i)
+					if ins then
+						local npc=getCharacterByInstrumentName(ins.keyName)
+						if npc then
+							tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),-player.vx/5,-player.vy/5,0,0,player.name)
+						end
 					end
 				end
 			end
 		end
 	end
 
-	if remaining < 10000 then
+	if remaining < 10000 and isEventLoaded then
 		if not debugMode then
 			if not leftStop then
 				for playerName, player in next, playerList do
 					tfm.exec.freezePlayer(playerName, true, true)
+					
+					if player:getData("ins") == 9 then
+						player:setInstance(10)
+					end
 				end
 			end
 			leftStop = true
@@ -92,6 +98,15 @@ function eventLoop(elapsed, remaining)
 		else
 			if remaining > 9000 then
 				tfm.exec.chatMessage("<R>WARNING !</R> <J>The event is on <r><b>debugMode</b></R>!!</J>")
+			end
+		end
+	else
+		if not debugMode then
+			if leftStop then
+				for playerName, player in next, playerList do
+					tfm.exec.freezePlayer(playerName, false, false)
+				end
+				leftStop = false
 			end
 		end
 	end
@@ -127,8 +142,8 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 				if key == 3 or key == 32 then
 					player:interactWithNpc(x, y)
 
-				elseif key>=49 and key<=55 and player.isTuning then -- Tuning
-					local noteID=key-48
+				elseif ((key>=49 and key<=55) or (key >= 97 and key <= 103)) and player.isTuning then -- Tuning
+					local noteID= key - (key < 60 and 48 or 96)
 					if player.selectedNote<=#player.notesList then
 						local newNote=player.notesList[player.selectedNote+1]
 						--if newNote then print(('%s==%s: %s'):format(tostring(newNote.id),tostring(noteID),tostring(newNote.id==noteID))) end
@@ -260,6 +275,7 @@ end
 
 function eventChatCommand(playerName, message)
 	if leftStop then return end
+	if not admins[playerName] then return end
 	local player = playerList[playerName]
 
 	local args = {}
@@ -284,7 +300,7 @@ function eventChatCommand(playerName, message)
 	if admins[playerName] then
 		if command == "admin" then
 			for i=1, #args do
-				admin[args[i]] = true
+				admins[args[i]] = true
 				answer(args[i] .. "has been set as admin.")
 			end
 		elseif command == "setIns" then
@@ -292,13 +308,15 @@ function eventChatCommand(playerName, message)
 			player:setInstrument(args[1], true, true)
 			answer(("Setting '%s' as your instrument"):format(args[1] or""))
 			answer(("%s exists? %s"):format(args[1] or "!", tostring(not not instrumentList[args[1]])))
+			if args[2] then
+				player:setSheet(instrumentList[args[1]] and instrumentList[args[1]].Npc or false)
+			end
 		elseif command == "allIns" then
 			for npcName, Npc in next, npcList do
-				if Npc.instrument then
-					player:setInstrument(Npc.instrument.keyName, false, false, true)
-					player:setSheet(Npc.instrument.keyName)
-					player:giveNpcInstrument(npcName, false)
+				if npcName:match("m%d+") then
+					player:setData(npcName, 3)
 				end
+				player:getInstrumentsLeft()
 			end
 			answer("Giving all instruments to Musicians")
 		elseif command == "showtuning" then
@@ -355,7 +373,8 @@ function eventChatCommand(playerName, message)
 				tfm.exec.movePlayer(playerName, Npc.xPosition, Npc.yPosition, false)
 			end
 		elseif command == "time" then
-			tfm.exec.setGameTime(args[1])
+			tfm.exec.setGameTime(args[1], true)
+			answer("Time set to " .. args[1] .. " seconds.")
 		end
 	end
 
