@@ -6,7 +6,7 @@ function eventNewGame()
 
         ui.setMapName(styles.chat:format(translate("title", room.language)))
 		ui.setBackgroundColor("#201200")
-        tfm.exec.setGameTime(150)
+        tfm.exec.setGameTime(183)
 
 		tfm.exec.addNPC("Dulce", {
 			title = 126,
