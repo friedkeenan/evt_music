@@ -81,7 +81,6 @@ function Player:init(data, reset)
 	if data then
 		local moduleData = dataHan.getModuleData(data, "MUS")
 		self.progress = dataHan.decodeData(moduleData)
-		printt(self.progress)
 		self.dataFile = data
 	end
 
@@ -124,10 +123,7 @@ end
 function Player:saveData()
 	local data = dataHan.encodeData(self.progress)
 	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
-
-	print(self.dataFile)
-	printt(self.progress)
-
+	
 	system.savePlayerData(self.name, self.dataFile)
 end
 

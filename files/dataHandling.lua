@@ -29,7 +29,7 @@ do
 			end
 		end
 		
-		print(table.concat({newData, data, str, oldModuleData}, "\n"))
+		--print(table.concat({newData, data, str, oldModuleData}, "\n"))
 		
 		return newData, data, str, oldModuleData
 	end
