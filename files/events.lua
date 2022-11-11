@@ -155,7 +155,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 							player:playSound('deadmaze/journal_ouverture.mp3')
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
-								tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
+								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
 								player:playMusicLength(beatLength*(6*player.tuningStage),player.tuningIns.sound,100,100,false,false)
 
 								if player.tuningStage<4 then

@@ -72,6 +72,8 @@ function Player.new(name)
 		self.keys[keyId] = false
 	end
 
+	uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
+
 	return self
 end
 
@@ -376,8 +378,6 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 			if success then
 				if self:setSheet() then
-
-					tfm.exec.chatMessage("tune here", self.name)
 					-- This was causing a crash so I changed it to pass the table
 					self:showTuning(Musician.instrument)
 					-- Call onCorrectTuning() if the player tunes correctly
