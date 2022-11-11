@@ -22,7 +22,7 @@ local fileList = {
     [12] = "start"
 }
 
-local releaseMode = true
+local releaseMode = false
 
 local fileTable = {}
 local File
