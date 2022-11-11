@@ -589,9 +589,9 @@ function Player:onCorrectTuning()
 	end
 end
 
-function Player:isMusicianCompleted(npc)
-    if npc and self.progress[npc.keyName] then
-        if self.progress[npc.keyName]>1 then
+function Player:isMusicianCompleted(npcName)
+    if npcName and self.progress[npcName] then
+        if self.progress[npcName]>1 then
             return true
         end
     end
@@ -599,17 +599,17 @@ function Player:isMusicianCompleted(npc)
 end
 function Player:isInstrumentCompleted(insName)
     local npc=getCharacterByInstrumentName(insName)
-    return self:isMusicianCompleted(npc)
+    local npcName=(npc and npc.keyName)
+	return self:isMusicianCompleted(npcName)
 end
 function Player:getCompletedMusicians()
-    print('getCompletedMusicians')
     local t={}
     for i,v in pairs(npcList) do
         if self:isMusicianCompleted(i) then
             table.insert(t,i)
         end
     end
-    print(t)
+    printt(t)
     return t
 end
 
@@ -1507,7 +1507,7 @@ function Player:setInstance(id)
 		self:setData("diva", 0)
 		self:setData("cond", 0)
 		self:setIconDisplay({{type = "end", active = true}})
-		tfm.exec.playMusic("lua/music_event/final_track.mp3", "main", 80, false, true, self.name)
+		self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
 		Timer.new(134000, false, function() -- For some reason this isn't working and it's not throwing any error
 			local player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
 			if player then
