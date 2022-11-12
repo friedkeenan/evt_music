@@ -142,7 +142,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 				if key == 3 or key == 32 then
 					player:interactWithNpc(x, y)
 
-				elseif ((key>=49 and key<=55) or (key >= 97 and key <= 103)) and player.isTuning then -- Tuning
+				elseif ((key>=49 and key<=55) or (key >= 97 and key <= 103)) and player.isTuning and not player.isHearingTuning then -- Tuning
 					local noteID= key - (key < 60 and 48 or 96)
 					if player.selectedNote<=#player.notesList then
 						local newNote=player.notesList[player.selectedNote+1]
@@ -155,6 +155,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 							player:playSound('deadmaze/journal_ouverture.mp3')
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
+								player.isHearingTuning = true
 								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
 								local length=beatLength*(6*player.tuningStage)
 								player:playMusicLength(length,player.tuningIns.sound,100,100,false,false)
@@ -166,6 +167,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 									if player.tuningStage<4 then
 										player.tuningStage=player.tuningStage+1
 										player:showTuning(player.tuningIns)
+										player.isHearingTuning = false
 									else -- Finished tuning
 										player:hideTuning()
 										player:onCorrectTuning()

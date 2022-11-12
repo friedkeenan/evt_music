@@ -731,7 +731,7 @@ function Player:showInstruments(show)
 
 			local counter = 100
 			for instrumentName, Ins in next, instrumentList do
-				if instrumentName ~= "voice" then
+				if instrumentName ~= "voice" and instrumentName ~= "piano" then
 					counter = counter + 1
 					self.viewingInstruments[counter] = counter
 					ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
@@ -785,7 +785,7 @@ function Player:showSheets(show)
 			local counter = 0
 			local instruments = translate("instruments", self.language, nil)
 			for instrumentName, Ins in next, instrumentList do
-				if instrumentName ~= "voice" then
+				if instrumentName ~= "voice" and instrumentName ~= "piano" then
 					counter = counter + 1
 					self.viewingSheets[counter] = counter
 					if not self.sheetCoords[instrumentName] then
@@ -1130,7 +1130,7 @@ function Player:npcInteraction(npcName, x, y, args)
 
 				if success == nil then
 					if seeking.onIt and Npc.instrument then
-						if seeking.instrumentName == Npc.instrument.keyName then
+						if seeking.searchingName == Npc.instrument.keyName then
 							self:newDialog(npcName, 1)
 						else
 							self:newDialog(npcName, 0)
