@@ -129,6 +129,11 @@ function Player:init(data, reset)
 		end
 		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
 	end
+	
+	if self:getData("times") >= 2 then
+		system.giveEventGift(self.name, "evt_music_title_553")
+		--tfm.exec.chatMessage("o/", self.name)
+	end
 end
 
 function Player:saveData()
@@ -1567,7 +1572,7 @@ shop: evt_music
 			system.giveEventGift(self.name, "evt_music_golden_ticket_5")
 			system.giveEventGift(self.name, "evt_music_golden_ticket_5")
 		elseif levelId == 3 then -- Diva's performance (piano)
-			system.giveEventGift(self.name, "evt_music_title")
+			system.giveEventGift(self.name, "evt_music_title_553")
 			system.giveEventGift(self.name, "evt_music_golden_ticket_25")
 		end
 
@@ -1580,7 +1585,7 @@ shop: evt_music
 
 	if self:getData("lev") >= 4 then -- Event has been completed
 		local times = self:getData("times")
-		if times >= 1 then
+		if times > 2 then
 			for i=1, 3 do
 				system.giveEventGift(self.name, "evt_music_golden_ticket_5")
 			end
