@@ -142,8 +142,8 @@ instrumentList = {
     ["euphonium"] = setInstrument("euphonium", "1840592475b.png", 59, 108, 148, 76, "euphonium"),
 
     ["flute"] = setInstrument("flute", "184058fe758.png", 163, 23, 80, 195, "flute"),
-    ["oboe"] = setInstrument("oboe", "1840591175d.png", 180, 33, 268, 185, "oboe"), -- Barb reported that oboe and clarinet sprites
-    ["clarinet"] = setInstrument("clarinet", "184058dd358.png", 167, 30, 510, 133, "clarinet"), -- were swapped?
+    ["oboe"] = setInstrument("oboe", "184058dd358.png", 180, 33, 268, 185, "oboe"), -- They weren't swapped lol
+    ["clarinet"] = setInstrument("clarinet", "1840591175d.png", 167, 30, 510, 133, "clarinet"),
     ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "basoon"),
     ["saxophone"] = setInstrument("saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone"),
 
