@@ -74,3 +74,28 @@ function Character:giveInstrument(instrumentName)
     printfd("Ins name: %s - self instrument: %s", instrumentName, self.instrument.keyName)
     return instrumentName == self.instrument.keyName
 end
+
+function Character:displayInstrument(playerName)
+    local ins = self.instrument
+    local scale = 0.4
+
+    tfm.exec.addImage(
+        ins.sprite, "_100",
+        self.xPosition + ins.cx, self.yPosition + ins.cy,
+        playerName,
+        scale * (ins.mir and -1 or 1), scale,
+        ins.rr, 1.0,
+        0.5 * (ins.mir and -1 or 1), 0.5,
+        true
+    )
+    
+    local player = playerList[playerName]
+    
+    if player then
+        if player.scoreTablesId then
+            tfm.exec.removeImage(player.scoreTablesId, false)
+        end
+        
+        player.scoreTablesId = tfm.exec.addImage("1846cc561de.png", "_101", 258, 530, playerName, 1.0, 1.0, 0, 1.0, 0, 0, false)
+    end
+end

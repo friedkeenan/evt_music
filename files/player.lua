@@ -88,9 +88,16 @@ function Player:init(data, reset)
 
 	do -- Sets musicias to default
 		local index
+		local Musician
 		for i=1, 20 do
 			index = ("m%d"):format(i)
 			self.progress[index] = self.progress[index] or 1
+			
+			Musician = npcList[index]
+			
+			if self.progress[index] > 1 then
+				Musician:displayInstrument(self.name)
+			end
 		end
 	end
 
@@ -130,6 +137,9 @@ function Player:init(data, reset)
 			self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 		end
 		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
+		Timer.new(3000, false, function()
+			uiRemoveWindow(-1, self.name)
+		end)
 	end
 	
 	if self:getData("times") >= 2 then
@@ -602,6 +612,7 @@ function Player:onCorrectTuning()
 		self:setInstance(8)
 	else
 		self:setData(npcName, 3, true)
+		npcList[npcName]:displayInstrument(self.name)
 		self:newDialog(npcName, 2)
 		self:releaseInstrument()
 		self:getInstrumentsLeft()
@@ -801,7 +812,7 @@ function Player:showSheets(show)
 
 					ui.addTextArea(
 						750 + counter,
-						styles.refdlg:format(Ins.Npc .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format(instruments[instrumentName][1])),
+						styles.refdlg:format((Ins.Npc or "m0") .. "-sheet", ("<font size='14'><p align='center'>%s</p></font>"):format((instruments[instrumentName] or {})[1] or "Null")),
 						self.name,
 						ta.x, ta.y,
 						150, 0,
@@ -927,6 +938,9 @@ function Player:setDialogDisplay(instruction)
 			Dialog.pointer = Dialog.pointer + 1
 			if Dialog.pointer <= #Text then
 				Dialog.currentText = Text[Dialog.pointer] or "..."
+				if (self.language == "ar") or (self.language == "he") then
+					Dialog.currentText = reverseWords(Dialog.currentText, true)
+				end
 				Dialog.displayText = "..."
 				Dialog.lenght = Dialog.currentText:len()
 				Dialog.cursor = 1
@@ -1092,7 +1106,7 @@ function Player:npcInteraction(npcName, x, y, args)
 	local Npc = npcList[npcName]
 
 	if Npc then
-		if args and #args > 0 then
+		if args and args[1] then
 			if npcName == "diva" then
 				if self.onDialog then
 					local pid = self.onDialog.pInf

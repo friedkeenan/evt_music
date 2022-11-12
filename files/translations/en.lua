@@ -95,7 +95,7 @@ Text["en"] = {
 		},
 		musician = {
 			name = "Musician",
-			[-2] = {"I can't tune my instrument with this score."}, -- It's a musical sheet. Dialog said when the player gives the wrong sheet to the musician.
+			[-2] = {"I can't tune my instrument without the right score."}, -- It's a musical sheet. Dialog said when the player gives the wrong sheet to the musician.
 			[-1] = {"Err... This is not my instrument."}, -- When the player tries to give the instrument to the wrong musician
 			[0] = {"..."},
 			[2] = {"I am ready for the concert!"}, -- When the player gives the correct instrument to the musician

@@ -1,5 +1,5 @@
 do
-	local welcome = styles.chat:format(translate("hey 1", room.language))
+	local welcome = styles.chat:format(translate("hey 1", tfm.get.room.community))
 	
 	for playerName, playerData in next, tfm.get.room.playerList do
 		eventNewPlayer(playerName)

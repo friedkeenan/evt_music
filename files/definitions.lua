@@ -105,7 +105,7 @@ tuningList = {
     ["voice"] = {7,0,0,1,0,6,7,0,0,1,0,2,1,2,3,2,0,4,3,0,0,2,0,0}
 }
 
-local setInstrument = function(instrumentName, sprite, width, height, xw, yw, sound)
+local setInstrument = function(instrumentName, sprite, width, height, xw, yw, sound, xc, yc, mirrored, rotation)
 	local self = {}
 	self.keyName = instrumentName
 
@@ -124,34 +124,39 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw, so
 
 	self.tdx = xw or 0
 	self.tdy = yw or 0
+	
+	self.cx = xc or 0
+	self.cy = yc or 0
+	self.rr = math.rad(rotation or 0)
+	self.mir = not not mirrored
 
 	return self
 end
 
 instrumentList = {
-    ["timpani"] = setInstrument("timpani", "184058f9b56.png", 225, 77, 516, 203, "timpani"),
-    ["cymbals"] = setInstrument("cymbals", "184058f4f5b.png", 81, 88, 233, 99, "cymbals"),
-    ["tubular_bells"] = setInstrument("tubular_bells", "1844edc325a.png", 100, 108, 353, 259, "tubular_bells"),
-    ["vibraphone"] = setInstrument("vibraphone", "1840592df5f.png", 147, 90, 602, 279, "vibraphone"),
-    ["marimba"] = setInstrument("marimba", "18405932b5c.png", 171, 76, 446, 284, "marimba"),
+    ["timpani"] = setInstrument("timpani", "184058f9b56.png", 225, 77, 516, 203, "timpani", 20, -2, false),
+    ["cymbals"] = setInstrument("cymbals", "184058f4f5b.png", 81, 88, 233, 99, "cymbals", 31, -25, true),
+    ["tubular_bells"] = setInstrument("tubular_bells", "1844edc325a.png", 100, 108, 353, 259, "tubular_bells", -15, -5, false),
+    ["vibraphone"] = setInstrument("vibraphone", "1840592df5f.png", 147, 90, 602, 279, "vibraphone", 20, -3, false),
+    ["marimba"] = setInstrument("marimba", "18405932b5c.png", 171, 76, 446, 284, "marimba", 0, 0, false),
 
-    ["horn"] = setInstrument("horn", "1840590335b.png", 93, 78, 326, 101, "french_horn"),
-    ["trumpet"] = setInstrument("trumpet", "1840591fb5b.png", 175, 55, 224, 50, "trumpets"),
-    ["trombone"] = setInstrument("trombone", "1840591af5b.png", 140, 41, 464, 71, "trombones"),
-    ["tuba"] = setInstrument("tuba", "1840592935c.png", 69, 125, 80, 65, "tuba"),
-    ["euphonium"] = setInstrument("euphonium", "1840592475b.png", 59, 108, 148, 76, "euphonium"),
+    ["horn"] = setInstrument("horn", "1840590335b.png", 93, 78, 326, 101, "french_horn", 20, -10, true, 270),
+    ["trumpet"] = setInstrument("trumpet", "1840591fb5b.png", 175, 55, 224, 50, "trumpets", 60, -23, false, 12),
+    ["trombone"] = setInstrument("trombone", "1840591af5b.png", 140, 41, 464, 71, "trombones", -5, -28, true, -12),
+    ["tuba"] = setInstrument("tuba", "1840592935c.png", 69, 125, 80, 65, "tuba", -15, -30, false, -15),
+    ["euphonium"] = setInstrument("euphonium", "1840592475b.png", 59, 108, 148, 76, "euphonium", -10, -28, false, -15),
 
-    ["flute"] = setInstrument("flute", "184058fe758.png", 163, 23, 80, 195, "flute"),
-    ["oboe"] = setInstrument("oboe", "184058dd358.png", 180, 33, 268, 185, "oboe"), -- They weren't swapped lol
-    ["clarinet"] = setInstrument("clarinet", "1840591175d.png", 167, 30, 510, 133, "clarinet"),
-    ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "bassoon"),
-    ["saxophone"] = setInstrument("saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone"),
+    ["flute"] = setInstrument("flute", "184058fe758.png", 163, 23, 80, 195, "flute", 0, -20, false, -15),
+    ["oboe"] = setInstrument("oboe", "1840591175d.png", 167, 30, 510, 133, "oboe", 37, 0, false, 70),
+    ["clarinet"] = setInstrument("clarinet", "184058dd358.png", 180, 33, 268, 185, "clarinet", 36, 3, false, 70),
+    ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "bassoon", -8, -17, true),
+    ["saxophone"] = setInstrument("saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone", -20, -3, true),
 
-    ["violin"] = setInstrument("violin", "184058f0358.png", 35, 90, 82, 269, "violins"),
-    ["viola"] = setInstrument("viola", "184058eb758.png", 49, 134, 296, 233, "violas"),
-    ["cello"] = setInstrument("cello", "184058e6b59.png", 55, 158, 133, 231, "cellos"),
-    ["bass"] = setInstrument("bass", "184058e1f5c.png", 79, 199, 203, 196, "basses"),
-    ["harp"] = setInstrument("harp", "1840590cb58.png", 91, 136, 647, 60, "harp"),
+    ["violin"] = setInstrument("violin", "184058f0358.png", 35, 90, 82, 269, "violins", 38, -25, false, 100),
+    ["viola"] = setInstrument("viola", "184058eb758.png", 49, 134, 296, 233, "violas", 38, -25, false, 100),
+    ["cello"] = setInstrument("cello", "184058e6b59.png", 55, 158, 133, 231, "cellos", 0, -22, false, 10),
+    ["bass"] = setInstrument("bass", "184058e1f5c.png", 79, 199, 203, 196, "basses", -10, -20, false, 10),
+    ["harp"] = setInstrument("harp", "1840590cb58.png", 91, 136, 647, 60, "harp", 31, -17),
 
     ["voice"] = setInstrument("voice", nil, nil, nil, nil, nil, "voice"),
     ["piano"] = setInstrument("piano", nil, nil, nil, nil, nil, "piano")

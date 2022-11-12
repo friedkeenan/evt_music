@@ -25,7 +25,7 @@ Text["fr"] = {
 		["violin"] 		= {"Violon", 		"Avec mon instrument, je pouvais être le second de tout l'orchestre."}, -- Male
 		["viola"] 		= {"Alto", 		"Mon instrument est le féminin d'un quatuor à cordes."}, -- Female
 		["cello"] 		= {"Violoncelle", 		"Je joue de mon instrument entre mes jambes."}, -- Female
-		["bass"] 		= {"Guitare basse", 			"Mon instrument à cordes est plus grand que vous."}, -- Male
+		["bass"] 		= {"Contrebasse", 			"Mon instrument à cordes est plus grand que vous."}, -- Male
 		["harp"] 		= {"Harpe", 			"Il paraît que les anges jouent aussi de mon instrument."} -- Neutral
 	},
 	npcDialogs = {

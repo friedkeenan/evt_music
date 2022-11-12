@@ -83,8 +83,8 @@ function eventLoop(elapsed, remaining)
 			end
 		end
 	end
-
-	if remaining < 10000 and isEventLoaded then
+	local timeMargin = 5000
+	if remaining < timeMargin and isEventLoaded then
 		if not debugMode then
 			if not leftStop then
 				for playerName, player in next, playerList do
@@ -101,7 +101,7 @@ function eventLoop(elapsed, remaining)
 				-- Kill event
 			end
 		else
-			if remaining > 9000 then
+			if remaining > (timeMargin - 1000) then
 				tfm.exec.chatMessage("<R>WARNING !</R> <J>The event is on <r><b>debugMode</b></R>!!</J>")
 			end
 		end
@@ -235,7 +235,9 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			end
 		elseif eventCommand == "instrumentWindow" then
 			if player:getData("ins") == 3 then
-				player:showInstruments()
+				do -- if player.seekingInstrument.onIt then
+					player:showInstruments()
+				end
 			end
 		elseif eventCommand == "sheetsWindow" then
 			if player.seekingInstrument.holdingIt and player:getData("ins") == 3 then

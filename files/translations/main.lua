@@ -1,3 +1,22 @@
+local reverseWords = function(text, reversePunctuation)
+	local aux = {}
+	local str = {}
+
+	for word in text:gmatch("%S+") do
+		if reversePunctuation then
+			word = word:gsub("(%P+)(%p+)", "%2%1")
+		end
+		aux[#aux + 1] = word
+	end
+
+	for i=#aux, 1, -1 do
+		str[#str + 1] = aux[i]
+	end
+
+	return table.concat(str, " ")
+end
+
+
 local Text = {}
 local translate
 translate = function(resource, language, gender, _format)
