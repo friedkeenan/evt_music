@@ -144,7 +144,7 @@ instrumentList = {
     ["flute"] = setInstrument("flute", "184058fe758.png", 163, 23, 80, 195, "flute"),
     ["oboe"] = setInstrument("oboe", "184058dd358.png", 180, 33, 268, 185, "oboe"), -- They weren't swapped lol
     ["clarinet"] = setInstrument("clarinet", "1840591175d.png", 167, 30, 510, 133, "clarinet"),
-    ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "basoon"),
+    ["bassoon"] = setInstrument("bassoon", "184058d86df.png", 94, 133, 426, 137, "bassoon"),
     ["saxophone"] = setInstrument("saxophone", "1840591635b.png", 92, 116, 391, 59, "saxophone"),
 
     ["violin"] = setInstrument("violin", "184058f0358.png", 35, 90, 82, 269, "violins"),
