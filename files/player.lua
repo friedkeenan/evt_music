@@ -388,7 +388,14 @@ function Player:giveNpcInstrument(npcName, showDialog)
 		printfd("on it")
 		if seeking.holdingIt then
 			printfd("holding it")
-			local success = Musician:giveInstrument(seeking.instrumentName)
+			local success = false
+			if seeking.instrumentName == seeking.searchingName then
+				if Musician:giveInstrument(seeking.instrumentName) then
+					success = true
+				end
+			end
+			
+			print(seeking.instrumentName, seeking.searchingName)
 
 			if success then
 				if self:setSheet() then

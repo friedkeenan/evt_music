@@ -178,6 +178,10 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 	end
 end
 
+function eventPlayerLeft(playerName)
+	playerList[playerName] = nil
+end
+
 function eventMouse(playerName, x, y)
 	local player = playerList[playerName]
 	if leftStop then return end
@@ -302,6 +306,16 @@ function eventChatCommand(playerName, message)
 			for i=1, #args do
 				admins[args[i]] = true
 				answer(args[i] .. "has been set as admin.")
+			end
+		elseif command == "join" then
+			if not player then
+				playerList[playerName] = Player.new(playerName)
+				system.loadPlayerData(playerName)
+				tfm.exec.respawnPlayer(playerName)
+				
+				answer("Joining to the event...")
+			else
+				answer("You already exist")
 			end
 		elseif command == "setIns" then
 			player:releaseInstrument()

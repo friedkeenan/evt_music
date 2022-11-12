@@ -2,7 +2,7 @@ if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not 
 	return system.exit()
 end
 
-local debugMode = true
+local debugMode = false
 local isEventLoaded = false
 
 system.disableChatCommandDisplay(nil)
