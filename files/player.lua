@@ -593,6 +593,8 @@ function Player:selectNote(noteID,hideOthers)
 end
 
 function Player:onCorrectTuning()
+    self.tuningStage=1
+
 	local npcName = self.seekingInstrument.npcName
 	local instrumentName = self.seekingInstrument.instrumentName
 	if self:getData("ins") == 7 then
