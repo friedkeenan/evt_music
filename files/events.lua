@@ -156,20 +156,23 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
 								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
-								player:playMusicLength(beatLength*(6*player.tuningStage),player.tuningIns.sound,100,100,false,false)
-
-								if player.tuningStage<4 then
-									player.tuningStage=player.tuningStage+1
-									player:showTuning(player.tuningIns)
-								else -- Finished tuning
-								    player:hideTuning()
-									player:onCorrectTuning()
-								end
+								local length=beatLength*(6*player.tuningStage)
+								player:playMusicLength(length,player.tuningIns.sound,100,100,false,false)
+								system.newTimer(function()
+									if player.tuningStage<4 then
+										player.tuningStage=player.tuningStage+1
+										player:showTuning(player.tuningIns)
+									else -- Finished tuning
+										player:hideTuning()
+										player:onCorrectTuning()
+									end
+								end,length+500)
 							end
 						else -- Wrong note
 							player:playSound('cite18/boule-acier.mp3')
 							player:playSound('x_impact_joueur_2.mp3',50)
-							player:selectNote()
+							player:selectNote(1,true) -- Hide notes except first
+							player:selectNote() -- Deselect first note
 						end
 					end
 				end
@@ -312,7 +315,7 @@ function eventChatCommand(playerName, message)
 				playerList[playerName] = Player.new(playerName)
 				system.loadPlayerData(playerName)
 				tfm.exec.respawnPlayer(playerName)
-				
+
 				answer("Joining to the event...")
 			else
 				answer("You already exist")

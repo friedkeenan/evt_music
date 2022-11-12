@@ -134,7 +134,7 @@ end
 function Player:saveData()
 	local data = dataHan.encodeData(self.progress)
 	self.dataFile = dataHan.setModuleData(self.dataFile, "MUS", data)
-	
+
 	system.savePlayerData(self.name, self.dataFile)
 end
 
@@ -394,7 +394,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 					success = true
 				end
 			end
-			
+
 			print(seeking.instrumentName, seeking.searchingName)
 
 			if success then
@@ -564,7 +564,7 @@ function Player:selectNote(noteID,hideOthers)
     if self.selectedNote>0 then -- Deselect current note
         local note=self.notesList[self.selectedNote]
         if note then
-			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,note.color[1],note.color[2],1,true)
+			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,note.color[1],(self.colorBlindMode and note.color[2] or 0x000001),1,true)
 			self.selectedNote=0
 
 		else
@@ -909,7 +909,7 @@ function Player:setDialogDisplay(instruction)
 				self.name
 			) -- Update text
 
-			tfm.exec.playSound("transformice/son/fleche.mp3", 80, nil, nil, self.name) -- tfmadv/sel.mp3
+			self:playSound("transformice/son/fleche.mp3", 80) -- tfmadv/sel.mp3
 
 			if Dialog.finished then
 				self:onDialogFinished()
@@ -1319,10 +1319,10 @@ function Player:selectPuzzleTile(id)
 
 			if okMove then
 				if self:movePuzzleTile(old, id) then
-					tfm.exec.playSound("cite18/bouton1.mp3", 80, nil, nil, self.name)
+					self:playSound("cite18/bouton1.mp3", 80)
 					self.puzzle.selected = nil
 				else
-					tfm.exec.playSound("transformice/son/dash.mp3", 80, nil, nil, self.name)
+					self:playSound("transformice/son/dash.mp3", 80)
 				end
 			end
 		end
@@ -1366,7 +1366,7 @@ function Player:movePuzzleTile(from, to)
 					self:newDialog("diva", 4, true)
 				end)
 
-				tfm.exec.playSound("deadmaze/niveau/gain_niveau.mp3", 80, nil, nil, self.name)
+				self:playSound("deadmaze/niveau/gain_niveau.mp3", 80)
 			end
 
 			return true
