@@ -158,6 +158,10 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
 								local length=beatLength*(6*player.tuningStage)
 								player:playMusicLength(length,player.tuningIns.sound,100,100,false,false)
+
+								if player.tuningIns.keyName=='voice' then -- If voice, accompany with piano
+								    player:playMusicLength(length,instrumentList['piano'].sound,101,100,false,false)
+								end
 								system.newTimer(function()
 									if player.tuningStage<4 then
 										player.tuningStage=player.tuningStage+1

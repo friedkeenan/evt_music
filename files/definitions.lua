@@ -154,6 +154,7 @@ instrumentList = {
     ["harp"] = setInstrument("harp", "1840590cb58.png", 91, 136, 647, 60, "harp"),
 
     ["voice"] = setInstrument("voice", nil, nil, nil, nil, nil, "voice"),
+    ["piano"] = setInstrument("piano", nil, nil, nil, nil, nil, "piano")
 }
 
 
