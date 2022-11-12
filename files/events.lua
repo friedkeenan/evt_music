@@ -76,6 +76,11 @@ function eventLoop(elapsed, remaining)
 					end
 				end
 			end
+			if player.finalePlaying then
+				for i,npc in pairs(npcList) do
+					tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),-player.vx/5,-player.vy/5,0,0,player.name)
+				end
+			end
 		end
 	end
 

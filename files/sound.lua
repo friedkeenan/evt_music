@@ -15,6 +15,7 @@ Stop a playing music.
 ]]
 
 function Player:playMusic(music,channel,volume,loop,fade)
+    tfm.exec.stopMusic('musique')
     tfm.exec.playMusic(music,channel,volume,loop,fade,self.name)
 end
 function Player:playMusicDelay(delay,music,channel,volume,loop,fade)
@@ -125,22 +126,25 @@ function Player:playSoundLoop(play) -- Play or stop the loop of instrument sound
         self.loopTimer=system.newTimer(function() self:soundLoop() end,loopTime,true)
     end
 
-    print(self.name..': '..(play and 'play' or 'pause'))
+    --print(self.name..': '..(play and 'play' or 'pause'))
 end
 
 
 function Player:pauseMusic(paused,displayOnly)
-    print(('pauseMusic(%s,%s)'):format(tostring(paused),tostring(displayOnly)))
+    --print(('pauseMusic(%s,%s)'):format(tostring(paused),tostring(displayOnly)))
     if self.pauseImg then
        -- ui.removeTextArea(-1,self.name)
         --tfm.exec.removeImage(self.pauseImg,true)
         ui.removeClickableImage(self.pauseImg,true)
         self.pauseImg=nil
     end
-    local sprite = (paused and '184360be1e4.png' or '1843612f382.png')
-    --self.pauseButtonID = tfm.exec.addImage(sprite,'~1',0,25,self.name,1,1,0,1,0,0,true)
-    --ui.addTextArea(-1,'<a href="event:toggle_pause">    \n    </a>',self.name,0,25,35,35,nil,nil,0.5,true)
-    self.pauseImg=ui.addClickableImage(sprite,'~1',self.name,35,35,'toggle_pause',0,25,1,1,1,true)
+
+    if paused~=nil then
+		local sprite = (paused and '184360be1e4.png' or '1843612f382.png')
+		--self.pauseButtonID = tfm.exec.addImage(sprite,'~1',0,25,self.name,1,1,0,1,0,0,true)
+		--ui.addTextArea(-1,'<a href="event:toggle_pause">    \n    </a>',self.name,0,25,35,35,nil,nil,0.5,true)
+		self.pauseImg=ui.addClickableImage(sprite,'~1',self.name,35,35,'toggle_pause',0,25,1,1,1,true)
+	end
 
 
     if not displayOnly then

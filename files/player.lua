@@ -54,6 +54,8 @@ function Player.new(name)
 	self.loopPaused=true
 	self.pauseImg=nil
 
+	self.finalePlaying=false
+
 
 	self.isFacingRight = true
 	self.isMoving = false
@@ -154,21 +156,15 @@ function Player:getData(key)
 	return self.progress[key]
 end
 
-function Player:setVignette(coverage, adjustment, fadeIn)
+function Player:setVignette(coverage, scale, fadeIn)
 	coverage = coverage or 1
 	adjustment = adjustment or 0
 
 	local old = self.vignetteId or -1
 
-	local xscale = 1 -- 4
-	local yscale = xscale + (xscale * adjustment)
-
-	local xanchor = xscale / 2
-	local yanchor = (yscale / 2) - adjustment
-
 	-- local pulse = false  (self.currentMap == 1 and (math.random(1,4) == 1) or false)
 
-	self.vignetteId = tfm.exec.addImage("183b987c56f.png", "~1", 400, 200, self.name, xscale, yscale, 0, coverage, xanchor, yanchor, fadeIn)
+	self.vignetteId = tfm.exec.addImage("183b987c56f.png", "~1", 400, 200, self.name, scale, scale, 0, coverage, 0.5, 0.5, fadeIn)
 
 	tfm.exec.removeImage(old, fadeIn)
 end
@@ -1154,6 +1150,7 @@ function Player:npcInteraction(npcName, x, y, args)
 end
 
 function Player:interactWithNpc(x, y)
+    if self.finalePlaying then return end
 	x = x or self.x
 	y = y or self.y
 	for npcName, Npc in next, npcList do
@@ -1534,13 +1531,32 @@ function Player:setInstance(id)
 		self:setData("diva", 0)
 		self:setData("cond", 0)
 		self:setIconDisplay({{type = "end", active = true}})
-		self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
-		Timer.new(134000, false, function() -- For some reason this isn't working and it's not throwing any error
-			local player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
-			if player then
-				player:setInstance(10)
-			end
-		end)
+		self:setVignette(nil,4,true)
+
+		system.newTimer(function()
+			--self:playSound("lua/music_event/final_track.mp3",100)
+			self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
+			self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
+			self.finalePlaying=true
+			self:pauseMusic(true) -- Pause music
+			self:pauseMusic(nil,true) -- Hide pause button
+			tfm.exec.setPlayerGravityScale(self.name,0)
+			tfm.exec.movePlayer(self.name,600,600)
+			system.newTimer(function()
+			    tfm.exec.killPlayer(self.name)
+			end,500)
+			Timer.new(100000, false, function() -- For some reason this isn't working and it's not throwing any error
+				local player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
+				if player then
+					player:setInstance(10)
+					self.finalePlaying=false
+					self:removeVignette(true)
+
+					tfm.exec.setPlayerGravityScale(self.name)
+					tfm.exec.respawnPlayer(self.name)
+				end
+			end)
+		end,2000)
 	end
 
 
