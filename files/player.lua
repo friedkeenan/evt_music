@@ -92,9 +92,9 @@ function Player:init(data, reset)
 		for i=1, 20 do
 			index = ("m%d"):format(i)
 			self.progress[index] = self.progress[index] or 1
-			
+
 			Musician = npcList[index]
-			
+
 			if self.progress[index] > 1 then
 				Musician:displayInstrument(self.name)
 			end
@@ -141,7 +141,7 @@ function Player:init(data, reset)
 			uiRemoveWindow(-1, self.name)
 		end)
 	end
-	
+
 	if self:getData("times") >= 2 then
 		system.giveEventGift(self.name, "evt_music_title_553")
 		--tfm.exec.chatMessage("o/", self.name)
@@ -520,7 +520,7 @@ function Player:showTuning(ins)
 			    if note>0 then
 			        local y=topY+(yDistance*(note-1))
 					local c=noteColors[note]
-					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],(self.colorBlindMode and v[2] or 0x000001),1,true)
+					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],(self.colorBlindMode and c[2] or 0x000001),1,true)
 					-- This line ^ crashes the module if the colorblind mode is enabled
 					--self.notesList[i]={id=102+i,x=x,y=y,color=c}
 					table.insert(self.notesList,{id=note,pos=i,tid=102+i,x=x,y=y,color=c})

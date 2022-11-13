@@ -295,8 +295,9 @@ end
 
 function eventChatCommand(playerName, message)
 	if leftStop then return end
-	if not admins[playerName] then return end
+	--if not admins[playerName] then return end
 	local player = playerList[playerName]
+	if not player then return end
 
 	local args = {}
 	local val
