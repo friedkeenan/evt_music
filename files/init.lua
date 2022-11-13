@@ -7,7 +7,7 @@ local isEventLoaded = false
 
 system.disableChatCommandDisplay(nil)
 
-system.luaEventLaunchInterval(50, 10)
+system.luaEventLaunchInterval(45, 10)
 
 local admins = {
 	["Indexinel#5948"] = true,

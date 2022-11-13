@@ -19,9 +19,9 @@ function eventNewGame()
 		})
 
 		--tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
-		system.newTimer(function() -- Stop existing background music
+		Timer.new(1000, false, function() -- Stop existing background music
 		    tfm.exec.stopMusic('musique')
-		end,1000)
+		end)
 	else
 		return system.exit()
 	end
@@ -168,16 +168,20 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 								if player.tuningIns.keyName=='voice' then -- If voice, accompany with piano
 								    player:playMusicLength(length,instrumentList['piano'].sound,101,100,false,false)
 								end
-								system.newTimer(function()
-									if player.tuningStage<4 then
-										player.tuningStage=player.tuningStage+1
-										player:showTuning(player.tuningIns)
-										player.isHearingTuning = false
-									else -- Finished tuning
-										player:hideTuning()
-										player:onCorrectTuning()
+								Timer.new(length + 300, false, function(playerName)
+									local _player = playerList[playerName]
+									if _player then
+										if _player.tuningStage<4 then
+											_player.tuningStage=_player.tuningStage+1
+											_player:showTuning(_player.tuningIns)
+										else -- Finished tuning
+											_player:hideTuning()
+											_player:onCorrectTuning()
+										end
+										
+										_player.isHearingTuning = false
 									end
-								end,length+500)
+								end, player.name)
 							end
 						else -- Wrong note
 							player:playSound('cite18/boule-acier.mp3')
@@ -214,10 +218,12 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 	local Window = textAreaHandle[textAreaId]
 	local player = playerList[playerName]
 
+	print(eventName)
 	local args = {}
 	for arg in eventName:gmatch("[^%-]+") do
 		args[#args + 1] = tonumber(arg) or arg
 	end
+	printt(args)
 
 	local eventCommand = table.remove(args, 1)
 

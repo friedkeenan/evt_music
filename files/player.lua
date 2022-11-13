@@ -1033,6 +1033,8 @@ function Player:onDialogFinished()
 					ts, ts,
 					0.4, true
 				)
+				
+				
 			end
 
 			ui.addTextArea(
@@ -1044,6 +1046,8 @@ function Player:onDialogFinished()
 				ts, ts,
 				0.4, true
 			)
+			
+			print("[Debug] Dialog Npc key: " .. Dialog.Npc.key)
 		else
 			if Dialog.timerId then
 				Timer.remove(Dialog.timerId)
@@ -1547,30 +1551,32 @@ function Player:setInstance(id)
 		self:setIconDisplay({{type = "end", active = true}})
 		self:setVignette(nil,4,true)
 
-		system.newTimer(function()
+		Timer.new(2000, false, function(playerName)
+			local player = playerList[playerName]
+			if not player then return end
 			--self:playSound("lua/music_event/final_track.mp3",100)
-			self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
-			self:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
-			self.finalePlaying=true
-			self:pauseMusic(true) -- Pause music
-			self:pauseMusic(nil,true) -- Hide pause button
-			tfm.exec.setPlayerGravityScale(self.name,0)
-			tfm.exec.movePlayer(self.name,600,600)
-			system.newTimer(function()
-			    tfm.exec.killPlayer(self.name)
-			end,500)
-			Timer.new(100000, false, function() -- For some reason this isn't working and it's not throwing any error
-				local player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
-				if player then
-					player:setInstance(10)
-					self.finalePlaying=false
-					self:removeVignette(true)
-
-					tfm.exec.setPlayerGravityScale(self.name)
-					tfm.exec.respawnPlayer(self.name)
-				end
+			player:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
+			player:playMusic("lua/music_event/final_track.mp3","main",100,false,false)
+			player.finalePlaying=true
+			player:pauseMusic(true) -- Pause music
+			player:pauseMusic(nil,true) -- Hide pause button
+			tfm.exec.setPlayerGravityScale(player.name,0)
+			tfm.exec.movePlayer(player.name,600,600)
+			Timer.new(500, false, function()
+			    tfm.exec.killPlayer(playerName)
 			end)
-		end,2000)
+			Timer.new(100000, false, function(playerName) -- For some reason this isn't working and it's not throwing any error
+				local _player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
+				if _player then
+					_player:setInstance(10)
+					_player.finalePlaying=false
+					_player:removeVignette(true)
+
+					tfm.exec.setPlayerGravityScale(playerName)
+					tfm.exec.respawnPlayer(playerName)
+				end
+			end, playerName)
+		end, self.name)
 	end
 
 
