@@ -4,7 +4,7 @@ function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
 
-        ui.setMapName(styles.chat:format(translate("title", room.language)))
+        ui.setMapName(styles.chat:format(translate("title", tfm.get.room.community)))
 		ui.setBackgroundColor("#201200")
         tfm.exec.setGameTime(183)
 
@@ -304,7 +304,7 @@ function eventChatCommand(playerName, message)
 	if leftStop then return end
 	--if not admins[playerName] then return end
 	local player = playerList[playerName]
-	if not player then return end
+	if not player and not admins[playerName] then return end -- If player doesn't exist and the player isn't on admin list (just so we can use !join)
 
 	local args = {}
 	local val
