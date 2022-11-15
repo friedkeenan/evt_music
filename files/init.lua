@@ -69,6 +69,8 @@ local npcList = {}
 local room = {}
 local instrumentList = {}
 
+local mapSize=1200
+
 local Player = {}
 Player.__index = Player
 

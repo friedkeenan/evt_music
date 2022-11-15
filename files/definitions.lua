@@ -58,10 +58,10 @@ beatLength=484 -- in MS
 noteColors = {
 	{0xE4FAFE,0x4C4544}, -- E
 	{0xFEFF00,0x0100FF}, -- D
-	{0xFF0100,0x00FEFF}, -- C
+	{0xFF0040,0x00FFBF}, -- C
 	{0x1600FE,0xE8FE00}, -- B
 	{0x2FCD2E,0xCC2ECD}, -- A
-	{0xFF6500,0x009AFF}, -- G
+	{0xFF9000,0x006FFF}, -- G
 	{0xBE01BE,0x0199AE}  -- F -- Changed first color (original: 0xAE1601) because it's too similar to the 3rd one
 }
 --[[ Notes:
@@ -124,7 +124,7 @@ local setInstrument = function(instrumentName, sprite, width, height, xw, yw, so
 
 	self.tdx = xw or 0
 	self.tdy = yw or 0
-	
+
 	self.cx = xc or 0
 	self.cy = yc or 0
 	self.rr = math.rad(rotation or 0)

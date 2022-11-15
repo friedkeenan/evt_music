@@ -81,6 +81,16 @@ function eventLoop(elapsed, remaining)
 					tfm.exec.displayParticle(33,npc.xPosition,(npc.yPosition-55),-player.vx/5,-player.vy/5,0,0,player.name)
 				end
 			end
+			if player.sheetMusicPlaying then
+			    local startY=0
+			    local count=9
+			    local distance=(350/count)
+			    local coords=player:screenSpaceToWorld(400,startY)
+			    for i=1,count do
+				    tfm.exec.displayParticle(33,(coords.x-215),coords.y+(distance*i),0,0,0,0,player.name)
+				    tfm.exec.displayParticle(33,(coords.x+205),coords.y+(distance*i),0,0,0,0,player.name)
+				end
+			end
 		end
 	end
 	local timeMargin = 5000
@@ -148,7 +158,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 				if key == 3 or key == 32 then
 					player:interactWithNpc(x, y)
 
-				elseif ((key>=49 and key<=55) or (key >= 97 and key <= 103)) and player.isTuning and not player.isHearingTuning then -- Tuning
+				elseif ((key>=49 and key<=55) or (key >= 97 and key <= 103)) and player.isTuning and not player.sheetMusicPlaying then -- Tuning
 					local noteID= key - (key < 60 and 48 or 96)
 					if player.selectedNote<=#player.notesList then
 						local newNote=player.notesList[player.selectedNote+1]
@@ -161,7 +171,10 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 							player:playSound('deadmaze/journal_ouverture.mp3')
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
-								player.isHearingTuning = true
+								player.sheetMusicPlaying=true
+								Timer.new(500,false,function()
+								    player:selectNote() -- Deselect note
+								end)
 								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
 								local length=beatLength*(6*player.tuningStage)
 								player:playMusicLength(length,player.tuningIns.sound,100,100,false,false)
@@ -180,7 +193,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 											_player:onCorrectTuning()
 										end
 
-										_player.isHearingTuning = false
+										_player.sheetMusicPlaying=false
 									end
 								end, player.name)
 							end
@@ -361,8 +374,10 @@ function eventChatCommand(playerName, message)
 			if #args==1 and instrumentList[args[1]] then
 				player:showTuning(instrumentList[args[1]])
 			else
-				player:showTuning()
+				player:hideTuning()
 			end
+		elseif command == "particles" then
+			player.sheetMusicPlaying=not player.sheetMusicPlaying
 		elseif command == "selectnote" then
 			if #args==1 and tonumber(args[1]) then
 				player:selectNote(args[1])

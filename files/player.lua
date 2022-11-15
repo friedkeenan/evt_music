@@ -55,6 +55,7 @@ function Player.new(name)
 	self.pauseImg=nil
 
 	self.finalePlaying=false
+	self.sheetMusicPlaying=false
 
 
 	self.isFacingRight = true
@@ -493,8 +494,8 @@ function Player:showTuning(ins)
 		self.tuningIns=ins
 
 		-- Bottom bar
-		local bMargin=10
-		local bx=bMargin/2
+		local bMargin=8
+		local bx=(bMargin/2)
 		local bCount=#noteColors
 		local bWidth=800/(bCount)-bMargin
 		local bHeight=(bWidth/4)
@@ -586,7 +587,7 @@ function Player:selectNote(noteID,hideOthers)
     if noteID then
 		local note=self.notesList[noteID]
 		if note then
-			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,0xFFFFFF,0x000001,1,true)
+			ui.addTextArea(note.tid,'',self.name,note.x,note.y,0,0,0x000001,0xDDDDDD,1,true)
 			self.selectedNote=noteID
 
 			if hideOthers then
@@ -1645,3 +1646,17 @@ function Player:updatePing()
     tfm.exec.addBonus(0, self.x, self.y, -1, 0, false, self.name)
 end
 ]]
+
+function Player:screenSpaceToWorld(x,y)
+    if self.x>400 and self.x<(mapSize-400) then
+        x=x+(self.x-400)
+    elseif self.x>=(mapSize-400) then
+        x=(mapSize-800)+x
+    end
+    if self.y>200 and self.y<(mapSize-200) then
+        y=y+(self.y-200)
+    elseif self.y>=(mapSize-200) then
+        y=(mapSize-400)+y
+    end
+    return {x=x,y=y}
+end
