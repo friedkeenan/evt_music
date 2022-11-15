@@ -37,7 +37,10 @@ do
 	end
 
 	printfd = function(str, ...)
-		print(".")--("[Debug] %s"):format(str:format(...)))
+		local ok, res = pcall(function(str, ...)
+			print(("[Debug] %s"):format(str:format(...)))
+		end, str, ...)
+		if not ok then print(res) end
 	end
 
 	if debugMode then

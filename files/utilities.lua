@@ -157,7 +157,7 @@ function Timer.handle()
 						setRemoved(timer)
 					end
 				else
-					printf("[Timer #%d] %s", timer.uniqueId, result)
+					printfd("[Timer #%d] %s", timer.uniqueId, result)
 
 					setRemoved(timer)
 				end
