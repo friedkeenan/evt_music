@@ -35,7 +35,8 @@ Text["en"] = {
 		["viola"] 		= {"Viola", 		"My instrument is the female member of a string quartet."}, -- Female
 		["cello"] 		= {"Cello", 		"I play my instrument between my legs."}, -- Female
 		["bass"] 		= {"Bass", 			"My stringed instrument is taller than you."}, -- Male
-		["harp"] 		= {"Harp", 			"Supposedly, angels also play my instrument."} -- Neutral
+		["harp"] 		= {"Harp", 			"Supposedly, angels also play my instrument."}, -- Neutral
+		["voice"]		= {"Voice", 		""}
 	},
 	npcDialogs = {
 		-- YES. Some of the dialogues are duplicated. That's on purpose.

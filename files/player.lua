@@ -455,6 +455,7 @@ function Player:giveNpcInstrument(npcName, showDialog)
 end
 
 function Player:hideTuning()
+	ui.removeTextArea(99, self.name)
     ui.removeTextArea(101,self.name)
     for i=1,#noteColors do
 		ui.removeTextArea(200+i,self.name)
@@ -489,8 +490,10 @@ function Player:showTuning(ins)
         end
 
 		self.tuningImg=tfm.exec.addImage('1845bf63716.png','~100',400,225,self.name,1,1,0,1,0.5,0.5)
-		local insName=getFormattedKey(ins.keyName)
+		local insName=translate("instruments " .. (ins.keyName or "") .. " 1", self.language)
 		ui.addTextArea(101,('<p align="center"><font face="Baskerville,Baskerville Old Face,Hoefler Text,Garamond,Times New Roman,serif" color="#948C86" size="50"><U>%s</U></font></p>'):format(insName),self.name,400-(335/2),30,335,60,nil,nil,0,true)
+		
+		ui.addTextArea(99, styles.refdlg:format("hideTuning", ("<font size='24' color='#6b6560'>%s</font>"):format("X")), self.name, 568, 25, 0, 0, 0x0, 0x0, 1.0, true)
 		self.tuningIns=ins
 
 		-- Bottom bar
@@ -522,7 +525,7 @@ function Player:showTuning(ins)
 			        local y=topY+(yDistance*(note-1))
 					local c=noteColors[note]
 					ui.addTextArea(102+i,'',self.name,x,y,0,0,c[1],(self.colorBlindMode and c[2] or 0x000001),1,true)
-					-- This line ^ crashes the module if the colorblind mode is enabled
+
 					--self.notesList[i]={id=102+i,x=x,y=y,color=c}
 					table.insert(self.notesList,{id=note,pos=i,tid=102+i,x=x,y=y,color=c})
 					self.finalNote=i
@@ -1569,12 +1572,12 @@ function Player:setInstance(id)
 			player:pauseMusic(true) -- Pause music
 			player:pauseMusic(nil,true) -- Hide pause button
 			tfm.exec.setPlayerGravityScale(player.name,0)
-			tfm.exec.movePlayer(player.name,600,600)
+			tfm.exec.movePlayer(player.name,597,660)
 			Timer.new(500, false, function()
 			    tfm.exec.killPlayer(playerName)
 			end)
-			Timer.new(100000, false, function(playerName) -- For some reason this isn't working and it's not throwing any error
-				local _player = playerList[self.name] -- There's a workaround in eventLoop, however it would be nice to work here too
+			Timer.new(95000, false, function(playerName) -- Edit: hopefully changing the time should fix it
+				local _player = playerList[playerName]
 				if _player then
 					_player:setInstance(10)
 					_player.finalePlaying=false

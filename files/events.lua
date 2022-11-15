@@ -6,7 +6,7 @@ function eventNewGame()
 
         ui.setMapName(styles.chat:format(translate("title", tfm.get.room.community)))
 		ui.setBackgroundColor("#201200")
-        tfm.exec.setGameTime(183)
+        tfm.exec.setGameTime(213) -- 3:30 (+ 3s)
 
 		tfm.exec.addNPC("Dulce", {
 			title = 126,
@@ -19,6 +19,7 @@ function eventNewGame()
 		})
 
 		--tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
+		tfm.exec.stopMusic('musique')
 		Timer.new(1000, false, function() -- Stop existing background music
 		    tfm.exec.stopMusic('musique')
 		end)
@@ -100,9 +101,9 @@ function eventLoop(elapsed, remaining)
 				for playerName, player in next, playerList do
 					tfm.exec.freezePlayer(playerName, true, true)
 
-					if player:getData("ins") == 9 then
+					--[[if player:getData("ins") == 9 then
 						player:setInstance(10)
-					end
+					end]]
 				end
 			end
 			leftStop = true
@@ -273,6 +274,8 @@ function eventTextAreaCallback(textAreaId, playerName, eventName)
 			end
 		elseif eventCommand == "icon" then
 			iconList[args[1]].callback(player)
+		elseif eventCommand == "hideTuning" then
+			player:hideTuning()
 		end
 	end
 end
