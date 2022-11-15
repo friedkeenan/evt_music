@@ -99,6 +99,7 @@ function eventLoop(elapsed, remaining)
 
 			if remaining <= 0 then
 				-- Kill event
+				system.exit()
 			end
 		else
 			if remaining > (timeMargin - 1000) then
@@ -178,7 +179,7 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 											_player:hideTuning()
 											_player:onCorrectTuning()
 										end
-										
+
 										_player.isHearingTuning = false
 									end
 								end, player.name)
@@ -391,8 +392,12 @@ function eventChatCommand(playerName, message)
 			player:resetAllData()
 			answer("Data removed")
 		elseif command == "instance" then
-			player:setInstance(args[1])
-			answer("Instance set as " ..  (args[1] or "?"))
+		    if args[1]~=nil then
+				player:setInstance(args[1])
+				answer("Instance set as " ..  (args[1] or "?"))
+			else
+			    answer("Instance: "..tostring(player:getData("ins") or "?"))
+			end
 		elseif command == "ping" then
 			answer(tostring(tfm.get.room.playerList[player.name].averageLatency))
 		elseif command == "sheets" then

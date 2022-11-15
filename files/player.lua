@@ -137,7 +137,7 @@ function Player:init(data, reset)
 			self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 		end
 		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
-		Timer.new(3000, false, function()
+		Timer.new(5000, false, function()
 			uiRemoveWindow(-1, self.name)
 		end)
 	end
@@ -1033,8 +1033,8 @@ function Player:onDialogFinished()
 					ts, ts,
 					0.4, true
 				)
-				
-				
+
+
 			end
 
 			ui.addTextArea(
@@ -1046,7 +1046,7 @@ function Player:onDialogFinished()
 				ts, ts,
 				0.4, true
 			)
-			
+
 			print("[Debug] Dialog Npc key: " .. Dialog.Npc.key)
 		else
 			if Dialog.timerId then

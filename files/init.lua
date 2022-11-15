@@ -3,6 +3,7 @@ if (tfm.get.room.uniquePlayers < 5 or tfm.get.room.uniquePlayers > 60) and (not 
 end
 
 local debugMode = false
+local printToChat = false
 local isEventLoaded = false
 
 system.disableChatCommandDisplay(nil)
@@ -22,7 +23,7 @@ local admins = {
 local styles = {}
 
 do
-	local p = function(a) tfm.exec.chatMessage(a, nil) end
+	local p = (printToChat and (function(a) tfm.exec.chatMessage(a, nil) end) or print)
 	local tc = table.concat
 	local ts = tostring
 	print = function(...) -- Fixed :+1:
@@ -51,7 +52,7 @@ tfm.exec.disableAutoShaman(true)
 tfm.exec.disableAutoTimeLeft(true)
 tfm.exec.disableMinimalistMode(true)
 tfm.exec.disableMortCommand(true)
-tfm.exec.disableAutoNewGame(debugMode)
+tfm.exec.disableAutoNewGame(true)
 tfm.exec.disablePhysicalConsumables(true)
 
 local currentTime = os.time
