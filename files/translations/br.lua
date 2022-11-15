@@ -112,6 +112,4 @@ Text["br"] = {
 	}
 }
 
--- Don't include the text after this line
-Text["xx"] = Text["en"]
-Text["int"] = Text["xx"]
+Text["pt"] = Text["br"]

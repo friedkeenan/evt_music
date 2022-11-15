@@ -1053,7 +1053,7 @@ function Player:onDialogFinished()
 			if Dialog.timerId then
 				Timer.remove(Dialog.timerId)
 			end
-			Dialog.timerId = Timer.new(5000, false, function()
+			Dialog.timerId = Timer.new(4000, false, function()
 				self:setDialogDisplay("next")
 			end)
 		end
@@ -1136,6 +1136,13 @@ function Player:npcInteraction(npcName, x, y, args)
 					self:closeDialog()
 				elseif args[1] == "sheet" then
 					self:setSheet(npcName)
+				end
+			end
+			
+			if self.onDialog then
+				if args[1] ~= "sheet" then
+					tfm.exec.chatMessage(("Error: Unexpected argument: %s-%s"):format(tostring(npcName), tostring(args[1])), self.name)
+					self:closeDialog()
 				end
 			end
 		else
