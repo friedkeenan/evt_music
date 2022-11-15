@@ -172,28 +172,28 @@ function eventKeyboard(playerName, key, down, x, y, vx, vy)
 
 							if newNote.pos==player.finalNote then -- Finished tuning stage
 								player.sheetMusicPlaying=true
-								Timer.new(500,false,function()
-								    player:selectNote() -- Deselect note
-								end)
-								--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
-								local length=beatLength*(6*player.tuningStage)
-								player:playMusicLength(length,player.tuningIns.sound,100,100,false,false)
+								Timer.new(500,false,function(playerName)
+								    local _player = playerList[playerName]
+								    if _player then
+										_player:selectNote() -- Deselect note
+										--tfm.exec.chatMessage(('Tuning stage %s complete'):format(player.tuningStage),player.name)
+										local length=beatLength*(6*_player.tuningStage)
+										_player:playMusicLength(length,_player.tuningIns.sound,100,100,false,false)
 
-								if player.tuningIns.keyName=='voice' then -- If voice, accompany with piano
-								    player:playMusicLength(length,instrumentList['piano'].sound,101,100,false,false)
-								end
-								Timer.new(length + 300, false, function(playerName)
-									local _player = playerList[playerName]
-									if _player then
-										if _player.tuningStage<4 then
-											_player.tuningStage=_player.tuningStage+1
-											_player:showTuning(_player.tuningIns)
-										else -- Finished tuning
-											_player:hideTuning()
-											_player:onCorrectTuning()
+										if _player.tuningIns.keyName=='voice' then -- If voice, accompany with piano
+											_player:playMusicLength(length,instrumentList['piano'].sound,101,100,false,false)
 										end
+										Timer.new(length + 300, false, function()
+											if _player.tuningStage<4 then
+												_player.tuningStage=_player.tuningStage+1
+												_player:showTuning(_player.tuningIns)
+											else -- Finished tuning
+												_player:hideTuning()
+												_player:onCorrectTuning()
+											end
 
-										_player.sheetMusicPlaying=false
+											_player.sheetMusicPlaying=false
+										end)
 									end
 								end, player.name)
 							end

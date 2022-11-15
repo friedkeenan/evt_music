@@ -137,7 +137,7 @@ function Player:init(data, reset)
 
 			self:pauseMusic(self.loopPaused,true) -- Display play/pause button
 		end
-		uiAddWindow(-1,5,{title="",default=""},nil,0,0,1.0,false) -- Show "music on" notice
+		uiAddWindow(-1,5,{title="",default=""},self.name,0,0,1.0,false) -- Show "music on" notice
 		Timer.new(5000, false, function()
 			uiRemoveWindow(-1, self.name)
 		end)
@@ -1138,7 +1138,7 @@ function Player:npcInteraction(npcName, x, y, args)
 					self:setSheet(npcName)
 				end
 			end
-			
+
 			if self.onDialog then
 				if args[1] ~= "sheet" then
 					tfm.exec.chatMessage(("Error: Unexpected argument: %s-%s"):format(tostring(npcName), tostring(args[1])), self.name)
@@ -1660,9 +1660,9 @@ function Player:screenSpaceToWorld(x,y)
     elseif self.x>=(mapSize-400) then
         x=(mapSize-800)+x
     end
-    if self.y>200 and self.y<(mapSize-200) then
-        y=y+(self.y-200)
-    elseif self.y>=(mapSize-200) then
+    if self.y>250 and self.y<(mapSize-250) then
+        y=y+(self.y-250)
+    elseif self.y>=(mapSize-250) then
         y=(mapSize-400)+y
     end
     return {x=x,y=y}
