@@ -9,19 +9,19 @@ Text["pl"] = {
 		["tubular_bells"] 		= {"Dzwony rurowe", 			"Mój instrument jest również używany w zegarach dziadków."}, -- Male
 		["vibraphone"] 	= {"Wibrafon", 	"Mój instrument nie ma nawet stu lat."}, -- Female
 		["marimba"] 	= {"Marimba", 		"Palisander jest często używany do produkcji mojego instrumentu."}, -- Female
-		
+
 		["horn"] 		= {"Róg", 			"Anglicy twierdzą, że mój instrument jest francuski."}, -- Male
 		["trumpet"] 	= {"Trąbka", 		"Mój instrument może sprawić, że mury Jerycha zadrżą."}, -- Female
 		["trombone"] 	= {"Puzon", 		"Don Drummond był człowiekiem z tak dużym instrumentem jak mój."}, -- Neutral
 		["tuba"] 		= {"Tuba", 			"Mój instrument zastąpił ofiklejdę w orkiestrze."}, -- Neutral
 		["euphonium"] 	= {"Eufonium", 	"Nazwa mojego instrumentu oznacza po grecku \"dobrze brzmiący\"."}, -- Male
-		
+
 		["flute"] 		= {"Flet", 		"Mój to, smukły instrument występujący w muzyce Jethro Tull."}, -- Neutral
 		["oboe"] 		= {"Obój", 			"Szałamaja to przodkini mojego instrumentu."}, -- Female
 		["clarinet"] 	= {"Klarnet", 		"Błękitna rapsodia otwiera solówkę na mój instrument."}, -- Female
 		["bassoon"] 	= {"Fagot", 		"Ustnik mojego instrumentu nazywa się bocal."}, -- Male
 		["saxophone"] 	= {"Saksofon", 	"Mój instrument jest idealny do zmysłowej muzyki."}, -- Male
-		
+
 		["violin"] 		= {"Skrzypce", 		"Z moim instrumentem, mógłbym być drugim dowódcą całej orkiestry."}, -- Male
 		["viola"] 		= {"Altówka", 		"Mój instrument jest żeńską członkinią kwartetu smyczkowego."}, -- Female
 		["cello"] 		= {"Wiolonczela", 		"Gram na swoim instrumencie między nogami."}, -- Female
@@ -99,7 +99,7 @@ Text["pl"] = {
 		insboard = "Wybierz odpowiedni instrument muzyczny, a następnie przynieś pasującą partyturę.",
 		scorepile = "Wybierz odpowiednią partyturę i zapamiętaj sekwencje gestów, aby nastroić instrument.",
 		piano = "Powtórz melodię, którą Diva właśnie zaśpiewała.",
-		
+
 		accept = "Accept",
 		reject = "Odrzuć",
 		continue = "Kontynuuj",
