@@ -1,27 +1,27 @@
 Text["pl"] = {
 	title = "Orkiestra muzyczna",
 	hey = {
-		[1] = "Witamy na evencie!"
+		[1] = "Witamy w evencie!"
 	},
 	instruments = { -- In comments (text after two lines --) gender of the musician that plays the instrument
 		["timpani"] 	= {"Kotły", 		"Używam pedału do strojenia mojego instrumentu."}, -- Male
 		["cymbals"] 	= {"Cymbałki", 		"Mój instrument tak naprawdę nie potrzebuje strojenia."}, -- Female
 		["tubular_bells"] 		= {"Dzwony rurowe", 			"Mój instrument jest również używany w zegarach dziadków."}, -- Male
-		["vibraphone"] 	= {"wibrafon", 	"Mój instrument nie ma nawet stu lat."}, -- Female
+		["vibraphone"] 	= {"Wibrafon", 	"Mój instrument nie ma nawet stu lat."}, -- Female
 		["marimba"] 	= {"Marimba", 		"Palisander jest często używany do produkcji mojego instrumentu."}, -- Female
-		
+
 		["horn"] 		= {"Róg", 			"Anglicy twierdzą, że mój instrument jest francuski."}, -- Male
 		["trumpet"] 	= {"Trąbka", 		"Mój instrument może sprawić, że mury Jerycha zadrżą."}, -- Female
 		["trombone"] 	= {"Puzon", 		"Don Drummond był człowiekiem z tak dużym instrumentem jak mój."}, -- Neutral
 		["tuba"] 		= {"Tuba", 			"Mój instrument zastąpił ofiklejdę w orkiestrze."}, -- Neutral
 		["euphonium"] 	= {"Eufonium", 	"Nazwa mojego instrumentu oznacza po grecku \"dobrze brzmiący\"."}, -- Male
-		
+
 		["flute"] 		= {"Flet", 		"Mój to, smukły instrument występujący w muzyce Jethro Tull."}, -- Neutral
 		["oboe"] 		= {"Obój", 			"Szałamaja to przodkini mojego instrumentu."}, -- Female
 		["clarinet"] 	= {"Klarnet", 		"Błękitna rapsodia otwiera solówkę na mój instrument."}, -- Female
 		["bassoon"] 	= {"Fagot", 		"Ustnik mojego instrumentu nazywa się bocal."}, -- Male
 		["saxophone"] 	= {"Saksofon", 	"Mój instrument jest idealny do zmysłowej muzyki."}, -- Male
-		
+
 		["violin"] 		= {"Skrzypce", 		"Z moim instrumentem, mógłbym być drugim dowódcą całej orkiestry."}, -- Male
 		["viola"] 		= {"Altówka", 		"Mój instrument jest żeńską członkinią kwartetu smyczkowego."}, -- Female
 		["cello"] 		= {"Wiolonczela", 		"Gram na swoim instrumencie między nogami."}, -- Female
@@ -35,12 +35,12 @@ Text["pl"] = {
 			[-1] = {"..."},
 			[1] = {
 				[1] = "Nareszcie jesteś! Potrzebuję tej orkiestry gotowej, najszybciej jak to możliwe. Nie chcę, aby Diva czekała, a już na pewno nie Król Fromagnus!",
-				[2] = "Cóż, zapytaj każdego muzyka o jego instrument i idź za kulisy po niego. Potrzebują też swoich partytur, weź je z tego... stosu.",
+				[2] = "Cóż, zapytaj każdego muzyka o jego instrument i udaj się za kulisy po niego. Potrzebują oni również swoich partytur, weź je z tego... stosu.",
 				[3] = "Moje biedne schludne stosy! Wandale...",
-				[4] = "W każdym razie, przynieś partyturę muzyczną każdemu muzykowi i nastrój jego instrument. Każda partytura ma instrukcje na ten temat."
+				[4] = "W każdym razie, przynieś partyturę każdemu muzykowi i nastrój jego instrument. Każda partytura ma instrukcje na ten temat."
 			},
 			[2] = {
-				[1] = "Zapytaj każdego muzyka o jego instrument i idź za kulisy po niego. Potrzebują też swoich partytur, weź je ze stosu.",
+				[1] = "Zapytaj każdego muzyka o jego instrument i udaj się za kulisy po niego. Potrzebują oni również swoich partytur, weź je ze stosu.",
 				[2] = "Przynieś każdemu muzykowi partyturę i nastrój jego instrument. Każda partytura ma instrukcje na ten temat."
 			},
 			[3] = {
@@ -64,7 +64,7 @@ Text["pl"] = {
 				[3] = "Gdzie ja położyłam swoje kieszonkowe lusterko..."
 			},
 			[2] = { -- Microphone phase (instruments deliver finished)
-				[1] = "No, zajęło ci to trochę czasu, zaczynałam rozpaczać.",
+				[1] = "No, zajęło ci to trochę czasu, zaczynałam już rozpaczać.",
 				[2] = "Okej, po pierwsze, czy możesz rozplątać kabel od mojego mikrofonu? Nie mogę tego zrobić w tej sukience."
 			},
 			[3] = {
@@ -80,7 +80,7 @@ Text["pl"] = {
 				[2] = "Nie popełniaj błędów, rozumiesz? Cóż, zaczynajmy!"
 			},
 			[6] = { -- Event finished (player will get rewards from here)
-				[1] = "Brawo! Zasługujesz na część oklasków, które otrzymaliśmy, nie moglibyśmy tego zrobić bez ciebie.",
+				[1] = "Brawo! Zasługujesz na część oklasków, które otrzymaliśmy, bez ciebie nie moglibyśmy tego zrobić.",
 				[2] = "Do zobaczenia na afterparty!"
 			}
 		},
@@ -99,7 +99,7 @@ Text["pl"] = {
 		insboard = "Wybierz odpowiedni instrument muzyczny, a następnie przynieś pasującą partyturę.",
 		scorepile = "Wybierz odpowiednią partyturę i zapamiętaj sekwencje gestów, aby nastroić instrument.",
 		piano = "Powtórz melodię, którą Diva właśnie zaśpiewała.",
-		
+
 		accept = "Accept",
 		reject = "Odrzuć",
 		continue = "Kontynuuj",
