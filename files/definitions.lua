@@ -43,7 +43,7 @@ iconList = { -- Size: 120 x 120 px
 		image = "184622f6a5d.png",
 		callback = function(player)
 			if player.isTuning then
-				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default = translate("instruct piano")}, player.name, 0, 0, 1.0, false)
+				uiAddWindow(100, 4, {title = translate("instruct riddle", player.language), default = translate("instruct piano", player.language)}, player.name, 0, 0, 1.0, false)
 			end
 		end
 	},

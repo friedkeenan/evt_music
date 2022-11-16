@@ -787,7 +787,7 @@ function Player:showSheets(show)
 
 			ui.addTextArea(
 				750,
-				styles.dialogue:format(("<p align='center'>%s</p>"):format(translate("instruct scorepile"))),
+				styles.dialogue:format(("<p align='center'>%s</p>"):format(translate("instruct scorepile", self.language))),
 				self.name,
 				220, 55,
 				360, 50,
