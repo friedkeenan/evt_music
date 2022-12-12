@@ -12,12 +12,7 @@ system.luaEventLaunchInterval(45, 10)
 
 local admins = {
 	["Indexinel#5948"] = true,
-	["Ricardinhotv#0000"] = true,
-	["Drgenius#0000"] = true,
-	["Undermath#2907"] = true,
-	["Zetdey#3845"] = true,
-	["Magikmail#0000"] = true,
-	["Nnaaaz#0000"] = true
+	["Drgenius#0000"] = true
 }
 
 local styles = {}

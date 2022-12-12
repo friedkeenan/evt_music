@@ -87,7 +87,7 @@ function Player:init(data, reset)
 		self.dataFile = data
 	end
 
-	do -- Sets musicias to default
+	do -- Sets musicians to default
 		local index
 		local Musician
 		for i=1, 20 do
@@ -411,9 +411,8 @@ function Player:giveNpcInstrument(npcName, showDialog)
 
 			if success then
 				if self:setSheet() then
-					-- This was causing a crash so I changed it to pass the table
+					-- This was causing a crash because it was trying to index a string, so now it passes the table
 					self:showTuning(Musician.instrument)
-					-- Call onCorrectTuning() if the player tunes correctly
 
 					wrongAttempt = false
 				else
@@ -823,8 +822,6 @@ function Player:showSheets(show)
 						0x0, 0x0,
 						1.0, true
 					)
-					--ui.addClickable(counter, Ins.tdx, Ins.tdy, Ins.txs, Ins.tys, self.name, "ins-".. (Ins.Npc or "m1"), true)
-					--print(Ins.Npc)
 				end
 			end
 		else
@@ -1478,11 +1475,7 @@ function Player:setIconDisplay(icons)
 	end
 end
 
-function Player:setInstance(id)
-
-	-- pls dont laugh at me im learning from yanderedev
-	    -- LMAO absolutely unreadable
-
+function Player:setInstance(id) -- Awful
 	if id == 1 then -- Module Start
 		for i=1, 20 do
 			self:setData("m" .. i, 0) -- "..."
@@ -1576,7 +1569,7 @@ function Player:setInstance(id)
 			Timer.new(500, false, function()
 			    tfm.exec.killPlayer(playerName)
 			end)
-			Timer.new(95000, false, function(playerName) -- Edit: hopefully changing the time should fix it
+			Timer.new(95000, false, function(playerName)
 				local _player = playerList[playerName]
 				if _player then
 					_player:setInstance(10)
@@ -1600,15 +1593,7 @@ end
 
 function Player:finishLevel(levelId)
 	levelId = levelId or self:getData("lev")
-	--[[
-	evt_music_orb
-evt_music_item
-evt_music_title_553
-evt_music_golden_ticket_5 x5
-evt_music_golden_ticket_25 x1
-evt_music_golden_ticket_50 x1
-shop: evt_music
-	]]
+
 	local pl = "le" .. levelId
 	if not self:getData(pl) then
 		if levelId == 1 then -- Instruments delivering & tuning

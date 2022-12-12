@@ -1,4 +1,5 @@
 local characterId = 0
+
 Character.new = function(name, keyName, x, y, instrumentName, dialogSprite, gender)
     local self = setmetatable({}, Character)
 

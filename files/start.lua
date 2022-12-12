@@ -1,9 +1,6 @@
-do
-	local welcome = styles.chat:format(translate("hey 1", tfm.get.room.community))
-	
+do	
 	for playerName, playerData in next, tfm.get.room.playerList do
 		eventNewPlayer(playerName)
-		tfm.exec.chatMessage(stringutils.getGendered(welcome, playerData.gender), playerName)
 	end
 	
 	-- Fast loop

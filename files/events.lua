@@ -1,5 +1,5 @@
 local leftStop = false
-
+local welcomeMessageTimer
 function eventNewGame()
 	if not isEventLoaded then
 		isEventLoaded = true
@@ -20,11 +20,18 @@ function eventNewGame()
 
 		--tfm.exec.playMusic("transformice/musique/m4.mp3", "background", 35, true, true, nil)
 		tfm.exec.stopMusic('musique')
-		Timer.new(1000, false, function() -- Stop existing background music
+		welcomeMessageTimer = Timer.new(1000, false, function() -- Stop existing background music (sometimes previous fails)
 		    tfm.exec.stopMusic('musique')
+			local welcome = styles.chat:format(translate("hey 1", tfm.get.room.community))
+			
+			for playerName, playerInfo in next, tfm.get.room.playerList do
+				tfm.exec.chatMessage(stringutils.getGendered(welcome, playerInfo.gender), playerName)
+			end
 		end)
-	else
-		return system.exit()
+	else -- Event tries to load twice
+		Timer.remove(welcomeMessageTimer)
+		system.newTimer(system.exit, 500, false)
+		error("Illegal Event Load")
 	end
 end
 
@@ -47,7 +54,7 @@ function eventPlayerDataLoaded(playerName, playerData)
 	end
 end
 
-function eventFastLoop(dif) -- To do
+function eventFastLoop(dif)
 	for _, player in next, playerList do
 		if player.onDialog then
 			player:updateDialog(2)
@@ -56,8 +63,6 @@ function eventFastLoop(dif) -- To do
 end
 
 function eventLoop(elapsed, remaining)
-	--eventFastLoop()
-
 	Timer.handle()
 
 	for playerName, player in next, playerList do
@@ -112,7 +117,7 @@ function eventLoop(elapsed, remaining)
 				-- Kill event
 				system.exit()
 			end
-		else
+		else -- On debug mode
 			if remaining > (timeMargin - 1000) then
 				tfm.exec.chatMessage("<R>WARNING !</R> <J>The event is on <r><b>debugMode</b></R>!!</J>")
 			end
@@ -318,7 +323,7 @@ end
 
 function eventChatCommand(playerName, message)
 	if leftStop then return end
-	--if not admins[playerName] then return end
+	
 	local player = playerList[playerName]
 	if not player and not admins[playerName] then return end -- If player doesn't exist and the player isn't on admin list (just so we can use !join)
 
@@ -447,6 +452,7 @@ function eventChatCommand(playerName, message)
 end
 
 --[[
+-- Removed because the 'averageLatency' property has been added
 function eventPlayerBonusGrabbed(playerName,id)
     local player = playerList[playerName]
     if player then

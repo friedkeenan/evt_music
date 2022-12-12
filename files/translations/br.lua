@@ -10,7 +10,7 @@ Text["br"] = {
 		["vibraphone"] 	= {"Vibrafone", 	"Meu instrumento não tem nem 100 anos."}, -- Female
 		["marimba"] 	= {"Marimba", 		"A madeira de jacarandá é bastante utilizada para fabricar meu instrumento."}, -- Female
 
-		["horn"] 		= {"Corne", 		"Os ingleses dizem que meu instrumento é francês."}, -- Male
+		["horn"] 		= {"Trompa", 		"Os ingleses dizem que meu instrumento é francês."}, -- Male
 		["trumpet"] 	= {"Trompete", 		"Meu instrumento pode fazer as paredes de Jericó tremerem."}, -- Female
 		["trombone"] 	= {"Trombone", 		"Don Drummond foi um homem com um grande instrumento igual ao meu."}, -- Neutral
 		["tuba"] 		= {"Tuba", 			"Meu instrumento substituiu o oficlide na orquestra."}, -- Neutral

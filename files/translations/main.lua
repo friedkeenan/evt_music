@@ -66,7 +66,7 @@ translate = function(resource, language, gender, _format)
         end
     end
 
-    return obj
+    return obj or resource:gsub(" ", "%.")
 end
 
 

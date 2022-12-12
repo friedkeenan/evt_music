@@ -58,7 +58,7 @@ local evt_music = readPath({files=fileList})
 if releaseMode then
     evt_music = evt_music:gsub("%-%-%[%[.-%]%]", "")
     evt_music = evt_music:gsub("%-%-.-\n", "\n")
-  --  evt_music = evt_music:gsub("\n\n", "\n")
+    --  evt_music = evt_music:gsub("\n\n", "\n")
     evt_music = evt_music:gsub("print[^=]-%b()", "")
 end
 

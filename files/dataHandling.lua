@@ -29,8 +29,6 @@ do
 			end
 		end
 		
-		--print(table.concat({newData, data, str, oldModuleData}, "\n"))
-		
 		return newData, data, str, oldModuleData
 	end
 end
@@ -111,63 +109,3 @@ dataHan.encodeData = function(data, depth)
 	
 	return table.concat(str, separator)
 end
-
-
---[[
-function _Player:saveData(onDatabase)
-    local Data = {
-        inv = self:serializeInventory(),
-        lng = self.language,
-        pos = {self.x, self.y},
-        hlt = self.healthHandle.max
-    }
-        
-    local data = string.saveData(Data)
-    self.dataFile = string.saveModuleData(self.dataFile, "MCC", data)
-    if onDatabase then
-        system.savePlayerData(self.name, self.dataFile)
-    else
-        room.tempData[self.name] = self.dataFile
-    end
-    
-    self.dataSaveTimestamp = currentTime()
-end
-
-function _Player:loadData(playerData)
-    if type(playerData) == "table" then
-        self:loadInventory(playerData.inv or "")
-        self.language = playerData.lng or tfm.get.room.playerList[self.name].language
-        
-        local x, y = table.unpack(playerData.pos or {})
-
-        self:move(map.spawnPoint.x, map.spawnPoint.y)
-        
-        self.healthHandle.points = playerData.hlt or 20
-    end
-    
-    self.awaitingData = false
-end
-
-
-onEvent("PlayerDataLoaded", function(playerName, playerData)
-	local Player = room.player[playerName]
-	if Player then
-		if Player.awaitingData then
-			local moduleData = string.getModuleData(playerData, "MCC")
-			Player.dataFile = playerData
-			Player:loadData(string.readData(moduleData))
-			
-			if not modulo.loading then
-				setUserInterface(playerName)
-			end
-			
-			tfm.exec.chatMessage(translate("help chattip", Player.language), playerName)
-		end
-	else
-		if modulo.dataHandlers[playerName] then
-			modulo:readStatus(playerData)
-		end
-	end
-end)
-
-]]
