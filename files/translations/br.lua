@@ -16,7 +16,7 @@ Text["br"] = {
 		["tuba"] 		= {"Tuba", 			"Meu instrumento substituiu o oficlide na orquestra."}, -- Neutral
 		["euphonium"] 	= {"Eufônio", 		"O nome do meu instrumento significa \"de bom som\" em grego."}, -- Male
 
-		["flute"] 		= {"Flauta", 		"O meu é um instrumento fino presente nas músicas do Jethro Tull."}, -- Neutral
+		["flute"] 		= {"Flauta", 		"O meu é um instrumento fino presente nas músicas de Jethro Tull."}, -- Neutral
 		["oboe"] 		= {"Oboé", 			"A charamela é a precursora do meu instrumento."}, -- Female
 		["clarinet"] 	= {"Clarinete", 	"Rhapsody in Blue começa com um solo do meu instrumento."}, -- Female
 		["bassoon"] 	= {"Fagote", 		"A peça do meu instrumento que se coloca na boca se chama bocal."}, -- Male
@@ -24,7 +24,7 @@ Text["br"] = {
 
 		["violin"] 		= {"Violino", 		"Com o meu instrumento, eu poderia ser o segundo no comando de toda a orquestra."}, -- Male
 		["viola"] 		= {"Viola", 		"O meu instrumento é o membro feminino em um quarteto de cordas."}, -- Female
-		["cello"] 		= {"Violoncelo", 	"Eu toco meu instrumento com ele entre minhas pernas."}, -- Female
+		["cello"] 		= {"Violoncelo", 	"Toco meu instrumento com ele entre minhas pernas."}, -- Female
 		["bass"] 		= {"Baixo", 		"Meu instrumento de corda é mais alto que você."}, -- Male
 		["harp"] 		= {"Harpa", 		"Supostamente, anjos também tocam meu instrumento."} -- Neutral
 	},
@@ -34,7 +34,7 @@ Text["br"] = {
 			name = "Condutor",
 			[-1] = {"..."},
 			[1] = {
-				[1] = "Finalmente você está aqui! Eu preciso que essa orquestra esteja pronta o mais rápido possível. Não quero deixar a Diva esperando e muito menos o Rei Fromagnus!",
+				[1] = "Finalmente você está aqui! Eu preciso que essa orquestra esteja pronta o mais rápido possível. Não quero deixar a Diva esperando, e muito menos o Rei Fromagnus!",
 				[2] = "Bem, pergunte a cada músico sobre seu instrumento e vá aos bastidores buscá-lo. Eles também precisarão de suas partituras, pegue-as daquela... pilha.",
 				[3] = "Minhas pobres pilhas arrumadas! Vândalos...",
 				[4] = "De qualquer forma, traga as partituras para cada músico e afine seu instrumento. Cada partitura possui instruções sobre isso."
@@ -50,7 +50,7 @@ Text["br"] = {
 				[4] = "Eu cuido do resto. Boa sorte!"
 			},
 			[4] = {
-				[1] = "Excelente trabalho! Agora você pode ir para seu acento e apreciar o espetáculo.",
+				[1] = "Excelente trabalho! Agora você pode ir para seu assento e apreciar o espetáculo.",
 				[2] = "Não se esqueça de silenciar o seu celular, certo?",
 				[3] = "Eeee 1, 2, 3, 4..."
 			}
@@ -59,7 +59,7 @@ Text["br"] = {
 			name = "Diva",
 			[-1] = {"..."},
 			[1] = { -- Start of the event
-				[1] = "O que você está olhando, quer um autógrafo meu?",
+				[1] = "O que você está olhando? Quer um autógrafo meu?",
 				[2] = "Eu não estou vendo a orquestra pronta! Não deixe uma dama esperando.",
 				[3] = "Agora, onde eu coloquei meu espelhinho..."
 			},
@@ -68,16 +68,16 @@ Text["br"] = {
 				[2] = "Certo, primeiramente, você pode desembaraçar os cabos do meu microfone? Eu não consigo fazer isso nesse vestido."
 			},
 			[3] = {
-				[1] = "Você pode desembaraçar os cabos do meu microfone? Eu não consigo fazer isso nesse vestido."
+				[1] = "Você pode desembaraçar os cabos do meu microfone? Eu não consigo fazer isso neste vestido."
 			},
 			[4] = { -- Last phase (performing on piano)
-                [1] = "Eu juro, estou cercado por amadores... Enfim, bom trabalho. Vamos fazer um pouco de arte!",
+                [1] = "Eu juro, estou cercada por amadores... Enfim, bom trabalho. Vamos fazer um pouco de arte!",
 				[2] = "Foco, agora. Eu irei cantar minha parte e você me acompanhará no piano.",
-				[3] = "Não faça nenhum errinho, você me entendeu? Bem, então vamos lá!"
+				[3] = "Não faça nem um errinho, você me entendeu? Bem, então vamos lá!"
 			},
 			[5] = {
 				[1] = "Foco, agora. Eu irei cantar minha parte e você me acompanhará no piano.",
-				[2] = "Não faça nenhum errinho, você me entendeu? Bem, então vamos lá!"
+				[2] = "Não faça nem um errinho, você me entendeu? Bem, então vamos lá!"
 			},
 			[6] = { -- Event finished (player will get rewards from here)
 				[1] = "Muito bem feito! Você merece alguns aplausos que recebemos, não poderíamos ter feito isso sem você.",
@@ -95,10 +95,10 @@ Text["br"] = {
 		}
 	},
 	instruct = {
-		microphone = "Desembarace o cabo do microfone momento os blocos ao redor.",
-		insboard = "Escolha o instrumento certo, e então pegue sua partitura correspondente.",
-		scorepile = "Escolha a partitura certa e memorize a sequência de gestos, para afinar o instrumento.",
-		piano = "Repita a melodia que Diva acaba de cantar.",
+		microphone = "Desembarace o cabo do microfone movendo os blocos ao redor.",
+		insboard = "Escolha o instrumento certo, e então encontre sua partitura correspondente.",
+		scorepile = "Escolha a partitura certa e memorize a sequência de gestos para afinar o instrumento.",
+		piano = "Repita a melodia que Diva acabou de cantar.",
 
 		accept = "Aceitar",
 		reject = "Rejeitar",
